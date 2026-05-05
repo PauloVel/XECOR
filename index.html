@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XECOR — BREAK THE FORM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --black: #050505;
+      --white: #f0f0f0;
+      --red: #ff1a1a;
+      --gray: #1a1a1a;
+    }
+
+    html {
+      scroll-behavior: auto;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Cursor */
+    .cursor {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background: var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      transition: transform 0.1s ease;
+    }
+
+    .cursor-follower {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      mix-blend-mode: difference;
+      transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+    }
+
+    .cursor.hover {
+      transform: scale(3);
+      background: var(--red);
+    }
+
+    .cursor-follower.hover {
+      width: 60px;
+      height: 60px;
+      border-color: var(--red);
+    }
+
+    /* Noise Overlay */
+    .noise {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9990;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Scanlines */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9991;
+      opacity: 0.03;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.03) 2px,
+        rgba(255,255,255,0.03) 4px
+      );
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 2rem 4vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      mix-blend-mode: difference;
+    }
+
+    .nav-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.15em;
+      color: var(--white);
+      text-decoration: none;
+      transition: letter-spacing 0.4s ease;
+    }
+
+    .nav-logo:hover {
+      letter-spacing: 0.3em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 3rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--red);
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      color: var(--red);
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #hero-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      mix-blend-mode: difference;
+    }
+
+    .hero-logo {
+      width: 320px;
+      max-width: 70vw;
+      margin-bottom: 2rem;
+      animation: logoPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes logoPulse {
+      0%, 100% { transform: scale(1); filter: brightness(1); }
+      50% { transform: scale(1.03); filter: brightness(1.2); }
+    }
+
+    .hero-tagline {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3rem, 12vw, 10rem);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .hero-tagline .line {
+      display: block;
+      overflow: hidden;
+    }
+
+    .hero-tagline .line span {
+      display: block;
+      transform: translateY(100%);
+      animation: revealUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .hero-tagline .line:nth-child(1) span { animation-delay: 0.3s; }
+    .hero-tagline .line:nth-child(2) span { animation-delay: 0.5s; }
+    .hero-tagline .line:nth-child(3) span { animation-delay: 0.7s; }
+
+    @keyframes revealUp {
+      to { transform: translateY(0); }
+    }
+
+    .hero-sub {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeIn 1s ease 1.2s forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 0.6; }
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeIn 1s ease 2s forwards;
+    }
+
+    .scroll-indicator span {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--white), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { transform: scaleY(1); opacity: 1; }
+      50% { transform: scaleY(0.5); opacity: 0.3; }
+    }
+
+    /* Manifesto Section */
+    .manifesto {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 10vh 4vw;
+      overflow: hidden;
+    }
+
+    .manifesto-text {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 7rem);
+      line-height: 1;
+      text-transform: uppercase;
+      max-width: 90vw;
+    }
+
+    .manifesto-text .word {
+      display: inline-block;
+      opacity: 0.15;
+      transition: opacity 0.3s ease, color 0.3s ease, transform 0.3s ease;
+      margin-right: 0.3em;
+    }
+
+    .manifesto-text .word.active {
+      opacity: 1;
+      color: var(--white);
+      transform: scale(1.05);
+    }
+
+    .manifesto-text .word.highlight {
+      color: var(--red);
+    }
+
+    /* Marquee Section */
+    .marquee-section {
+      position: relative;
+      padding: 8vh 0;
+      overflow: hidden;
+      border-top: 1px solid var(--gray);
+      border-bottom: 1px solid var(--gray);
+    }
+
+    .marquee {
+      display: flex;
+      white-space: nowrap;
+      animation: marquee 20s linear infinite;
+    }
+
+    .marquee-reverse {
+      animation-direction: reverse;
+    }
+
+    .marquee span {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(4rem, 10vw, 8rem);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0 2rem;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--white);
+      transition: color 0.3s ease;
+    }
+
+    .marquee span:hover {
+      color: var(--white);
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Visual Grid Section */
+    .visual-grid {
+      position: relative;
+      padding: 15vh 4vw;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(6, 1fr);
+      gap: 1rem;
+      min-height: 150vh;
+    }
+
+    .grid-item {
+      position: relative;
+      overflow: hidden;
+      background: var(--gray);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .grid-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 0%, rgba(255,26,26,0.1) 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 1;
+    }
+
+    .grid-item:hover::before {
+      opacity: 1;
+    }
+
+    .grid-item:hover {
+      transform: scale(1.02);
+    }
+
+    .grid-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(1.2);
+      transition: filter 0.6s ease, transform 0.6s ease;
+    }
+
+    .grid-item:hover img {
+      filter: grayscale(0%) contrast(1.1);
+      transform: scale(1.1);
+    }
+
+    .grid-item-1 { grid-column: 1 / 6; grid-row: 1 / 4; }
+    .grid-item-2 { grid-column: 6 / 10; grid-row: 2 / 5; }
+    .grid-item-3 { grid-column: 10 / 13; grid-row: 1 / 3; }
+    .grid-item-4 { grid-column: 2 / 5; grid-row: 4 / 7; }
+    .grid-item-5 { grid-column: 5 / 9; grid-row: 5 / 7; }
+    .grid-item-6 { grid-column: 9 / 13; grid-row: 3 / 6; }
+
+    .grid-label {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      z-index: 2;
+      font-family: 'Anton', sans-serif;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      mix-blend-mode: difference;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+
+    .grid-item:hover .grid-label {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Collection Section */
+    .collection {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10vh 4vw;
+    }
+
+    .collection-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .collection-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3rem, 10vw, 8rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+    }
+
+    .collection-desc {
+      max-width: 400px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      opacity: 0.7;
+      text-align: right;
+    }
+
+    .collection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .collection-card {
+      position: relative;
+      aspect-ratio: 3/4;
+      background: var(--gray);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .collection-card .card-glitch {
+      position: absolute;
+      inset: 0;
+      background: var(--red);
+      mix-blend-mode: multiply;
+      opacity: 0;
+      transition: opacity 0.1s ease;
+      z-index: 2;
+    }
+
+    .collection-card:hover .card-glitch {
+      opacity: 0.3;
+      animation: glitchFlash 0.3s ease;
+    }
+
+    @keyframes glitchFlash {
+      0%, 100% { opacity: 0; }
+      20% { opacity: 0.4; }
+      40% { opacity: 0.1; }
+      60% { opacity: 0.5; }
+      80% { opacity: 0.2; }
+    }
+
+    .collection-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(1.1);
+      transition: all 0.6s ease;
+    }
+
+    .collection-card:hover img {
+      filter: grayscale(0%) contrast(1.2);
+      transform: scale(1.05);
+    }
+
+    .card-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2rem 1.5rem 1.5rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+      z-index: 3;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+
+    .collection-card:hover .card-info {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .card-name {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .card-price {
+      font-size: 0.85rem;
+      opacity: 0.6;
+      margin-top: 0.3rem;
+    }
+
+    /* Footer CTA */
+    .footer-cta {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10vh 4vw;
+      overflow: hidden;
+    }
+
+    .footer-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, var(--gray) 0%, var(--black) 70%);
+      z-index: 0;
+    }
+
+    .cta-title {
+      position: relative;
+      z-index: 1;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3rem, 12vw, 10rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+    }
+
+    .cta-btn {
+      position: relative;
+      z-index: 1;
+      display: inline-block;
+      padding: 1.2rem 4rem;
+      border: 1px solid var(--white);
+      color: var(--white);
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--white);
+      transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .cta-btn:hover::before {
+      left: 0;
+    }
+
+    .cta-btn:hover {
+      color: var(--black);
+    }
+
+    .cta-btn:hover {
+      border-color: var(--red);
+    }
+
+    .cta-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: var(--red);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+      z-index: -2;
+    }
+
+    .cta-btn:hover::after {
+      width: 300px;
+      height: 300px;
+    }
+
+    /* Footer */
+    footer {
+      padding: 4rem 4vw;
+      border-top: 1px solid var(--gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .footer-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.15em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      color: var(--red);
+    }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      opacity: 0.4;
+      letter-spacing: 0.05em;
+    }
+
+    /* Glitch effect class */
+    .glitch-text {
+      position: relative;
+    }
+
+    .glitch-text::before,
+    .glitch-text::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+
+    .glitch-text.active::before {
+      animation: glitch-1 0.3s ease;
+      color: var(--red);
+      z-index: -1;
+      opacity: 0.8;
+    }
+
+    .glitch-text.active::after {
+      animation: glitch-2 0.3s ease;
+      color: cyan;
+      z-index: -2;
+      opacity: 0.8;
+    }
+
+    @keyframes glitch-1 {
+      0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      20% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 2px); }
+      40% { clip-path: inset(50% 0 30% 0); transform: translate(3px, -2px); }
+      60% { clip-path: inset(10% 0 80% 0); transform: translate(-2px, 1px); }
+      80% { clip-path: inset(70% 0 10% 0); transform: translate(2px, -1px); }
+    }
+
+    @keyframes glitch-2 {
+      0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      20% { clip-path: inset(60% 0 20% 0); transform: translate(3px, -2px); }
+      40% { clip-path: inset(30% 0 50% 0); transform: translate(-3px, 2px); }
+      60% { clip-path: inset(80% 0 10% 0); transform: translate(2px, -1px); }
+      80% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 1px); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .visual-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        min-height: auto;
+      }
+      .grid-item-1, .grid-item-2, .grid-item-3,
+      .grid-item-4, .grid-item-5, .grid-item-6 {
+        grid-column: 1;
+        grid-row: auto;
+        aspect-ratio: 4/5;
+      }
+      .collection-desc { text-align: left; }
+      .cursor, .cursor-follower { display: none; }
+      body { cursor: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+  <div class="noise"></div>
+  <div class="scanlines"></div>
+
+  <nav>
+    <a href="#" class="nav-logo">XECOR</a>
+    <ul class="nav-links">
+      <li><a href="#manifesto">Manifesto</a></li>
+      <li><a href="#collection">Collection</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <img src="assets/images/Gemini_Generated_Image_971qxx971qxx971q.png" alt="XECOR Logo" class="hero-logo">
+      <h1 class="hero-tagline">
+        <span class="line"><span>BREAK</span></span>
+        <span class="line"><span>THE</span></span>
+        <span class="line"><span>FORM</span></span>
+      </h1>
+      <p class="hero-sub">Style. Culture. Disruption.</p>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <section class="manifesto" id="manifesto">
+    <p class="manifesto-text" id="manifesto-text">
+      WE DON'T FOLLOW TRENDS WE SET THEM ON FIRE CONVENTION IS OUR ENEMY THE ARCH IS REBELLION SHARP EDGES CLEAN LINES ZERO COMPROMISE THIS IS NOT FASHION THIS IS XECOR
+    </p>
+  </section>
+
+  <section class="marquee-section">
+    <div class="marquee">
+      <span>Disrupt</span><span>×</span><span>Create</span><span>×</span><span>Destroy</span><span>×</span><span>Rebuild</span><span>×</span><span>Disrupt</span><span>×</span><span>Create</span><span>×</span><span>Destroy</span><span>×</span><span>Rebuild</span><span>×</span>
+    </div>
+    <div class="marquee marquee-reverse" style="margin-top: 1rem;">
+      <span>XECOR</span><span>//</span><span>XECOR</span><span>//</span><span>XECOR</span><span>//</span><span>XECOR</span><span>//</span><span>XECOR</span><span>//</span><span>XECOR</span><span>//</span><span>XECOR</span><span>//</span><span>XECOR</span><span>//</span>
+    </div>
+  </section>
+
+  <section class="visual-grid">
+    <div class="grid-item grid-item-1">
+      <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80" alt="Fashion">
+      <span class="grid-label">Raw</span>
+    </div>
+    <div class="grid-item grid-item-2">
+      <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80" alt="Style">
+      <span class="grid-label">Edge</span>
+    </div>
+    <div class="grid-item grid-item-3">
+      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80" alt="Culture">
+      <span class="grid-label">Void</span>
+    </div>
+    <div class="grid-item grid-item-4">
+      <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=800&q=80" alt="Street">
+      <span class="grid-label">Neon</span>
+    </div>
+    <div class="grid-item grid-item-5">
+      <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=800&q=80" alt="Urban">
+      <span class="grid-label">Steel</span>
+    </div>
+    <div class="grid-item grid-item-6">
+      <img src="https://images.unsplash.com/photo-1504194921103-f8b80cadd5e4?w=800&q=80" alt="Night">
+      <span class="grid-label">Burn</span>
+    </div>
+  </section>
+
+  <section class="collection" id="collection">
+    <div class="collection-header">
+      <h2 class="collection-title glitch-text" data-text="SS / 26">SS / 26</h2>
+      <p class="collection-desc">
+        The new season drops hard. Monolithic silhouettes. Aggressive cuts. 
+        Zero noise, pure signal. Engineered for those who move different.
+      </p>
+    </div>
+    <div class="collection-grid">
+      <div class="collection-card">
+        <div class="card-glitch"></div>
+        <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=600&q=80" alt="Item 1">
+        <div class="card-info">
+          <div class="card-name">Arc Blade</div>
+          <div class="card-price">$420</div>
+        </div>
+      </div>
+      <div class="collection-card">
+        <div class="card-glitch"></div>
+        <img src="https://images.unsplash.com/photo-1519058082700-08a0b56da9b4?w=600&q=80" alt="Item 2">
+        <div class="card-info">
+          <div class="card-name">Void Shell</div>
+          <div class="card-price">$380</div>
+        </div>
+      </div>
+      <div class="collection-card">
+        <div class="card-glitch"></div>
+        <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80" alt="Item 3">
+        <div class="card-info">
+          <div class="card-name">Iron Weave</div>
+          <div class="card-price">$290</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="footer-cta" id="contact">
+    <h2 class="cta-title glitch-text" data-text="JOIN THE VOID">JOIN THE VOID</h2>
+    <a href="#" class="cta-btn">Enter Xecor</a>
+  </section>
+
+  <footer>
+    <div class="footer-logo">XECOR</div>
+    <ul class="footer-links">
+      <li><a href="#">Instagram</a></li>
+      <li><a href="#">TikTok</a></li>
+      <li><a href="#">Discord</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 XECOR. ALL RIGHTS RESERVED.</span>
+  </footer>
+
+  <script>
+    // Custom Cursor
+    const cursor = document.querySelector('.cursor');
+    const follower = document.querySelector('.cursor-follower');
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    let followerX = 0, followerY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.2;
+      cursorY += (mouseY - cursorY) * 0.2;
+      followerX += (mouseX - followerX) * 0.1;
+      followerY += (mouseY - followerY) * 0.1;
+
+      cursor.style.transform = `translate(${cursorX - 6}px, ${cursorY - 6}px)`;
+      follower.style.transform = `translate(${followerX - 20}px, ${followerY - 20}px)`;
+
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    document.querySelectorAll('a, .collection-card, .grid-item').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.classList.add('hover');
+        follower.classList.add('hover');
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hover');
+        follower.classList.remove('hover');
+      });
+    });
+
+    // Hero Canvas - Particle Field
+    const canvas = document.getElementById('hero-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const PARTICLE_COUNT = 80;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+        this.opacity = Math.random() * 0.5 + 0.2;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+
+        const dx = mouseX - this.x;
+        const dy = mouseY - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          this.x -= dx * 0.01;
+          this.y -= dy * 0.01;
+        }
+      }
+
+      draw() {
+        ctx.fillStyle = `rgba(240, 240, 240, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push(new Particle());
+    }
+
+    function drawConnections() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 200) {
+            ctx.strokeStyle = `rgba(240, 240, 240, ${0.1 * (1 - dist / 200)})`;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animateCanvas() {
+      ctx.fillStyle = 'rgba(5, 5, 5, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      drawConnections();
+
+      requestAnimationFrame(animateCanvas);
+    }
+    animateCanvas();
+
+    // Manifesto Word Reveal
+    const manifestoText = document.getElementById('manifesto-text');
+    const words = manifestoText.textContent.trim().split(' ');
+    manifestoText.innerHTML = words.map(word => 
+      `<span class="word${['FIRE','ENEMY','REBELLION','XECOR'].includes(word) ? ' highlight' : ''}">${word}</span>`
+    ).join(' ');
+
+    const wordEls = manifestoText.querySelectorAll('.word');
+
+    const wordObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const word = entry.target;
+          const index = Array.from(wordEls).indexOf(word);
+          setTimeout(() => {
+            word.classList.add('active');
+          }, index * 80);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    wordEls.forEach(word => wordObserver.observe(word));
+
+    // Glitch Text Trigger
+    const glitchTexts = document.querySelectorAll('.glitch-text');
+    const glitchObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          setTimeout(() => entry.target.classList.remove('active'), 400);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    glitchTexts.forEach(el => {
+      glitchObserver.observe(el);
+      // Random glitch
+      setInterval(() => {
+        if (Math.random() > 0.9) {
+          el.classList.add('active');
+          setTimeout(() => el.classList.remove('active'), 300);
+        }
+      }, 3000);
+    });
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Grid Parallax
+    const gridItems = document.querySelectorAll('.grid-item');
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      gridItems.forEach((item, i) => {
+        const rect = item.getBoundingClientRect();
+        const speed = (i % 3 + 1) * 0.05;
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          item.style.transform = `translateY(${scrollY * speed * 0.1}px)`;
+        }
+      });
+    });
+
+    // Collection Card Glitch on Hover
+    document.querySelectorAll('.collection-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        const glitch = card.querySelector('.card-glitch');
+        glitch.style.animation = 'none';
+        glitch.offsetHeight;
+        glitch.style.animation = 'glitchFlash 0.4s ease';
+      });
+    });
+  </script>
+</body>
+</html>
