@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>XECOR — BREAK THE FORM</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -190,18 +191,6 @@
       z-index: 2;
       text-align: center;
       mix-blend-mode: difference;
-    }
-
-    .hero-logo {
-      width: 320px;
-      max-width: 70vw;
-      margin-bottom: 2rem;
-      animation: logoPulse 4s ease-in-out infinite;
-    }
-
-    @keyframes logoPulse {
-      0%, 100% { transform: scale(1); filter: brightness(1); }
-      50% { transform: scale(1.03); filter: brightness(1.2); }
     }
 
     .hero-tagline {
@@ -677,6 +666,31 @@
       letter-spacing: 0.05em;
     }
 
+    /* Logo Section */
+    .logo-section {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12vh 4vw;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 50% 0%, rgba(26,26,26,0.5) 0%, var(--black) 70%);
+    }
+
+    .logo-section img {
+      width: 280px;
+      max-width: 60vw;
+      display: block;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .logo-section img.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
     /* Glitch effect class */
     .glitch-text {
       position: relative;
@@ -761,7 +775,6 @@
   <section class="hero">
     <canvas id="hero-canvas"></canvas>
     <div class="hero-content">
-      <img src="assets/images/Gemini_Generated_Image_971qxx971qxx971q.png" alt="XECOR Logo" class="hero-logo">
       <h1 class="hero-tagline">
         <span class="line"><span>BREAK</span></span>
         <span class="line"><span>THE</span></span>
@@ -792,15 +805,15 @@
 
   <section class="visual-grid">
     <div class="grid-item grid-item-1">
-      <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80" alt="Fashion">
+      <img src="https://cdn.cosmos.so/a36b972d-1aa7-4e9b-8c8e-a0691f3a4feb?format=jpeg" alt="Fashion">
       <span class="grid-label">Raw</span>
     </div>
     <div class="grid-item grid-item-2">
-      <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80" alt="Style">
+      <img src="https://cdn.cosmos.so/3e5ef261-6119-474e-9def-b1cf11794af4.?format=jpeg" alt="Style">
       <span class="grid-label">Edge</span>
     </div>
     <div class="grid-item grid-item-3">
-      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80" alt="Culture">
+      <img src="https://cdn.cosmos.so/05f1b4bc-df13-4182-8649-fabeecc400a5?format=jpeg" alt="Culture">
       <span class="grid-label">Void</span>
     </div>
     <div class="grid-item grid-item-4">
@@ -808,11 +821,11 @@
       <span class="grid-label">Neon</span>
     </div>
     <div class="grid-item grid-item-5">
-      <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=800&q=80" alt="Urban">
+      <img src="https://cdn.cosmos.so/20e031d2-5980-45a4-a4a5-1e99a24f8010?format=jpeg" alt="Urban">
       <span class="grid-label">Steel</span>
     </div>
     <div class="grid-item grid-item-6">
-      <img src="https://images.unsplash.com/photo-1504194921103-f8b80cadd5e4?w=800&q=80" alt="Night">
+      <img src="https://cdn.cosmos.so/7226b096-5903-401d-9f87-9f6a30fefd56?format=jpeg" alt="Night">
       <span class="grid-label">Burn</span>
     </div>
   </section>
@@ -828,7 +841,7 @@
     <div class="collection-grid">
       <div class="collection-card">
         <div class="card-glitch"></div>
-        <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=600&q=80" alt="Item 1">
+        <img src="https://cdn.cosmos.so/f2565b51-87f6-4f00-aa54-e2ea4bb8ceb9?format=jpeg" alt="Item 1">
         <div class="card-info">
           <div class="card-name">Arc Blade</div>
           <div class="card-price">$420</div>
@@ -836,7 +849,7 @@
       </div>
       <div class="collection-card">
         <div class="card-glitch"></div>
-        <img src="https://images.unsplash.com/photo-1519058082700-08a0b56da9b4?w=600&q=80" alt="Item 2">
+        <img src="https://cdn.cosmos.so/13e21033-3c05-4aa2-98df-1edf49d80528?format=jpeg" alt="Item 2">
         <div class="card-info">
           <div class="card-name">Void Shell</div>
           <div class="card-price">$380</div>
@@ -844,7 +857,7 @@
       </div>
       <div class="collection-card">
         <div class="card-glitch"></div>
-        <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80" alt="Item 3">
+        <img src="https://cdn.cosmos.so/eed1465f-b629-4aff-9b6a-a17889c6bc29?format=jpeg" alt="Item 3">
         <div class="card-info">
           <div class="card-name">Iron Weave</div>
           <div class="card-price">$290</div>
@@ -856,6 +869,10 @@
   <section class="footer-cta" id="contact">
     <h2 class="cta-title glitch-text" data-text="JOIN THE VOID">JOIN THE VOID</h2>
     <a href="#" class="cta-btn">Enter Xecor</a>
+  </section>
+
+  <section class="logo-section" id="logo-section">
+    <img src="assets/images/logo.png" alt="XECOR Logo" id="bottom-logo">
   </section>
 
   <footer>
@@ -1037,6 +1054,18 @@
         }
       }, 3000);
     });
+
+    // Bottom Logo Reveal
+    const bottomLogo = document.getElementById('bottom-logo');
+    const logoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.3 });
+
+    if (bottomLogo) logoObserver.observe(bottomLogo);
 
     // Smooth scroll for nav links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
