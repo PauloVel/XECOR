@@ -266,39 +266,204 @@
       50% { transform: scaleY(0.5); opacity: 0.3; }
     }
 
-    /* Manifesto Section */
+    /* Manifesto Section — Rapid-Cut Video Montage */
     .manifesto {
       position: relative;
       min-height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      background: var(--black);
       display: flex;
       align-items: center;
-      padding: 10vh 4vw;
-      overflow: hidden;
+      justify-content: center;
     }
 
-    .manifesto-text {
-      font-family: 'Anton', sans-serif;
-      font-size: clamp(2.5rem, 8vw, 7rem);
-      line-height: 1;
-      text-transform: uppercase;
-      max-width: 90vw;
+    .manifesto-video-stack {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
     }
 
-    .manifesto-text .word {
-      display: inline-block;
-      opacity: 0.15;
-      transition: opacity 0.3s ease, color 0.3s ease, transform 0.3s ease;
-      margin-right: 0.3em;
+    .manifesto-video-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(1.12);
+      transition: opacity 0.15s linear, transform 2.5s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+      /* High contrast cinematic grade */
+      filter: contrast(1.5) brightness(0.65) saturate(0.5);
     }
 
-    .manifesto-text .word.active {
+    .manifesto-video-bg.active {
       opacity: 1;
-      color: var(--white);
-      transform: scale(1.05);
+      transform: scale(1);
     }
 
-    .manifesto-text .word.highlight {
+    .manifesto-cut-flash {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: var(--red);
+      opacity: 0;
+      pointer-events: none;
+      transition: none;
+      mix-blend-mode: screen;
+    }
+
+    .manifesto-cut-flash.punch {
+      animation: cutFlash 0.1s ease-out;
+    }
+
+    @keyframes cutFlash {
+      0% { opacity: 0.25; }
+      50% { opacity: 0.08; }
+      100% { opacity: 0; }
+    }
+
+    .manifesto-shake {
+      animation: screenShake 0.12s ease-out;
+    }
+
+    @keyframes screenShake {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(-3px, 2px); }
+      50% { transform: translate(3px, -2px); }
+      75% { transform: translate(-2px, 1px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    .manifesto-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      background:
+        /* top/bottom gradient bars */
+        linear-gradient(180deg, rgba(5,5,5,0.85) 0%, transparent 30%, transparent 70%, rgba(5,5,5,0.95) 100%),
+        /* strong radial vignette */
+        radial-gradient(ellipse at 50% 50%, transparent 20%, rgba(5,5,5,0.6) 60%, rgba(5,5,5,0.95) 100%);
+      pointer-events: none;
+    }
+
+    .manifesto-grain {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      opacity: 0.07;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    .manifesto-content {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      width: 100%;
+      padding: 0 4vw;
+    }
+
+    .manifesto-kicker {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
       color: var(--red);
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .manifesto-kicker.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .manifesto-headline {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3.5rem, 12vw, 11rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      min-height: 1.1em;
+    }
+
+    .manifesto-headline .line {
+      display: block;
+      opacity: 0;
+      transform: translateY(50px) scale(0.95);
+      filter: blur(6px);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .manifesto-headline .line.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+
+    .manifesto-sub {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--white);
+      opacity: 0;
+      margin-top: 2.5rem;
+      transform: translateY(20px);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .manifesto-sub.visible {
+      opacity: 0.6;
+      transform: translateY(0);
+    }
+
+    .manifesto-cta {
+      display: inline-block;
+      margin-top: 3rem;
+      padding: 1rem 3.5rem;
+      border: 1px solid var(--white);
+      color: var(--white);
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .manifesto-cta.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .manifesto-cta:hover {
+      background: var(--white);
+      color: var(--black);
+      border-color: var(--white);
+    }
+
+    .manifesto-red-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      z-index: 5;
+      opacity: 0.6;
     }
 
     /* Marquee Section */
@@ -740,6 +905,9 @@
     /* Responsive */
     @media (max-width: 768px) {
       .nav-links { display: none; }
+      .manifesto { min-height: 80vh; }
+      .manifesto-headline { font-size: clamp(2.5rem, 14vw, 5rem); }
+      .manifesto-cta { padding: 0.8rem 2rem; font-size: 0.7rem; }
       .visual-grid {
         grid-template-columns: 1fr;
         grid-template-rows: auto;
@@ -789,9 +957,49 @@
   </section>
 
   <section class="manifesto" id="manifesto">
-    <p class="manifesto-text" id="manifesto-text">
-      WE DON'T FOLLOW TRENDS WE SET THEM ON FIRE CONVENTION IS OUR ENEMY THE ARCH IS REBELLION SHARP EDGES CLEAN LINES ZERO COMPROMISE THIS IS NOT FASHION THIS IS XECOR
-    </p>
+    <!-- 
+      RAPID-CUT VIDEO MONTAGE — Stack multiple videos, they cycle aggressively.
+      SWAP THESE SOURCES with your own footage: cars, soldiers, bull riding, etc.
+      Place .mp4 files in assets/videos/ and update the src attributes below.
+    -->
+    <div class="manifesto-video-stack" id="manifesto-video-stack">
+      <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
+        <source src="assets/videos/13345402_1920_1080_60fps.mp4" type="video/mp4">
+      </video>
+      <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
+        <source src="assets/videos/13866390-uhd_3840_2160_30fps.mp4" type="video/mp4">
+      </video>
+      <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
+        <source src="assets/videos/15518745_1080_1920_30fps.mp4" type="video/mp4">
+      </video>
+      <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
+        <source src="assets/videos/15528052_2160_3840_60fps.mp4" type="video/mp4">
+      </video>
+      <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
+        <source src="assets/videos/6026115-hd_1920_1080_25fps.mp4" type="video/mp4">
+      </video>
+      <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
+        <source src="assets/videos/8328590-uhd_2160_3840_25fps.mp4" type="video/mp4">
+      </video>
+      <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
+        <source src="assets/videos/8733007-uhd_3840_2160_30fps.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="manifesto-cut-flash" id="manifesto-cut-flash"></div>
+    <div class="manifesto-overlay"></div>
+    <div class="manifesto-grain"></div>
+
+    <div class="manifesto-content">
+      <div class="manifesto-kicker" id="manifesto-kicker">The Manifesto</div>
+      <h2 class="manifesto-headline" id="manifesto-headline">
+        <span class="line" data-index="0">NO COMPROMISE</span>
+      </h2>
+      <p class="manifesto-sub" id="manifesto-sub">Asphalt · Battlefield · Arena</p>
+      <a href="#collection" class="manifesto-cta" id="manifesto-cta">Witness the chaos</a>
+    </div>
+
+    <div class="manifesto-red-line"></div>
   </section>
 
   <section class="marquee-section">
@@ -878,9 +1086,8 @@
   <footer>
     <div class="footer-logo">XECOR</div>
     <ul class="footer-links">
-      <li><a href="#">Instagram</a></li>
-      <li><a href="#">TikTok</a></li>
-      <li><a href="#">Discord</a></li>
+      <li><a href="https://www.instagram.com/rawcocky/" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.tiktok.com/@rawcocky?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
     </ul>
     <span class="footer-copy">© 2026 XECOR. ALL RIGHTS RESERVED.</span>
   </footer>
@@ -1010,28 +1217,112 @@
     }
     animateCanvas();
 
-    // Manifesto Word Reveal
-    const manifestoText = document.getElementById('manifesto-text');
-    const words = manifestoText.textContent.trim().split(' ');
-    manifestoText.innerHTML = words.map(word => 
-      `<span class="word${['FIRE','ENEMY','REBELLION','XECOR'].includes(word) ? ' highlight' : ''}">${word}</span>`
-    ).join(' ');
+    // Manifesto — Rapid-Cut Video Montage Engine
+    const manifestoSection = document.getElementById('manifesto');
+    const videoStack = document.getElementById('manifesto-video-stack');
+    const videos = videoStack.querySelectorAll('.manifesto-video-bg');
+    const cutFlash = document.getElementById('manifesto-cut-flash');
+    const manifestoKicker = document.getElementById('manifesto-kicker');
+    const manifestoHeadline = document.getElementById('manifesto-headline');
+    const manifestoSub = document.getElementById('manifesto-sub');
+    const manifestoCta = document.getElementById('manifesto-cta');
+    const headlineLine = manifestoHeadline.querySelector('.line');
 
-    const wordEls = manifestoText.querySelectorAll('.word');
+    const headlines = [
+      { text: 'NO COMPROMISE', sub: 'Asphalt · Battlefield · Arena' },
+      { text: 'NO MERCY', sub: 'Dominate Every Field' },
+      { text: 'NO FEAR', sub: 'Soldiers · Supercars · Stampede' },
+      { text: 'BREAK THE FORM', sub: 'This is XECOR' }
+    ];
 
-    const wordObserver = new IntersectionObserver((entries) => {
+    let activeVideoIndex = 0;
+    let headlineIndex = 0;
+    let montageInterval = null;
+    let headlineInterval = null;
+    let isMontageRunning = false;
+
+    // Activate first video
+    videos[0].classList.add('active');
+    videos.forEach(v => v.play().catch(() => {}));
+
+    function punchCut() {
+      // Trigger red flash overlay
+      cutFlash.classList.remove('punch');
+      void cutFlash.offsetWidth;
+      cutFlash.classList.add('punch');
+
+      // Screen shake on the content layer
+      manifestoSection.classList.remove('manifesto-shake');
+      void manifestoSection.offsetWidth;
+      manifestoSection.classList.add('manifesto-shake');
+
+      // Swap video
+      videos[activeVideoIndex].classList.remove('active');
+      activeVideoIndex = (activeVideoIndex + 1) % videos.length;
+      videos[activeVideoIndex].classList.add('active');
+
+      // Randomize next cut timing — faster for aggression
+      if (isMontageRunning) {
+        clearInterval(montageInterval);
+        const nextCut = 550 + Math.random() * 500; // 550ms - 1050ms
+        montageInterval = setInterval(punchCut, nextCut);
+      }
+    }
+
+    function rotateHeadline() {
+      headlineLine.classList.remove('visible');
+      setTimeout(() => {
+        headlineIndex = (headlineIndex + 1) % headlines.length;
+        headlineLine.textContent = headlines[headlineIndex].text;
+        manifestoSub.textContent = headlines[headlineIndex].sub;
+        headlineLine.classList.add('visible');
+      }, 400);
+    }
+
+    function startMontage() {
+      if (isMontageRunning) return;
+      isMontageRunning = true;
+      videos.forEach(v => v.play().catch(() => {}));
+      montageInterval = setInterval(punchCut, 900);
+      headlineInterval = setInterval(rotateHeadline, 2500);
+    }
+
+    function stopMontage() {
+      isMontageRunning = false;
+      clearInterval(montageInterval);
+      clearInterval(headlineInterval);
+    }
+
+    // Reveal sequence when section enters viewport
+    const manifestoObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const word = entry.target;
-          const index = Array.from(wordEls).indexOf(word);
-          setTimeout(() => {
-            word.classList.add('active');
-          }, index * 80);
+          setTimeout(() => manifestoKicker.classList.add('visible'), 200);
+          setTimeout(() => headlineLine.classList.add('visible'), 400);
+          setTimeout(() => manifestoSub.classList.add('visible'), 700);
+          setTimeout(() => manifestoCta.classList.add('visible'), 1000);
+          startMontage();
+          manifestoObserver.unobserve(manifestoSection);
         }
       });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.4 });
 
-    wordEls.forEach(word => wordObserver.observe(word));
+    manifestoObserver.observe(manifestoSection);
+
+    // Pause/resume when off-screen to save resources
+    const manifestoVisibilityObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) {
+          stopMontage();
+          videos.forEach(v => v.pause());
+        } else {
+          videos.forEach(v => v.play().catch(() => {}));
+          startMontage();
+        }
+      });
+    }, { threshold: 0.05 });
+
+    manifestoVisibilityObserver.observe(manifestoSection);
 
     // Glitch Text Trigger
     const glitchTexts = document.querySelectorAll('.glitch-text');
