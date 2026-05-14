@@ -166,7 +166,7 @@
       color: var(--red);
     }
 
-    /* Hero Section */
+    /* Hero Section — Digital Decay */
     .hero {
       position: relative;
       height: 100vh;
@@ -175,6 +175,7 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      background: var(--black);
     }
 
     #hero-canvas {
@@ -184,6 +185,7 @@
       width: 100%;
       height: 100%;
       z-index: 1;
+      image-rendering: pixelated;
     }
 
     .hero-content {
@@ -191,79 +193,30 @@
       z-index: 2;
       text-align: center;
       mix-blend-mode: difference;
+      pointer-events: none;
     }
 
     .hero-tagline {
       font-family: 'Anton', sans-serif;
-      font-size: clamp(3rem, 12vw, 10rem);
-      line-height: 0.9;
-      letter-spacing: -0.02em;
+      font-size: clamp(4rem, 14vw, 12rem);
+      line-height: 0.85;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       color: var(--white);
+      animation: glitchReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    .hero-tagline .line {
-      display: block;
-      overflow: hidden;
-    }
-
-    .hero-tagline .line span {
-      display: block;
-      transform: translateY(100%);
-      animation: revealUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    .hero-tagline .line:nth-child(1) span { animation-delay: 0.3s; }
-    .hero-tagline .line:nth-child(2) span { animation-delay: 0.5s; }
-    .hero-tagline .line:nth-child(3) span { animation-delay: 0.7s; }
-
-    @keyframes revealUp {
-      to { transform: translateY(0); }
-    }
-
-    .hero-sub {
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      opacity: 0;
-      animation: fadeIn 1s ease 1.2s forwards;
-    }
-
-    @keyframes fadeIn {
-      to { opacity: 0.6; }
-    }
-
-    .scroll-indicator {
-      position: absolute;
-      bottom: 3rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      opacity: 0;
-      animation: fadeIn 1s ease 2s forwards;
-    }
-
-    .scroll-indicator span {
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    .scroll-line {
-      width: 1px;
-      height: 60px;
-      background: linear-gradient(to bottom, var(--white), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-
-    @keyframes scrollPulse {
-      0%, 100% { transform: scaleY(1); opacity: 1; }
-      50% { transform: scaleY(0.5); opacity: 0.3; }
+    @keyframes glitchReveal {
+      0% {
+        transform: translateY(60px) scale(0.9);
+        filter: blur(12px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+        opacity: 1;
+      }
     }
 
     /* Manifesto Section — Rapid-Cut Video Montage */
@@ -940,22 +893,6 @@
     </ul>
   </nav>
 
-  <section class="hero">
-    <canvas id="hero-canvas"></canvas>
-    <div class="hero-content">
-      <h1 class="hero-tagline">
-        <span class="line"><span>BREAK</span></span>
-        <span class="line"><span>THE</span></span>
-        <span class="line"><span>FORM</span></span>
-      </h1>
-      <p class="hero-sub">Style. Culture. Disruption.</p>
-    </div>
-    <div class="scroll-indicator">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
-    </div>
-  </section>
-
   <section class="manifesto" id="manifesto">
     <!-- 
       RAPID-CUT VIDEO MONTAGE — Stack multiple videos, they cycle aggressively.
@@ -964,25 +901,25 @@
     -->
     <div class="manifesto-video-stack" id="manifesto-video-stack">
       <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
-        <source src="assets/videos/13345402_1920_1080_60fps.mp4" type="video/mp4">
+        <source src="assets/videos/Video1.mp4" type="video/mp4">
       </video>
       <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
-        <source src="assets/videos/13866390-uhd_3840_2160_30fps.mp4" type="video/mp4">
+        <source src="assets/videos/Video2.mp4" type="video/mp4">
       </video>
       <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
-        <source src="assets/videos/15518745_1080_1920_30fps.mp4" type="video/mp4">
+        <source src="assets/videos/Video3.mp4" type="video/mp4">
       </video>
       <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
-        <source src="assets/videos/15528052_2160_3840_60fps.mp4" type="video/mp4">
+        <source src="assets/videos/Video4.mp4" type="video/mp4">
       </video>
       <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
-        <source src="assets/videos/6026115-hd_1920_1080_25fps.mp4" type="video/mp4">
+        <source src="assets/videos/Video5.mp4" type="video/mp4">
       </video>
       <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
-        <source src="assets/videos/8328590-uhd_2160_3840_25fps.mp4" type="video/mp4">
+        <source src="assets/videos/Video6.mp4" type="video/mp4">
       </video>
       <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
-        <source src="assets/videos/8733007-uhd_3840_2160_30fps.mp4" type="video/mp4">
+        <source src="assets/videos/Video7.mp4" type="video/mp4">
       </video>
     </div>
 
@@ -999,7 +936,13 @@
       <a href="#collection" class="manifesto-cta" id="manifesto-cta">Witness the chaos</a>
     </div>
 
-    <div class="manifesto-red-line"></div>
+  </section>
+
+  <section class="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <h1 class="hero-tagline">AGRESSIVE STYLE</h1>
+    </div>
   </section>
 
   <section class="marquee-section">
@@ -1129,93 +1072,123 @@
       });
     });
 
-    // Hero Canvas - Particle Field
+    // Hero Canvas — Digital Decay Engine
     const canvas = document.getElementById('hero-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    const PARTICLE_COUNT = 80;
+    const ctx = canvas.getContext('2d', { alpha: false });
+    let w, h, d, buf;
 
     function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      d = ctx.createImageData(w, h);
+      buf = d.data;
     }
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    class Particle {
-      constructor() {
-        this.reset();
-      }
+    const RED = [255, 26, 26];
+    const WHITE = [240, 240, 240];
+    const GRAY = [26, 26, 26];
 
-      reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 0.5;
-        this.speedX = (Math.random() - 0.5) * 0.5;
-        this.speedY = (Math.random() - 0.5) * 0.5;
-        this.opacity = Math.random() * 0.5 + 0.2;
-      }
+    let frame = 0;
+    let flashFrames = 0;
 
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-
-        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-
-        const dx = mouseX - this.x;
-        const dy = mouseY - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 150) {
-          this.x -= dx * 0.01;
-          this.y -= dy * 0.01;
-        }
-      }
-
-      draw() {
-        ctx.fillStyle = `rgba(240, 240, 240, ${this.opacity})`;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
+    function setPixel(x, y, r, g, b) {
+      if (x < 0 || x >= w || y < 0 || y >= h) return;
+      const i = (y * w + x) * 4;
+      buf[i] = r;
+      buf[i + 1] = g;
+      buf[i + 2] = b;
+      buf[i + 3] = 255;
     }
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      particles.push(new Particle());
-    }
-
-    function drawConnections() {
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < 200) {
-            ctx.strokeStyle = `rgba(240, 240, 240, ${0.1 * (1 - dist / 200)})`;
-            ctx.lineWidth = 0.5;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
+    function fillRect(x, y, rw, rh, r, g, b) {
+      const x0 = Math.max(0, x);
+      const y0 = Math.max(0, y);
+      const x1 = Math.min(w, x + rw);
+      const y1 = Math.min(h, y + rh);
+      for (let py = y0; py < y1; py++) {
+        const row = py * w;
+        for (let px = x0; px < x1; px++) {
+          const i = (row + px) * 4;
+          buf[i] = r;
+          buf[i + 1] = g;
+          buf[i + 2] = b;
+          buf[i + 3] = 255;
         }
       }
     }
 
-    function animateCanvas() {
-      ctx.fillStyle = 'rgba(5, 5, 5, 0.1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    function decayFrame() {
+      frame++;
 
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      drawConnections();
+      // Base fill: near-black
+      for (let i = 0; i < buf.length; i += 4) {
+        buf[i] = 5;
+        buf[i + 1] = 5;
+        buf[i + 2] = 5;
+        buf[i + 3] = 255;
+      }
 
-      requestAnimationFrame(animateCanvas);
+      // Occasional full-screen red flash
+      if (flashFrames > 0) {
+        for (let i = 0; i < buf.length; i += 4) {
+          buf[i] = 255;
+          buf[i + 1] = 26;
+          buf[i + 2] = 26;
+        }
+        flashFrames--;
+      } else if (Math.random() < 0.015) {
+        flashFrames = 2 + Math.floor(Math.random() * 3);
+      }
+
+      // Horizontal tear strips (chroma separation feel)
+      const tearCount = 3 + Math.floor(Math.random() * 6);
+      for (let t = 0; t < tearCount; t++) {
+        const ty = Math.floor(Math.random() * h);
+        const th = 2 + Math.floor(Math.random() * 25);
+        const offset = Math.floor((Math.random() - 0.5) * 80);
+        const color = Math.random() < 0.4 ? RED : (Math.random() < 0.6 ? WHITE : GRAY);
+        fillRect(0, ty, w, th, color[0], color[1], color[2]);
+        if (offset !== 0) {
+          const altColor = color === RED ? [240, 240, 240] : [240, 5, 5];
+          fillRect(offset, ty + Math.floor(Math.random() * 6), w, th, altColor[0], altColor[1], altColor[2]);
+        }
+      }
+
+      // Noise bursts
+      const noiseCount = Math.floor(w * h * 0.008);
+      for (let n = 0; n < noiseCount; n++) {
+        const nx = Math.floor(Math.random() * w);
+        const ny = Math.floor(Math.random() * h);
+        const bright = Math.random();
+        if (bright < 0.5) {
+          setPixel(nx, ny, 240, 240, 240);
+        } else if (bright < 0.8) {
+          setPixel(nx, ny, 255, 26, 26);
+        } else {
+          setPixel(nx, ny, 26, 26, 26);
+        }
+      }
+
+      // Moiré-like vertical drift lines
+      const drift = Math.sin(frame * 0.03) * 30;
+      for (let x = 0; x < w; x += 2 + Math.floor(Math.random() * 3)) {
+        const px = x + Math.floor((Math.random() - 0.5) * 2);
+        if (px < 0 || px >= w) continue;
+        const intensity = ((x + drift + frame * 2) % 50 < 25) ? 35 : 10;
+        for (let y = 0; y < h; y += 2) {
+          const i = (y * w + px) * 4;
+          buf[i] = Math.min(255, buf[i] + intensity);
+          buf[i + 1] = Math.min(255, buf[i + 1] + intensity);
+          buf[i + 2] = Math.min(255, buf[i + 2] + intensity);
+        }
+      }
+
+      ctx.putImageData(d, 0, 0);
+      requestAnimationFrame(decayFrame);
     }
-    animateCanvas();
+    decayFrame();
 
     // Manifesto — Rapid-Cut Video Montage Engine
     const manifestoSection = document.getElementById('manifesto');
