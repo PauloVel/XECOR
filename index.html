@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>XECOR — BREAK THE FORM</title>
+  <title>MAGNUS — BREAK THE FORM</title>
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -166,57 +166,112 @@
       color: var(--red);
     }
 
-    /* Hero Section — Digital Decay */
+    /* Hero — Intro */
     .hero {
       position: relative;
-      height: 100vh;
+      min-height: 65vh;
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      text-align: center;
       overflow: hidden;
       background: var(--black);
     }
 
-    #hero-canvas {
+    .hero-shard-field {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-shard {
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      image-rendering: pixelated;
+      background: var(--red);
+      pointer-events: none;
+      will-change: transform;
+      box-shadow: 0 0 8px rgba(255,26,26,0.5);
+    }
+
+    .hero-flash {
+      position: absolute;
+      inset: 0;
+      background: var(--red);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 4;
+      mix-blend-mode: overlay;
+    }
+
+    .hero-flash.punch {
+      animation: heroFlash 0.12s ease-out;
+    }
+
+    @keyframes heroFlash {
+      0% { opacity: 0.45; }
+      100% { opacity: 0; }
     }
 
     .hero-content {
       position: relative;
-      z-index: 2;
-      text-align: center;
-      mix-blend-mode: difference;
-      pointer-events: none;
+      z-index: 3;
+      padding: 0 4vw;
+      transition: transform 0.08s ease-out;
     }
 
-    .hero-tagline {
+    .hero-title {
       font-family: 'Anton', sans-serif;
-      font-size: clamp(4rem, 14vw, 12rem);
+      font-size: clamp(5rem, 20vw, 18rem);
       line-height: 0.85;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--white);
-      animation: glitchReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      text-shadow: 0 0 60px rgba(255,26,26,0.3), 0 0 140px rgba(255,26,26,0.1);
+      position: relative;
     }
 
-    @keyframes glitchReveal {
-      0% {
-        transform: translateY(60px) scale(0.9);
-        filter: blur(12px);
-        opacity: 0;
-      }
-      100% {
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-        opacity: 1;
-      }
+    .hero-title span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(60px);
+      filter: blur(8px);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: default;
+    }
+
+    .hero-title.visible span {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    .hero-title.visible span:nth-child(1) { transition-delay: 0.08s; }
+    .hero-title.visible span:nth-child(2) { transition-delay: 0.16s; }
+    .hero-title.visible span:nth-child(3) { transition-delay: 0.24s; }
+    .hero-title.visible span:nth-child(4) { transition-delay: 0.32s; }
+    .hero-title.visible span:nth-child(5) { transition-delay: 0.40s; }
+
+
+
+    .hero-tagline {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(0.8rem, 1.8vw, 1.2rem);
+      font-weight: 500;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-top: 2.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+    }
+
+    .hero-tagline.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* Manifesto Section — Rapid-Cut Video Montage */
@@ -419,119 +474,79 @@
       opacity: 0.6;
     }
 
-    /* Marquee Section */
-    .marquee-section {
+    /* Aggressive Style Section */
+    .aggressive-style {
       position: relative;
-      padding: 8vh 0;
+      min-height: 100vh;
+      width: 100%;
       overflow: hidden;
-      border-top: 1px solid var(--gray);
-      border-bottom: 1px solid var(--gray);
-    }
-
-    .marquee {
+      background: var(--black);
       display: flex;
-      white-space: nowrap;
-      animation: marquee 20s linear infinite;
+      align-items: center;
+      justify-content: center;
     }
 
-    .marquee-reverse {
-      animation-direction: reverse;
-    }
-
-    .marquee span {
-      font-family: 'Anton', sans-serif;
-      font-size: clamp(4rem, 10vw, 8rem);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 0 2rem;
-      color: transparent;
-      -webkit-text-stroke: 1px var(--white);
-      transition: color 0.3s ease;
-    }
-
-    .marquee span:hover {
-      color: var(--white);
-    }
-
-    @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    /* Visual Grid Section */
-    .visual-grid {
-      position: relative;
-      padding: 15vh 4vw;
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      grid-template-rows: repeat(6, 1fr);
-      gap: 1rem;
-      min-height: 150vh;
-    }
-
-    .grid-item {
-      position: relative;
-      overflow: hidden;
-      background: var(--gray);
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .grid-item::before {
-      content: '';
+    .aggressive-style-image-stack {
       position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, transparent 0%, rgba(255,26,26,0.1) 100%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       z-index: 1;
     }
 
-    .grid-item:hover::before {
-      opacity: 1;
-    }
-
-    .grid-item:hover {
-      transform: scale(1.02);
-    }
-
-    .grid-item img {
+    .aggressive-style-image-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: grayscale(100%) contrast(1.2);
-      transition: filter 0.6s ease, transform 0.6s ease;
-    }
-
-    .grid-item:hover img {
-      filter: grayscale(0%) contrast(1.1);
-      transform: scale(1.1);
-    }
-
-    .grid-item-1 { grid-column: 1 / 6; grid-row: 1 / 4; }
-    .grid-item-2 { grid-column: 6 / 10; grid-row: 2 / 5; }
-    .grid-item-3 { grid-column: 10 / 13; grid-row: 1 / 3; }
-    .grid-item-4 { grid-column: 2 / 5; grid-row: 4 / 7; }
-    .grid-item-5 { grid-column: 5 / 9; grid-row: 5 / 7; }
-    .grid-item-6 { grid-column: 9 / 13; grid-row: 3 / 6; }
-
-    .grid-label {
-      position: absolute;
-      bottom: 1rem;
-      left: 1rem;
-      z-index: 2;
-      font-family: 'Anton', sans-serif;
-      font-size: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      mix-blend-mode: difference;
-      transform: translateY(20px);
       opacity: 0;
-      transition: all 0.4s ease;
+      transform: scale(1.08);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 3s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+      filter: contrast(1.4) brightness(0.5) saturate(0.4);
     }
 
-    .grid-item:hover .grid-label {
-      transform: translateY(0);
+    .aggressive-style-image-bg.active {
       opacity: 1;
+      transform: scale(1);
+    }
+
+    .aggressive-style-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background:
+        linear-gradient(180deg, rgba(5,5,5,0.7) 0%, transparent 40%, transparent 60%, rgba(5,5,5,0.9) 100%),
+        radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(5,5,5,0.7) 70%, rgba(5,5,5,0.95) 100%);
+      pointer-events: none;
+    }
+
+    .aggressive-style-content {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      padding: 0 4vw;
+    }
+
+    .aggressive-style-text {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(5rem, 18vw, 16rem);
+      line-height: 0.85;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--red);
+      text-shadow: 0 0 60px rgba(255, 26, 26, 0.35), 0 0 120px rgba(255, 26, 26, 0.15);
+      opacity: 0;
+      transform: translateY(40px) scale(0.95);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .aggressive-style-text.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
 
     /* Collection Section */
@@ -784,31 +799,6 @@
       letter-spacing: 0.05em;
     }
 
-    /* Logo Section */
-    .logo-section {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12vh 4vw;
-      overflow: hidden;
-      background: radial-gradient(ellipse at 50% 0%, rgba(26,26,26,0.5) 0%, var(--black) 70%);
-    }
-
-    .logo-section img {
-      width: 280px;
-      max-width: 60vw;
-      display: block;
-      opacity: 0;
-      transform: scale(0.9);
-      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .logo-section img.visible {
-      opacity: 1;
-      transform: scale(1);
-    }
-
     /* Glitch effect class */
     .glitch-text {
       position: relative;
@@ -855,26 +845,21 @@
       80% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 1px); }
     }
 
+    #aggressive-style-phone-stack { display: none; }
+
     /* Responsive */
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .manifesto { min-height: 80vh; }
       .manifesto-headline { font-size: clamp(2.5rem, 14vw, 5rem); }
       .manifesto-cta { padding: 0.8rem 2rem; font-size: 0.7rem; }
-      .visual-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        min-height: auto;
-      }
-      .grid-item-1, .grid-item-2, .grid-item-3,
-      .grid-item-4, .grid-item-5, .grid-item-6 {
-        grid-column: 1;
-        grid-row: auto;
-        aspect-ratio: 4/5;
-      }
       .collection-desc { text-align: left; }
       .cursor, .cursor-follower { display: none; }
       body { cursor: auto; }
+      #aggressive-style-pc-stack { display: none; }
+      #aggressive-style-phone-stack { display: block; }
+      .hero-red-pulse { width: 300px; height: 300px; }
+      .hero-red-line { top: 56%; }
     }
   </style>
 </head>
@@ -885,13 +870,46 @@
   <div class="scanlines"></div>
 
   <nav>
-    <a href="#" class="nav-logo">XECOR</a>
+    <a href="#" class="nav-logo">MAGNUS</a>
     <ul class="nav-links">
-      <li><a href="#manifesto">Manifesto</a></li>
-      <li><a href="#collection">Collection</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="originals.html">Originals</a></li>
+      <li><a href="contact.html">Contact</a></li>
     </ul>
   </nav>
+
+  <section class="hero" id="hero">
+    <div class="hero-shard-field" id="hero-shard-field"></div>
+    <div class="hero-flash" id="hero-flash"></div>
+    <div class="hero-content" id="hero-content">
+      <h1 class="hero-title" id="hero-title">
+        <span>X</span><span>E</span><span>C</span><span>O</span><span>R</span>
+      </h1>
+      <p class="hero-tagline">Risk it all for the unimaginable.</p>
+    </div>
+  </section>
+
+  <section class="aggressive-style" id="aggressive-style">
+    <div class="aggressive-style-image-stack" id="aggressive-style-pc-stack">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/Image1.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/Image2.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/Image3.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/Image4.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/Image5.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/image6.jpeg" alt="">
+    </div>
+    <div class="aggressive-style-image-stack" id="aggressive-style-phone-stack">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image1.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image2.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image3.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image4.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image5.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image6.jpeg" alt="">
+    </div>
+    <div class="aggressive-style-overlay"></div>
+    <div class="aggressive-style-content">
+      <h2 class="aggressive-style-text" id="aggressive-style-text">AGRESSIVE STYLE</h2>
+    </div>
+  </section>
 
   <section class="manifesto" id="manifesto">
     <!-- 
@@ -928,58 +946,16 @@
     <div class="manifesto-grain"></div>
 
     <div class="manifesto-content">
-      <div class="manifesto-kicker" id="manifesto-kicker">The Manifesto</div>
+      <div class="manifesto-kicker" id="manifesto-kicker">Take the Big</div>
       <h2 class="manifesto-headline" id="manifesto-headline">
-        <span class="line" data-index="0">NO COMPROMISE</span>
+        <span class="line" data-index="0">NO COMPARISON</span>
       </h2>
-      <p class="manifesto-sub" id="manifesto-sub">Asphalt · Battlefield · Arena</p>
+      <p class="manifesto-sub" id="manifesto-sub">Dirt · Dream · Reach</p>
       <a href="#collection" class="manifesto-cta" id="manifesto-cta">Witness the chaos</a>
     </div>
 
   </section>
 
-  <section class="hero">
-    <canvas id="hero-canvas"></canvas>
-    <div class="hero-content">
-      <h1 class="hero-tagline">AGRESSIVE STYLE</h1>
-    </div>
-  </section>
-
-  <section class="marquee-section">
-    <div class="marquee">
-      <span>Disrupt</span><span>×</span><span>Create</span><span>×</span><span>Destroy</span><span>×</span><span>Rebuild</span><span>×</span><span>Disrupt</span><span>×</span><span>Create</span><span>×</span><span>Destroy</span><span>×</span><span>Rebuild</span><span>×</span>
-    </div>
-    <div class="marquee marquee-reverse" style="margin-top: 1rem;">
-      <span>XECOR</span><span>//</span><span>XECOR</span><span>//</span><span>XECOR</span><span>//</span><span>XECOR</span><span>//</span><span>XECOR</span><span>//</span><span>XECOR</span><span>//</span><span>XECOR</span><span>//</span><span>XECOR</span><span>//</span>
-    </div>
-  </section>
-
-  <section class="visual-grid">
-    <div class="grid-item grid-item-1">
-      <img src="https://cdn.cosmos.so/a36b972d-1aa7-4e9b-8c8e-a0691f3a4feb?format=jpeg" alt="Fashion">
-      <span class="grid-label">Raw</span>
-    </div>
-    <div class="grid-item grid-item-2">
-      <img src="https://cdn.cosmos.so/3e5ef261-6119-474e-9def-b1cf11794af4.?format=jpeg" alt="Style">
-      <span class="grid-label">Edge</span>
-    </div>
-    <div class="grid-item grid-item-3">
-      <img src="https://cdn.cosmos.so/05f1b4bc-df13-4182-8649-fabeecc400a5?format=jpeg" alt="Culture">
-      <span class="grid-label">Void</span>
-    </div>
-    <div class="grid-item grid-item-4">
-      <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=800&q=80" alt="Street">
-      <span class="grid-label">Neon</span>
-    </div>
-    <div class="grid-item grid-item-5">
-      <img src="https://cdn.cosmos.so/20e031d2-5980-45a4-a4a5-1e99a24f8010?format=jpeg" alt="Urban">
-      <span class="grid-label">Steel</span>
-    </div>
-    <div class="grid-item grid-item-6">
-      <img src="https://cdn.cosmos.so/7226b096-5903-401d-9f87-9f6a30fefd56?format=jpeg" alt="Night">
-      <span class="grid-label">Burn</span>
-    </div>
-  </section>
 
   <section class="collection" id="collection">
     <div class="collection-header">
@@ -1019,20 +995,16 @@
 
   <section class="footer-cta" id="contact">
     <h2 class="cta-title glitch-text" data-text="JOIN THE VOID">JOIN THE VOID</h2>
-    <a href="#" class="cta-btn">Enter Xecor</a>
+    <a href="contact.html" class="cta-btn">Enter Magnus</a>
   </section>
 
-  <section class="logo-section" id="logo-section">
-    <img src="assets/images/logo.png" alt="XECOR Logo" id="bottom-logo">
-  </section>
-
-  <footer>
-    <div class="footer-logo">XECOR</div>
+<footer>
+    <div class="footer-logo">MAGNUS</div>
     <ul class="footer-links">
       <li><a href="https://www.instagram.com/rawcocky/" target="_blank" rel="noopener">Instagram</a></li>
       <li><a href="https://www.tiktok.com/@rawcocky?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
     </ul>
-    <span class="footer-copy">© 2026 XECOR. ALL RIGHTS RESERVED.</span>
+    <span class="footer-copy">© 2026 MAGNUS. ALL RIGHTS RESERVED.</span>
   </footer>
 
   <script>
@@ -1061,7 +1033,7 @@
     }
     animateCursor();
 
-    document.querySelectorAll('a, .collection-card, .grid-item').forEach(el => {
+    document.querySelectorAll('a, .collection-card').forEach(el => {
       el.addEventListener('mouseenter', () => {
         cursor.classList.add('hover');
         follower.classList.add('hover');
@@ -1071,124 +1043,6 @@
         follower.classList.remove('hover');
       });
     });
-
-    // Hero Canvas — Digital Decay Engine
-    const canvas = document.getElementById('hero-canvas');
-    const ctx = canvas.getContext('2d', { alpha: false });
-    let w, h, d, buf;
-
-    function resizeCanvas() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-      d = ctx.createImageData(w, h);
-      buf = d.data;
-    }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    const RED = [255, 26, 26];
-    const WHITE = [240, 240, 240];
-    const GRAY = [26, 26, 26];
-
-    let frame = 0;
-    let flashFrames = 0;
-
-    function setPixel(x, y, r, g, b) {
-      if (x < 0 || x >= w || y < 0 || y >= h) return;
-      const i = (y * w + x) * 4;
-      buf[i] = r;
-      buf[i + 1] = g;
-      buf[i + 2] = b;
-      buf[i + 3] = 255;
-    }
-
-    function fillRect(x, y, rw, rh, r, g, b) {
-      const x0 = Math.max(0, x);
-      const y0 = Math.max(0, y);
-      const x1 = Math.min(w, x + rw);
-      const y1 = Math.min(h, y + rh);
-      for (let py = y0; py < y1; py++) {
-        const row = py * w;
-        for (let px = x0; px < x1; px++) {
-          const i = (row + px) * 4;
-          buf[i] = r;
-          buf[i + 1] = g;
-          buf[i + 2] = b;
-          buf[i + 3] = 255;
-        }
-      }
-    }
-
-    function decayFrame() {
-      frame++;
-
-      // Base fill: near-black
-      for (let i = 0; i < buf.length; i += 4) {
-        buf[i] = 5;
-        buf[i + 1] = 5;
-        buf[i + 2] = 5;
-        buf[i + 3] = 255;
-      }
-
-      // Occasional full-screen red flash
-      if (flashFrames > 0) {
-        for (let i = 0; i < buf.length; i += 4) {
-          buf[i] = 255;
-          buf[i + 1] = 26;
-          buf[i + 2] = 26;
-        }
-        flashFrames--;
-      } else if (Math.random() < 0.015) {
-        flashFrames = 2 + Math.floor(Math.random() * 3);
-      }
-
-      // Horizontal tear strips (chroma separation feel)
-      const tearCount = 3 + Math.floor(Math.random() * 6);
-      for (let t = 0; t < tearCount; t++) {
-        const ty = Math.floor(Math.random() * h);
-        const th = 2 + Math.floor(Math.random() * 25);
-        const offset = Math.floor((Math.random() - 0.5) * 80);
-        const color = Math.random() < 0.4 ? RED : (Math.random() < 0.6 ? WHITE : GRAY);
-        fillRect(0, ty, w, th, color[0], color[1], color[2]);
-        if (offset !== 0) {
-          const altColor = color === RED ? [240, 240, 240] : [240, 5, 5];
-          fillRect(offset, ty + Math.floor(Math.random() * 6), w, th, altColor[0], altColor[1], altColor[2]);
-        }
-      }
-
-      // Noise bursts
-      const noiseCount = Math.floor(w * h * 0.008);
-      for (let n = 0; n < noiseCount; n++) {
-        const nx = Math.floor(Math.random() * w);
-        const ny = Math.floor(Math.random() * h);
-        const bright = Math.random();
-        if (bright < 0.5) {
-          setPixel(nx, ny, 240, 240, 240);
-        } else if (bright < 0.8) {
-          setPixel(nx, ny, 255, 26, 26);
-        } else {
-          setPixel(nx, ny, 26, 26, 26);
-        }
-      }
-
-      // Moiré-like vertical drift lines
-      const drift = Math.sin(frame * 0.03) * 30;
-      for (let x = 0; x < w; x += 2 + Math.floor(Math.random() * 3)) {
-        const px = x + Math.floor((Math.random() - 0.5) * 2);
-        if (px < 0 || px >= w) continue;
-        const intensity = ((x + drift + frame * 2) % 50 < 25) ? 35 : 10;
-        for (let y = 0; y < h; y += 2) {
-          const i = (y * w + px) * 4;
-          buf[i] = Math.min(255, buf[i] + intensity);
-          buf[i + 1] = Math.min(255, buf[i + 1] + intensity);
-          buf[i + 2] = Math.min(255, buf[i + 2] + intensity);
-        }
-      }
-
-      ctx.putImageData(d, 0, 0);
-      requestAnimationFrame(decayFrame);
-    }
-    decayFrame();
 
     // Manifesto — Rapid-Cut Video Montage Engine
     const manifestoSection = document.getElementById('manifesto');
@@ -1202,10 +1056,10 @@
     const headlineLine = manifestoHeadline.querySelector('.line');
 
     const headlines = [
-      { text: 'NO COMPROMISE', sub: 'Asphalt · Battlefield · Arena' },
+      { text: 'NO COMPARISON', sub: 'Dirt · Dream · Reach' },
       { text: 'NO MERCY', sub: 'Dominate Every Field' },
-      { text: 'NO FEAR', sub: 'Soldiers · Supercars · Stampede' },
-      { text: 'BREAK THE FORM', sub: 'This is XECOR' }
+      { text: 'NO FEAR', sub: 'Models · Supercars · Hot' },
+      { text: 'BREAK THE FORM', sub: 'This is MAGNUS' }
     ];
 
     let activeVideoIndex = 0;
@@ -1297,6 +1151,67 @@
 
     manifestoVisibilityObserver.observe(manifestoSection);
 
+    // Aggressive Style — Image Background Cycle
+    const aggressiveStyleSection = document.getElementById('aggressive-style');
+    const pcStack = document.getElementById('aggressive-style-pc-stack');
+    const phoneStack = document.getElementById('aggressive-style-phone-stack');
+    const aggressiveText = document.getElementById('aggressive-style-text');
+    let activeImageIndex = 0;
+    let imageInterval = null;
+    let currentBgImages = [];
+
+    function getActiveStack() {
+      return window.innerWidth <= 768 ? phoneStack : pcStack;
+    }
+
+    function initImages() {
+      const stack = getActiveStack();
+      currentBgImages = stack.querySelectorAll('.aggressive-style-image-bg');
+      // Reset all images in both stacks
+      pcStack.querySelectorAll('.aggressive-style-image-bg').forEach(img => img.classList.remove('active'));
+      phoneStack.querySelectorAll('.aggressive-style-image-bg').forEach(img => img.classList.remove('active'));
+      activeImageIndex = 0;
+      if (currentBgImages.length) currentBgImages[0].classList.add('active');
+    }
+
+    function cycleImages() {
+      if (!currentBgImages.length) return;
+      currentBgImages[activeImageIndex].classList.remove('active');
+      activeImageIndex = (activeImageIndex + 1) % currentBgImages.length;
+      currentBgImages[activeImageIndex].classList.add('active');
+    }
+
+    initImages();
+
+    const aggressiveObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          aggressiveText.classList.add('visible');
+          if (!imageInterval) {
+            imageInterval = setInterval(cycleImages, 1200);
+          }
+        } else {
+          if (imageInterval) {
+            clearInterval(imageInterval);
+            imageInterval = null;
+          }
+        }
+      });
+    }, { threshold: 0.3 });
+
+    aggressiveObserver.observe(aggressiveStyleSection);
+
+    // Handle resize to swap stacks
+    let lastWidth = window.innerWidth;
+    window.addEventListener('resize', () => {
+      const isMobile = window.innerWidth <= 768;
+      const wasMobile = lastWidth <= 768;
+      if (isMobile !== wasMobile) {
+        lastWidth = window.innerWidth;
+        initImages();
+      }
+    });
+
     // Glitch Text Trigger
     const glitchTexts = document.querySelectorAll('.glitch-text');
     const glitchObserver = new IntersectionObserver((entries) => {
@@ -1319,18 +1234,6 @@
       }, 3000);
     });
 
-    // Bottom Logo Reveal
-    const bottomLogo = document.getElementById('bottom-logo');
-    const logoObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.3 });
-
-    if (bottomLogo) logoObserver.observe(bottomLogo);
-
     // Smooth scroll for nav links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
@@ -1342,18 +1245,140 @@
       });
     });
 
-    // Grid Parallax
-    const gridItems = document.querySelectorAll('.grid-item');
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-      gridItems.forEach((item, i) => {
-        const rect = item.getBoundingClientRect();
-        const speed = (i % 3 + 1) * 0.05;
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-          item.style.transform = `translateY(${scrollY * speed * 0.1}px)`;
+    // Hero — Shrapnel Field
+    const heroSection = document.getElementById('hero');
+    const shardField = document.getElementById('hero-shard-field');
+    const heroFlash = document.getElementById('hero-flash');
+    const heroTitle = document.getElementById('hero-title');
+    const heroContent = document.getElementById('hero-content');
+    const heroTagline = document.querySelector('.hero-tagline');
+
+    const SHARD_COUNT = 50;
+    const shards = [];
+
+    function createShards() {
+      if (!shardField || !heroSection) return;
+      shardField.innerHTML = '';
+      shards.length = 0;
+      const w = heroSection.offsetWidth;
+      const h = heroSection.offsetHeight;
+      for (let i = 0; i < SHARD_COUNT; i++) {
+        const el = document.createElement('div');
+        el.className = 'hero-shard';
+        const isLine = Math.random() > 0.3;
+        const width = isLine ? 1 + Math.random() : 2 + Math.random() * 2;
+        const height = isLine ? 10 + Math.random() * 20 : 2 + Math.random() * 3;
+        el.style.width = `${width}px`;
+        el.style.height = `${height}px`;
+        el.style.opacity = `${0.25 + Math.random() * 0.75}`;
+        const x = Math.random() * w;
+        const y = Math.random() * h;
+        const vx = (Math.random() - 0.5) * 0.25;
+        const vy = (Math.random() - 0.5) * 0.25;
+        const rotation = Math.random() * 360;
+        const vRot = (Math.random() - 0.5) * 0.4;
+        shards.push({ el, x, y, vx, vy, rotation, vRot });
+        shardField.appendChild(el);
+      }
+    }
+
+    let heroMouseX = -9999, heroMouseY = -9999;
+    let rafId = null;
+
+    function animateShards() {
+      if (!heroSection) return;
+      const w = heroSection.offsetWidth;
+      const h = heroSection.offsetHeight;
+      for (const s of shards) {
+        s.x += s.vx;
+        s.y += s.vy;
+        s.rotation += s.vRot;
+
+        const dx = s.x - heroMouseX;
+        const dy = s.y - heroMouseY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const repelRadius = 160;
+        if (dist < repelRadius && dist > 0) {
+          const force = (repelRadius - dist) / repelRadius;
+          s.vx += (dx / dist) * force * 2.2;
+          s.vy += (dy / dist) * force * 2.2;
+          s.vRot += force * 2;
+        }
+
+        s.vx *= 0.955;
+        s.vy *= 0.955;
+        s.vRot *= 0.97;
+
+        if (s.x < -30) s.x = w + 30;
+        if (s.x > w + 30) s.x = -30;
+        if (s.y < -30) s.y = h + 30;
+        if (s.y > h + 30) s.y = -30;
+
+        s.el.style.transform = `translate(${s.x}px, ${s.y}px) rotate(${s.rotation}deg)`;
+      }
+      rafId = requestAnimationFrame(animateShards);
+    }
+
+    if (heroSection && shardField) {
+      createShards();
+      animateShards();
+
+      heroSection.addEventListener('mousemove', (e) => {
+        const rect = heroSection.getBoundingClientRect();
+        heroMouseX = e.clientX - rect.left;
+        heroMouseY = e.clientY - rect.top;
+        const offsetX = (heroMouseX - rect.width / 2) * -0.01;
+        const offsetY = (heroMouseY - rect.height / 2) * -0.01;
+        if (heroContent) heroContent.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+      });
+
+      heroSection.addEventListener('mouseleave', () => {
+        heroMouseX = -9999;
+        heroMouseY = -9999;
+        if (heroContent) heroContent.style.transform = 'translate(0,0)';
+      });
+
+      heroSection.addEventListener('click', (e) => {
+        if (heroFlash) {
+          heroFlash.classList.remove('punch');
+          void heroFlash.offsetWidth;
+          heroFlash.classList.add('punch');
+        }
+        const rect = heroSection.getBoundingClientRect();
+        const cx = e.clientX - rect.left;
+        const cy = e.clientY - rect.top;
+        for (const s of shards) {
+          const dx = s.x - cx;
+          const dy = s.y - cy;
+          const dist = Math.sqrt(dx * dx + dy * dy) + 1;
+          const force = 800 / (dist + 40);
+          s.vx += (dx / dist) * force * 1.8;
+          s.vy += (dy / dist) * force * 1.8;
+          s.vRot += (Math.random() - 0.5) * force * 0.5;
         }
       });
-    });
+
+      window.addEventListener('resize', () => {
+        shards.length = 0;
+        if (rafId) cancelAnimationFrame(rafId);
+        createShards();
+        animateShards();
+      });
+    }
+
+    const heroObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (heroTitle) heroTitle.classList.add('visible');
+          setTimeout(() => {
+            if (heroTagline) heroTagline.classList.add('visible');
+          }, 600);
+          heroObserver.unobserve(heroSection);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    if (heroSection) heroObserver.observe(heroSection);
 
     // Collection Card Glitch on Hover
     document.querySelectorAll('.collection-card').forEach(card => {

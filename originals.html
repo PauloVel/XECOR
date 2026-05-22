@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAGNUS — ORIGINALS</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --black: #050505;
+      --white: #f0f0f0;
+      --red: #ff1a1a;
+      --gray: #1a1a1a;
+    }
+
+    html {
+      scroll-behavior: auto;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Cursor */
+    .cursor {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background: var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      transition: transform 0.1s ease;
+    }
+
+    .cursor-follower {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      mix-blend-mode: difference;
+      transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+    }
+
+    .cursor.hover {
+      transform: scale(3);
+      background: var(--red);
+    }
+
+    .cursor-follower.hover {
+      width: 60px;
+      height: 60px;
+      border-color: var(--red);
+    }
+
+    /* Noise Overlay */
+    .noise {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9990;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Scanlines */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9991;
+      opacity: 0.03;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.03) 2px,
+        rgba(255,255,255,0.03) 4px
+      );
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 2rem 4vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      mix-blend-mode: difference;
+    }
+
+    .nav-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.15em;
+      color: var(--white);
+      text-decoration: none;
+      transition: letter-spacing 0.4s ease;
+    }
+
+    .nav-logo:hover {
+      letter-spacing: 0.3em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 3rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--red);
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      color: var(--red);
+    }
+
+    .nav-links a.active {
+      color: var(--red);
+    }
+
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    /* Page Header */
+    .page-header {
+      position: relative;
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10vh 4vw;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(26,26,26,0.4) 0%, var(--black) 70%);
+      z-index: 0;
+    }
+
+    .page-header-kicker {
+      position: relative;
+      z-index: 1;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 1.5rem;
+    }
+
+    .page-header-title {
+      position: relative;
+      z-index: 1;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(4rem, 14vw, 12rem);
+      line-height: 0.85;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .page-header-sub {
+      position: relative;
+      z-index: 1;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--white);
+      opacity: 0.5;
+      margin-top: 2rem;
+    }
+
+    /* Projects Section */
+    .projects {
+      position: relative;
+      padding: 10vh 4vw 15vh;
+    }
+
+    .projects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 5rem;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .projects-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3rem, 10vw, 8rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+    }
+
+    .projects-desc {
+      max-width: 400px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      opacity: 0.7;
+      text-align: right;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      position: relative;
+      background: var(--gray);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .project-card .card-glitch {
+      position: absolute;
+      inset: 0;
+      background: var(--red);
+      mix-blend-mode: multiply;
+      opacity: 0;
+      transition: opacity 0.1s ease;
+      z-index: 2;
+    }
+
+    .project-card:hover .card-glitch {
+      opacity: 0.3;
+      animation: glitchFlash 0.3s ease;
+    }
+
+    @keyframes glitchFlash {
+      0%, 100% { opacity: 0; }
+      20% { opacity: 0.4; }
+      40% { opacity: 0.1; }
+      60% { opacity: 0.5; }
+      80% { opacity: 0.2; }
+    }
+
+    .project-card img {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(1.1);
+      transition: all 0.6s ease;
+    }
+
+    .project-card:hover img {
+      filter: grayscale(0%) contrast(1.2);
+      transform: scale(1.05);
+    }
+
+    .project-info {
+      padding: 1.5rem;
+      position: relative;
+      z-index: 3;
+    }
+
+    .project-category {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.5rem;
+    }
+
+    .project-name {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-desc {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      opacity: 0.6;
+    }
+
+    .project-year {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--white);
+      background: rgba(5,5,5,0.7);
+      padding: 0.3rem 0.8rem;
+      z-index: 3;
+    }
+
+    /* Marquee */
+    .marquee-section {
+      position: relative;
+      padding: 8vh 0;
+      overflow: hidden;
+      border-top: 1px solid var(--gray);
+      border-bottom: 1px solid var(--gray);
+    }
+
+    .marquee {
+      display: flex;
+      white-space: nowrap;
+      animation: marquee 20s linear infinite;
+    }
+
+    .marquee span {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(4rem, 10vw, 8rem);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0 2rem;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--white);
+      transition: color 0.3s ease;
+    }
+
+    .marquee span:hover {
+      color: var(--white);
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Footer CTA */
+    .footer-cta {
+      position: relative;
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10vh 4vw;
+      overflow: hidden;
+    }
+
+    .footer-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, var(--gray) 0%, var(--black) 70%);
+      z-index: 0;
+    }
+
+    .cta-title {
+      position: relative;
+      z-index: 1;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3rem, 12vw, 10rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+    }
+
+    .cta-btn {
+      position: relative;
+      z-index: 1;
+      display: inline-block;
+      padding: 1.2rem 4rem;
+      border: 1px solid var(--white);
+      color: var(--white);
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--white);
+      transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .cta-btn:hover::before {
+      left: 0;
+    }
+
+    .cta-btn:hover {
+      color: var(--black);
+    }
+
+    /* Footer */
+    footer {
+      padding: 4rem 4vw;
+      border-top: 1px solid var(--gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .footer-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.15em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      color: var(--red);
+    }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      opacity: 0.4;
+      letter-spacing: 0.05em;
+    }
+
+    /* Glitch effect class */
+    .glitch-text {
+      position: relative;
+    }
+
+    .glitch-text::before,
+    .glitch-text::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+
+    .glitch-text.active::before {
+      animation: glitch-1 0.3s ease;
+      color: var(--red);
+      z-index: -1;
+      opacity: 0.8;
+    }
+
+    .glitch-text.active::after {
+      animation: glitch-2 0.3s ease;
+      color: cyan;
+      z-index: -2;
+      opacity: 0.8;
+    }
+
+    @keyframes glitch-1 {
+      0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      20% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 2px); }
+      40% { clip-path: inset(50% 0 30% 0); transform: translate(3px, -2px); }
+      60% { clip-path: inset(10% 0 80% 0); transform: translate(-2px, 1px); }
+      80% { clip-path: inset(70% 0 10% 0); transform: translate(2px, -1px); }
+    }
+
+    @keyframes glitch-2 {
+      0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      20% { clip-path: inset(60% 0 20% 0); transform: translate(3px, -2px); }
+      40% { clip-path: inset(30% 0 50% 0); transform: translate(-3px, 2px); }
+      60% { clip-path: inset(80% 0 10% 0); transform: translate(2px, -1px); }
+      80% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 1px); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .projects-desc { text-align: left; }
+      .cursor, .cursor-follower { display: none; }
+      body { cursor: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+  <div class="noise"></div>
+  <div class="scanlines"></div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">MAGNUS</a>
+    <ul class="nav-links">
+      <li><a href="originals.html" class="active">Originals</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="page-header">
+    <div class="page-header-kicker">The Lab</div>
+    <h1 class="page-header-title glitch-text" data-text="ORIGINALS">ORIGINALS</h1>
+    <p class="page-header-sub">Projects born in the void</p>
+  </section>
+
+  <section class="projects">
+    <div class="projects-header">
+      <h2 class="projects-title glitch-text" data-text="ARCHIVE">ARCHIVE</h2>
+      <p class="projects-desc">
+        Every build starts with a spark. These are the experiments, prototypes, 
+        and full-scale drops that defined the MAGNUS identity.
+      </p>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <span class="project-year">2025</span>
+        <div class="card-glitch"></div>
+        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80" alt="Void Protocol">
+        <div class="project-info">
+          <div class="project-category">Digital Infrastructure</div>
+          <div class="project-name">Void Protocol</div>
+          <div class="project-desc">Decentralized distribution layer for independent creators. Zero gatekeepers.</div>
+        </div>
+      </div>
+      <div class="project-card">
+        <span class="project-year">2024</span>
+        <div class="card-glitch"></div>
+        <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=800&q=80" alt="Signal Frame">
+        <div class="project-info">
+          <div class="project-category">Visual System</div>
+          <div class="project-name">Signal Frame</div>
+          <div class="project-desc">Real-time generative identity engine. Typography that reacts to data.</div>
+        </div>
+      </div>
+      <div class="project-card">
+        <span class="project-year">2024</span>
+        <div class="card-glitch"></div>
+        <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&q=80" alt="Black Circuit">
+        <div class="project-info">
+          <div class="project-category">Hardware Drop</div>
+          <div class="project-name">Black Circuit</div>
+          <div class="project-desc">Limited run of machined aluminum wearables. CNC-cut, hand-finished.</div>
+        </div>
+      </div>
+      <div class="project-card">
+        <span class="project-year">2023</span>
+        <div class="card-glitch"></div>
+        <img src="https://images.unsplash.com/photo-1509343256512-d77a5cb3791b?w=800&q=80" alt="Raw Frequency">
+        <div class="project-info">
+          <div class="project-category">Sound Design</div>
+          <div class="project-name">Raw Frequency</div>
+          <div class="project-desc">24-hour ambient noise composition for focus and disruption.</div>
+        </div>
+      </div>
+      <div class="project-card">
+        <span class="project-year">2023</span>
+        <div class="card-glitch"></div>
+        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80" alt="Nocturne Run">
+        <div class="project-info">
+          <div class="project-category">Event Series</div>
+          <div class="project-name">Nocturne Run</div>
+          <div class="project-desc">Underground showcases in Tokyo, Berlin, and Mexico City. No cameras. No press.</div>
+        </div>
+      </div>
+      <div class="project-card">
+        <span class="project-year">2022</span>
+        <div class="card-glitch"></div>
+        <img src="https://images.unsplash.com/photo-1515462277126-2dd0c162007a?w=800&q=80" alt="Null Object">
+        <div class="project-info">
+          <div class="project-category">Software</div>
+          <div class="project-name">Null Object</div>
+          <div class="project-desc">Open-source toolkit for building brutalist web experiences. MIT licensed.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="marquee-section">
+    <div class="marquee">
+      <span>Disrupt</span><span>×</span><span>Create</span><span>×</span><span>Destroy</span><span>×</span><span>Rebuild</span><span>×</span><span>Disrupt</span><span>×</span><span>Create</span><span>×</span><span>Destroy</span><span>×</span><span>Rebuild</span><span>×</span>
+    </div>
+  </section>
+
+  <section class="footer-cta">
+    <h2 class="cta-title glitch-text" data-text="JOIN THE VOID">JOIN THE VOID</h2>
+    <a href="contact.html" class="cta-btn">Enter Magnus</a>
+  </section>
+
+  <footer>
+    <div class="footer-logo">MAGNUS</div>
+    <ul class="footer-links">
+      <li><a href="https://www.instagram.com/rawcocky/" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.tiktok.com/@rawcocky?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 MAGNUS. ALL RIGHTS RESERVED.</span>
+  </footer>
+
+  <script>
+    // Custom Cursor
+    const cursor = document.querySelector('.cursor');
+    const follower = document.querySelector('.cursor-follower');
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    let followerX = 0, followerY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.2;
+      cursorY += (mouseY - cursorY) * 0.2;
+      followerX += (mouseX - followerX) * 0.1;
+      followerY += (mouseY - followerY) * 0.1;
+
+      cursor.style.transform = `translate(${cursorX - 6}px, ${cursorY - 6}px)`;
+      follower.style.transform = `translate(${followerX - 20}px, ${followerY - 20}px)`;
+
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    document.querySelectorAll('a, .project-card').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.classList.add('hover');
+        follower.classList.add('hover');
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hover');
+        follower.classList.remove('hover');
+      });
+    });
+
+    // Glitch Text Trigger
+    const glitchTexts = document.querySelectorAll('.glitch-text');
+    const glitchObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          setTimeout(() => entry.target.classList.remove('active'), 400);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    glitchTexts.forEach(el => {
+      glitchObserver.observe(el);
+      setInterval(() => {
+        if (Math.random() > 0.9) {
+          el.classList.add('active');
+          setTimeout(() => el.classList.remove('active'), 300);
+        }
+      }, 3000);
+    });
+  </script>
+</body>
+</html>

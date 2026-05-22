@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAGNUS — CONTACT</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --black: #050505;
+      --white: #f0f0f0;
+      --red: #ff1a1a;
+      --gray: #1a1a1a;
+    }
+
+    html {
+      scroll-behavior: auto;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Cursor */
+    .cursor {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background: var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      transition: transform 0.1s ease;
+    }
+
+    .cursor-follower {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      mix-blend-mode: difference;
+      transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+    }
+
+    .cursor.hover {
+      transform: scale(3);
+      background: var(--red);
+    }
+
+    .cursor-follower.hover {
+      width: 60px;
+      height: 60px;
+      border-color: var(--red);
+    }
+
+    /* Noise Overlay */
+    .noise {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9990;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Scanlines */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9991;
+      opacity: 0.03;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.03) 2px,
+        rgba(255,255,255,0.03) 4px
+      );
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 2rem 4vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      mix-blend-mode: difference;
+    }
+
+    .nav-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.15em;
+      color: var(--white);
+      text-decoration: none;
+      transition: letter-spacing 0.4s ease;
+    }
+
+    .nav-logo:hover {
+      letter-spacing: 0.3em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 3rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--red);
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      color: var(--red);
+    }
+
+    .nav-links a.active {
+      color: var(--red);
+    }
+
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    /* Word Wall */
+    .word-wall {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10vh 4vw;
+      overflow: hidden;
+    }
+
+    .word-wall::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(26,26,26,0.5) 0%, var(--black) 70%);
+      z-index: 0;
+    }
+
+    .word-wall-kicker {
+      position: relative;
+      z-index: 1;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 3rem;
+    }
+
+    .word-wall-headline {
+      position: relative;
+      z-index: 1;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(5rem, 18vw, 16rem);
+      line-height: 0.85;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--white);
+      min-height: 1.1em;
+    }
+
+    .word-wall-sub {
+      position: relative;
+      z-index: 1;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--white);
+      opacity: 0.5;
+      margin-top: 2.5rem;
+    }
+
+    .word-wall-list {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem 2.5rem;
+      margin-top: 4rem;
+      max-width: 900px;
+    }
+
+    .word-wall-list span {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.6rem);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+      transition: all 0.3s ease;
+    }
+
+    .word-wall-list span.active {
+      color: var(--red);
+      -webkit-text-stroke: 1px var(--red);
+      text-shadow: 0 0 40px rgba(255,26,26,0.35);
+    }
+
+    /* Contact Section */
+    .contact-section {
+      position: relative;
+      padding: 15vh 4vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .contact-info h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .contact-info p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      opacity: 0.7;
+      max-width: 400px;
+      margin-bottom: 3rem;
+    }
+
+    .contact-channel {
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-channel-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.3rem;
+    }
+
+    .contact-channel a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .contact-channel a:hover {
+      color: var(--red);
+    }
+
+    .social-row {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .social-row a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      transition: opacity 0.3s ease, color 0.3s ease;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.6rem 1.4rem;
+    }
+
+    .social-row a:hover {
+      opacity: 1;
+      color: var(--red);
+      border-color: var(--red);
+    }
+
+    /* Brutalist Form */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      padding: 0.8rem 0;
+      outline: none;
+      transition: border-color 0.3s ease;
+      border-radius: 0;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-bottom-color: var(--red);
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-submit {
+      align-self: flex-start;
+      padding: 1rem 3.5rem;
+      border: 1px solid var(--white);
+      background: transparent;
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .form-submit:hover {
+      background: var(--white);
+      color: var(--black);
+    }
+
+    /* Red Line Divider */
+    .red-line {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      opacity: 0.4;
+    }
+
+    /* Footer */
+    footer {
+      padding: 4rem 4vw;
+      border-top: 1px solid var(--gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .footer-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.15em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      color: var(--red);
+    }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      opacity: 0.4;
+      letter-spacing: 0.05em;
+    }
+
+    /* Glitch effect class */
+    .glitch-text {
+      position: relative;
+    }
+
+    .glitch-text::before,
+    .glitch-text::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+
+    .glitch-text.active::before {
+      animation: glitch-1 0.3s ease;
+      color: var(--red);
+      z-index: -1;
+      opacity: 0.8;
+    }
+
+    .glitch-text.active::after {
+      animation: glitch-2 0.3s ease;
+      color: cyan;
+      z-index: -2;
+      opacity: 0.8;
+    }
+
+    @keyframes glitch-1 {
+      0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      20% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 2px); }
+      40% { clip-path: inset(50% 0 30% 0); transform: translate(3px, -2px); }
+      60% { clip-path: inset(10% 0 80% 0); transform: translate(-2px, 1px); }
+      80% { clip-path: inset(70% 0 10% 0); transform: translate(2px, -1px); }
+    }
+
+    @keyframes glitch-2 {
+      0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      20% { clip-path: inset(60% 0 20% 0); transform: translate(3px, -2px); }
+      40% { clip-path: inset(30% 0 50% 0); transform: translate(-3px, 2px); }
+      60% { clip-path: inset(80% 0 10% 0); transform: translate(2px, -1px); }
+      80% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 1px); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .contact-section {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+      }
+      .word-wall-list {
+        gap: 0.8rem 1.5rem;
+      }
+      .cursor, .cursor-follower { display: none; }
+      body { cursor: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+  <div class="noise"></div>
+  <div class="scanlines"></div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">MAGNUS</a>
+    <ul class="nav-links">
+      <li><a href="originals.html">Originals</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="word-wall">
+    <div class="word-wall-kicker"> We </div>
+    <h1 class="word-wall-headline glitch-text" id="word-wall-headline" data-text="DOMINATE">DOMINATE</h1>
+    <p class="word-wall-sub" id="word-wall-sub">The seven forces that define MAGNUS</p>
+    <div class="word-wall-list" id="word-wall-list">
+      <span data-index="0">Seduce</span>
+      <span data-index="1">Dominate</span>
+      <span data-index="5">Risk</span>
+      <span data-index="2">Compete</span>
+      <span data-index="3">Obsess</span>
+      <span data-index="4">Aggressive</span>
+      <span data-index="6">Raw</span>
+    </div>
+  </section>
+
+  <div class="red-line"></div>
+
+  <section class="contact-section">
+    <div class="contact-info">
+      <h2 class="glitch-text" data-text="MAKE CONTACT">MAKE CONTACT</h2>
+      <p>
+        Everyone wants to see you, make it be. No Hesitation. No Doubt. 
+        Make sure they hear from you. Partnerships, collaborations, 
+        open the channel.
+      </p>
+      <div class="contact-channel">
+        <div class="contact-channel-label">Email</div>
+        <a href="mailto:magnuswp@outlook.com">magnuswp@outlook.com</a>
+      </div>
+      <div class="contact-channel">
+        <div class="contact-channel-label">Phone</div>
+        <a href="tel:2215292879">2215292879</a>
+      </div>
+      <div class="social-row">
+        <a href="https://www.instagram.com/rawcocky/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.tiktok.com/@rawcocky?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a>
+      </div>
+    </div>
+
+    <form class="contact-form" onsubmit="event.preventDefault(); alert('Signal transmitted.');">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Who are you" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="your@signal.com" required>
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Hand us your intent..." required></textarea>
+      </div>
+      <button type="submit" class="form-submit">Transmit</button>
+    </form>
+  </section>
+
+  <footer>
+    <div class="footer-logo">MAGNUS</div>
+    <ul class="footer-links">
+      <li><a href="https://www.instagram.com/rawcocky/" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.tiktok.com/@rawcocky?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 MAGNUS. ALL RIGHTS RESERVED.</span>
+  </footer>
+
+  <script>
+    // Custom Cursor
+    const cursor = document.querySelector('.cursor');
+    const follower = document.querySelector('.cursor-follower');
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    let followerX = 0, followerY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.2;
+      cursorY += (mouseY - cursorY) * 0.2;
+      followerX += (mouseX - followerX) * 0.1;
+      followerY += (mouseY - followerY) * 0.1;
+
+      cursor.style.transform = `translate(${cursorX - 6}px, ${cursorY - 6}px)`;
+      follower.style.transform = `translate(${followerX - 20}px, ${followerY - 20}px)`;
+
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    document.querySelectorAll('a, button, input, textarea').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.classList.add('hover');
+        follower.classList.add('hover');
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hover');
+        follower.classList.remove('hover');
+      });
+    });
+
+    // Word Wall — Cycle the 7 core words
+    const words = ['Seduce', 'Dominate', 'Risk', 'Compete', 'Obsess', 'Aggressive', 'Raw'];
+    const headlineEl = document.getElementById('word-wall-headline');
+    const subEl = document.getElementById('word-wall-sub');
+    const listSpans = document.querySelectorAll('#word-wall-list span');
+    let wordIndex = 0;
+
+    function cycleWord() {
+      // Remove active from all list items
+      listSpans.forEach(s => s.classList.remove('active'));
+
+      wordIndex = (wordIndex + 1) % words.length;
+      const nextWord = words[wordIndex];
+
+      // Glitch transition on headline
+      headlineEl.classList.add('active');
+      setTimeout(() => {
+        headlineEl.textContent = nextWord;
+        headlineEl.setAttribute('data-text', nextWord);
+        headlineEl.classList.remove('active');
+      }, 150);
+
+      // Highlight the corresponding list word
+      listSpans[wordIndex].classList.add('active');
+    }
+
+    // Start cycling
+    setInterval(cycleWord, 2000);
+    listSpans[0].classList.add('active');
+
+    // Glitch Text Trigger on scroll
+    const glitchTexts = document.querySelectorAll('.glitch-text');
+    const glitchObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          setTimeout(() => entry.target.classList.remove('active'), 400);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    glitchTexts.forEach(el => glitchObserver.observe(el));
+  </script>
+</body>
+</html>
