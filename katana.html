@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAGNUS — KATANA</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --black: #050505;
+      --white: #f0f0f0;
+      --red: #ff1a1a;
+      --gray: #1a1a1a;
+    }
+
+    html {
+      scroll-behavior: auto;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Cursor */
+    .cursor {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background: var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      transition: transform 0.1s ease;
+    }
+
+    .cursor-follower {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      mix-blend-mode: difference;
+      transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+    }
+
+    .cursor.hover {
+      transform: scale(3);
+      background: var(--red);
+    }
+
+    .cursor-follower.hover {
+      width: 60px;
+      height: 60px;
+      border-color: var(--red);
+    }
+
+    /* Noise Overlay */
+    .noise {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9990;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Scanlines */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9991;
+      opacity: 0.03;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.03) 2px,
+        rgba(255,255,255,0.03) 4px
+      );
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 2rem 4vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      mix-blend-mode: difference;
+    }
+
+    .nav-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.15em;
+      color: var(--white);
+      text-decoration: none;
+      transition: letter-spacing 0.4s ease;
+    }
+
+    .nav-logo:hover {
+      letter-spacing: 0.3em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 3rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--red);
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      color: var(--red);
+    }
+
+    /* Initiative Hero */
+    .initiative-hero {
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 10vh 4vw;
+      gap: 4rem;
+    }
+
+    .initiative-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      background: var(--gray);
+    }
+
+    .initiative-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(1.1);
+      transition: all 0.6s ease;
+    }
+
+    .initiative-image:hover img {
+      filter: grayscale(0%) contrast(1.2);
+      transform: scale(1.03);
+    }
+
+    .initiative-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .initiative-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+
+    .initiative-name {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(4rem, 12vw, 10rem);
+      line-height: 0.85;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .initiative-tagline {
+      font-size: 1.2rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    .initiative-editorial {
+      max-width: 480px;
+      font-size: 1rem;
+      line-height: 1.7;
+      opacity: 0.7;
+    }
+
+    .initiative-actions {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 1rem 3rem;
+      border: 1px solid var(--white);
+      color: var(--white);
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+      position: relative;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--red);
+      transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .btn:hover::before {
+      left: 0;
+    }
+
+    .btn:hover {
+      border-color: var(--red);
+    }
+
+    /* Statement Section */
+    .statement {
+      position: relative;
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10vh 4vw;
+      overflow: hidden;
+    }
+
+    .statement::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(26,26,26,0.5) 0%, var(--black) 70%);
+      z-index: 0;
+    }
+
+    .statement-text {
+      position: relative;
+      z-index: 1;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3rem, 10vw, 8rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      max-width: 1200px;
+    }
+
+    .statement-text span {
+      color: var(--red);
+      text-shadow: 0 0 60px rgba(255, 26, 26, 0.35);
+    }
+
+    /* Aggressive Style Section */
+    .aggressive-style {
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .aggressive-style-image-stack {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .aggressive-style-image-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(1.08);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 3s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+      filter: contrast(1.4) brightness(0.5) saturate(0.4);
+    }
+
+    .aggressive-style-image-bg.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .aggressive-style-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background:
+        linear-gradient(180deg, rgba(5,5,5,0.7) 0%, transparent 40%, transparent 60%, rgba(5,5,5,0.9) 100%),
+        radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(5,5,5,0.7) 70%, rgba(5,5,5,0.95) 100%);
+      pointer-events: none;
+    }
+
+    .aggressive-style-content {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      padding: 0 4vw;
+    }
+
+    .aggressive-style-text {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(5rem, 18vw, 16rem);
+      line-height: 0.85;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--red);
+      text-shadow: 0 0 60px rgba(255, 26, 26, 0.35), 0 0 120px rgba(255, 26, 26, 0.15);
+      opacity: 0;
+      transform: translateY(60px) scale(0.95);
+      transition: all 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform, opacity;
+    }
+
+    .aggressive-style-text.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    #aggressive-style-phone-stack { display: none; }
+
+    /* Footer */
+    footer {
+      padding: 4rem 4vw;
+      border-top: 1px solid var(--gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .footer-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.15em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      transition: opacity 0.3s ease, color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      color: var(--red);
+    }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      opacity: 0.4;
+      letter-spacing: 0.05em;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .initiative-hero {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        padding-top: 15vh;
+      }
+      .initiative-image {
+        aspect-ratio: 1/1;
+      }
+      #aggressive-style-pc-stack { display: none; }
+      #aggressive-style-phone-stack { display: block; }
+      .cursor, .cursor-follower { display: none; }
+      body { cursor: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+  <div class="noise"></div>
+  <div class="scanlines"></div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">MAGNUS</a>
+    <ul class="nav-links">
+      <li><a href="index.html#collection">Issues</a></li>
+      <li><a href="originals.html">Originals</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="initiative-hero">
+    <div class="initiative-image">
+      <img src="https://cdn.cosmos.so/13e21033-3c05-4aa2-98df-1edf49d80528?format=jpeg" alt="Katana">
+    </div>
+    <div class="initiative-info">
+      <div class="initiative-label">SS / 26 — Issue II</div>
+      <h1 class="initiative-name">KATANA</h1>
+      <div class="initiative-tagline">One clean cut. No warning.</div>
+      <p class="initiative-editorial">
+        Precision, edge, and the kind of presence that parts crowds without asking. Sharp isn't 
+        a look. It's a warning. The room doesn't belong to the loudest — it belongs to the ones 
+        who move like blades.
+      </p>
+      <div class="initiative-actions">
+        <a href="contact.html" class="btn">Enter</a>
+        <a href="index.html#collection" class="btn">Back to Issues</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="statement">
+    <h2 class="statement-text">Make them <span>watch you win</span></h2>
+  </section>
+
+  <section class="aggressive-style" id="aggressive-style">
+    <div class="aggressive-style-image-stack" id="aggressive-style-pc-stack">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/Image1.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/Image2.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/Image3.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/Image4.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/Image5.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/image6.jpeg" alt="">
+    </div>
+    <div class="aggressive-style-image-stack" id="aggressive-style-phone-stack">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image1.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image2.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image3.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image4.png" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image5.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image6.jpeg" alt="">
+    </div>
+    <div class="aggressive-style-overlay"></div>
+    <div class="aggressive-style-content">
+      <h2 class="aggressive-style-text" id="aggressive-style-text">AGGRESSIVE STYLE</h2>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">MAGNUS</div>
+    <ul class="footer-links">
+      <li><a href="https://www.instagram.com/magnustpt/" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.tiktok.com/@magnustpt?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 MAGNUS. ALL RIGHTS RESERVED.</span>
+  </footer>
+
+  <script>
+    // Custom Cursor
+    const cursor = document.querySelector('.cursor');
+    const follower = document.querySelector('.cursor-follower');
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    let followerX = 0, followerY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.2;
+      cursorY += (mouseY - cursorY) * 0.2;
+      followerX += (mouseX - followerX) * 0.1;
+      followerY += (mouseY - followerY) * 0.1;
+
+      cursor.style.transform = `translate(${cursorX - 6}px, ${cursorY - 6}px)`;
+      follower.style.transform = `translate(${followerX - 20}px, ${followerY - 20}px)`;
+
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.classList.add('hover');
+        follower.classList.add('hover');
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hover');
+        follower.classList.remove('hover');
+      });
+    });
+
+    // Aggressive Style — Image Background Cycle
+    const aggressiveStyleSection = document.getElementById('aggressive-style');
+    const pcStack = document.getElementById('aggressive-style-pc-stack');
+    const phoneStack = document.getElementById('aggressive-style-phone-stack');
+    const aggressiveText = document.getElementById('aggressive-style-text');
+    let activeImageIndex = 0;
+    let imageInterval = null;
+    let currentBgImages = [];
+
+    function getActiveStack() {
+      return window.innerWidth <= 768 ? phoneStack : pcStack;
+    }
+
+    function initImages() {
+      const stack = getActiveStack();
+      currentBgImages = stack.querySelectorAll('.aggressive-style-image-bg');
+      pcStack.querySelectorAll('.aggressive-style-image-bg').forEach(img => img.classList.remove('active'));
+      phoneStack.querySelectorAll('.aggressive-style-image-bg').forEach(img => img.classList.remove('active'));
+      activeImageIndex = 0;
+      if (currentBgImages.length) currentBgImages[0].classList.add('active');
+    }
+
+    function cycleImages() {
+      if (!currentBgImages.length) return;
+      currentBgImages[activeImageIndex].classList.remove('active');
+      activeImageIndex = (activeImageIndex + 1) % currentBgImages.length;
+      currentBgImages[activeImageIndex].classList.add('active');
+    }
+
+    initImages();
+
+    const aggressiveObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          aggressiveText.classList.add('visible');
+          if (!imageInterval) {
+            imageInterval = setInterval(cycleImages, 1200);
+          }
+        } else {
+          if (imageInterval) {
+            clearInterval(imageInterval);
+            imageInterval = null;
+          }
+        }
+      });
+    }, { threshold: 0.3 });
+
+    aggressiveObserver.observe(aggressiveStyleSection);
+
+    let lastWidth = window.innerWidth;
+    window.addEventListener('resize', () => {
+      const isMobile = window.innerWidth <= 768;
+      const wasMobile = lastWidth <= 768;
+      if (isMobile !== wasMobile) {
+        lastWidth = window.innerWidth;
+        initImages();
+      }
+    });
+  </script>
+</body>
+</html>

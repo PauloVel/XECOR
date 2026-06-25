@@ -230,33 +230,6 @@
       margin-top: 2.5rem;
     }
 
-    .word-wall-list {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem 2.5rem;
-      margin-top: 4rem;
-      max-width: 900px;
-    }
-
-    .word-wall-list span {
-      font-family: 'Anton', sans-serif;
-      font-size: clamp(1rem, 2.5vw, 1.6rem);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(255,255,255,0.3);
-      transition: all 0.3s ease;
-    }
-
-    .word-wall-list span.active {
-      color: var(--red);
-      -webkit-text-stroke: 1px var(--red);
-      text-shadow: 0 0 40px rgba(255,26,26,0.35);
-    }
-
     /* Contact Section */
     .contact-section {
       position: relative;
@@ -500,9 +473,6 @@
         grid-template-columns: 1fr;
         gap: 4rem;
       }
-      .word-wall-list {
-        gap: 0.8rem 1.5rem;
-      }
       .cursor, .cursor-follower { display: none; }
       body { cursor: auto; }
     }
@@ -524,17 +494,9 @@
 
   <section class="word-wall">
     <div class="word-wall-kicker"> We </div>
-    <h1 class="word-wall-headline glitch-text" id="word-wall-headline" data-text="DOMINATE">DOMINATE</h1>
-    <p class="word-wall-sub" id="word-wall-sub">The seven forces that define MAGNUS</p>
-    <div class="word-wall-list" id="word-wall-list">
-      <span data-index="0">Seduce</span>
-      <span data-index="1">Dominate</span>
-      <span data-index="5">Risk</span>
-      <span data-index="2">Compete</span>
-      <span data-index="3">Obsess</span>
-      <span data-index="4">Aggressive</span>
-      <span data-index="6">Raw</span>
-    </div>
+    <h1 class="word-wall-headline glitch-text" id="word-wall-headline" data-text="SEDUCE">SEDUCE</h1>
+    <p class="word-wall-sub" id="word-wall-sub">Make them watch you win</p>
+
   </section>
 
   <div class="red-line"></div>
@@ -556,15 +518,14 @@
         <a href="tel:2215292879">2215292879</a>
       </div>
       <div class="social-row">
-        <a href="https://www.instagram.com/rawcocky/" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://www.tiktok.com/@rawcocky?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a>
+        <a href="https://www.instagram.com/magnustpt/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.tiktok.com/@magnustpt?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a>
       </div>
     </div>
 
     <form class="contact-form" onsubmit="event.preventDefault(); alert('Signal transmitted.');">
       <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" placeholder="Who are you" required>
+        <input type="text" id="name" name="name" placeholder="Who are you" aria-label="Name" required>
       </div>
       <div class="form-group">
         <label for="email">Email</label>
@@ -581,8 +542,8 @@
   <footer>
     <div class="footer-logo">MAGNUS</div>
     <ul class="footer-links">
-      <li><a href="https://www.instagram.com/rawcocky/" target="_blank" rel="noopener">Instagram</a></li>
-      <li><a href="https://www.tiktok.com/@rawcocky?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+      <li><a href="https://www.instagram.com/magnustpt/" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.tiktok.com/@magnustpt?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
     </ul>
     <span class="footer-copy">© 2026 MAGNUS. ALL RIGHTS RESERVED.</span>
   </footer>
@@ -625,16 +586,11 @@
     });
 
     // Word Wall — Cycle the 7 core words
-    const words = ['Seduce', 'Dominate', 'Risk', 'Compete', 'Obsess', 'Aggressive', 'Raw'];
+    const words = ['Seduce', 'Dominate', 'Risk', 'Compete', 'Obsess', 'Wild', 'Raw'];
     const headlineEl = document.getElementById('word-wall-headline');
-    const subEl = document.getElementById('word-wall-sub');
-    const listSpans = document.querySelectorAll('#word-wall-list span');
     let wordIndex = 0;
 
     function cycleWord() {
-      // Remove active from all list items
-      listSpans.forEach(s => s.classList.remove('active'));
-
       wordIndex = (wordIndex + 1) % words.length;
       const nextWord = words[wordIndex];
 
@@ -645,14 +601,10 @@
         headlineEl.setAttribute('data-text', nextWord);
         headlineEl.classList.remove('active');
       }, 150);
-
-      // Highlight the corresponding list word
-      listSpans[wordIndex].classList.add('active');
     }
 
     // Start cycling
     setInterval(cycleWord, 2000);
-    listSpans[0].classList.add('active');
 
     // Glitch Text Trigger on scroll
     const glitchTexts = document.querySelectorAll('.glitch-text');

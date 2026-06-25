@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAGNUS — CRIB</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --black: #050505;
+      --white: #f0f0f0;
+      --red: #ff1a1a;
+      --gray: #1a1a1a;
+    }
+
+    html {
+      scroll-behavior: auto;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Cursor */
+    .cursor {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background: var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      transition: transform 0.1s ease;
+    }
+
+    .cursor-follower {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      mix-blend-mode: difference;
+      transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+    }
+
+    .cursor.hover {
+      transform: scale(3);
+      background: var(--red);
+    }
+
+    .cursor-follower.hover {
+      width: 60px;
+      height: 60px;
+      border-color: var(--red);
+    }
+
+    /* Noise Overlay */
+    .noise {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9990;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Scanlines */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9991;
+      opacity: 0.03;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.03) 2px,
+        rgba(255,255,255,0.03) 4px
+      );
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 2rem 4vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      mix-blend-mode: difference;
+    }
+
+    .nav-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.15em;
+      color: var(--white);
+      text-decoration: none;
+      transition: letter-spacing 0.4s ease;
+    }
+
+    .nav-logo:hover {
+      letter-spacing: 0.3em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 3rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--red);
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      color: var(--red);
+    }
+
+    /* Initiative Hero */
+    .initiative-hero {
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 10vh 4vw;
+      gap: 4rem;
+    }
+
+    .initiative-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      background: var(--gray);
+    }
+
+    .initiative-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(1.1);
+      transition: all 0.6s ease;
+    }
+
+    .initiative-image:hover img {
+      filter: grayscale(0%) contrast(1.2);
+      transform: scale(1.03);
+    }
+
+    .initiative-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .initiative-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+
+    .initiative-name {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(4rem, 12vw, 10rem);
+      line-height: 0.85;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .initiative-tagline {
+      font-size: 1.2rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    .initiative-editorial {
+      max-width: 480px;
+      font-size: 1rem;
+      line-height: 1.7;
+      opacity: 0.7;
+    }
+
+    .initiative-actions {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 1rem 3rem;
+      border: 1px solid var(--white);
+      color: var(--white);
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+      position: relative;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--red);
+      transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .btn:hover::before {
+      left: 0;
+    }
+
+    .btn:hover {
+      border-color: var(--red);
+    }
+
+    /* Statement Section */
+    .statement {
+      position: relative;
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10vh 4vw;
+      overflow: hidden;
+    }
+
+    .statement::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(26,26,26,0.5) 0%, var(--black) 70%);
+      z-index: 0;
+    }
+
+    .statement-text {
+      position: relative;
+      z-index: 1;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3rem, 10vw, 8rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      max-width: 1200px;
+    }
+
+    .statement-text span {
+      color: var(--red);
+      text-shadow: 0 0 60px rgba(255, 26, 26, 0.35);
+    }
+
+    /* Footer */
+    footer {
+      padding: 4rem 4vw;
+      border-top: 1px solid var(--gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .footer-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.15em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      transition: opacity 0.3s ease, color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      color: var(--red);
+    }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      opacity: 0.4;
+      letter-spacing: 0.05em;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .initiative-hero {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        padding-top: 15vh;
+      }
+      .initiative-image {
+        aspect-ratio: 1/1;
+      }
+      .cursor, .cursor-follower { display: none; }
+      body { cursor: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+  <div class="noise"></div>
+  <div class="scanlines"></div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">MAGNUS</a>
+    <ul class="nav-links">
+      <li><a href="index.html#collection">Issues</a></li>
+      <li><a href="originals.html">Originals</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="initiative-hero">
+    <div class="initiative-image">
+      <img src="https://cdn.cosmos.so/f2565b51-87f6-4f00-aa54-e2ea4bb8ceb9?format=jpeg" alt="Crib">
+    </div>
+    <div class="initiative-info">
+      <div class="initiative-label">SS / 26 — Issue I</div>
+      <h1 class="initiative-name">CRIB</h1>
+      <div class="initiative-tagline">Close the door. Turn the lock.</div>
+      <p class="initiative-editorial">
+        A private world built for closeness, tension, and the kind of silence that speaks 
+        louder than words. This is where desire gets comfortable — and dangerous. What happens 
+        next is yours.
+      </p>
+      <div class="initiative-actions">
+        <a href="contact.html" class="btn">Enter</a>
+        <a href="index.html#collection" class="btn">Back to Issues</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="statement">
+    <h2 class="statement-text">Make them <span>watch you win</span></h2>
+  </section>
+
+  <footer>
+    <div class="footer-logo">MAGNUS</div>
+    <ul class="footer-links">
+      <li><a href="https://www.instagram.com/magnustpt/" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.tiktok.com/@magnustpt?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 MAGNUS. ALL RIGHTS RESERVED.</span>
+  </footer>
+
+  <script>
+    // Custom Cursor
+    const cursor = document.querySelector('.cursor');
+    const follower = document.querySelector('.cursor-follower');
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    let followerX = 0, followerY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.2;
+      cursorY += (mouseY - cursorY) * 0.2;
+      followerX += (mouseX - followerX) * 0.1;
+      followerY += (mouseY - followerY) * 0.1;
+
+      cursor.style.transform = `translate(${cursorX - 6}px, ${cursorY - 6}px)`;
+      follower.style.transform = `translate(${followerX - 20}px, ${followerY - 20}px)`;
+
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.classList.add('hover');
+        follower.classList.add('hover');
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hover');
+        follower.classList.remove('hover');
+      });
+    });
+  </script>
+</body>
+</html>

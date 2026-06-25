@@ -356,6 +356,63 @@
       transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
+    .project-main-link {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .project-card-has-proposal .project-info {
+      pointer-events: none;
+    }
+
+    .project-proposal-btn {
+      position: relative;
+      display: inline-flex;
+      align-self: flex-start;
+      margin-top: 0.4rem;
+      padding: 0.85rem 2.2rem;
+      border: 1px solid var(--white);
+      color: var(--white);
+      background: transparent;
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+      pointer-events: auto;
+      z-index: 4;
+    }
+
+    .project-proposal-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--white);
+      transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .project-proposal-btn:hover::before {
+      left: 0;
+    }
+
+    .project-proposal-btn:hover {
+      color: var(--black);
+    }
+
+    .project-card:nth-child(3n+2) .project-proposal-btn {
+      align-self: flex-end;
+    }
+
     .project-category {
       font-size: 0.7rem;
       font-weight: 500;
@@ -671,10 +728,24 @@
       </p>
     </div>
     <div class="projects-grid">
+      <div class="project-card project-card-has-proposal">
+        <a href="https://leonardou-lab.github.io/WEB-DOWNHILL_03/index.html" target="_blank" rel="noopener noreferrer" class="project-main-link">
+          <div class="project-visual">
+            <span class="project-year">2025</span>
+            <img src="assets\images\pICdH.jpg" alt="Downhill Mexico">
+          </div>
+        </a>
+        <div class="project-info">
+          <div class="project-category">Presentation</div>
+          <div class="project-name">Downhill Mexico</div>
+          <div class="project-desc">Full prosual identity, motion direction, and campaign strategy.</div>
+          <a href="https://canva.link/9erall72rpquqm5" target="_blank" rel="noopener noreferrer" class="project-proposal-btn">View Proposal</a>
+        </div>
+      </div>
       <div class="project-card">
         <div class="project-visual">
           <span class="project-year">2025</span>
-          <img src="assets/images/DHMEX.png" alt="Void Protocol">
+          <img src="assets\images\pICdH.jpg" alt="Void Protocol">
         </div>
         <div class="project-info">
           <div class="project-category">Digital Infrastructure</div>
@@ -685,7 +756,7 @@
       <div class="project-card">
         <div class="project-visual">
           <span class="project-year">2024</span>
-          <img src="assets/images/DHMEX.png" alt="Signal Frame">
+          <img src="assets/images/pICdH.png" alt="Signal Frame">
         </div>
         <div class="project-info">
           <div class="project-category">Visual System</div>
@@ -696,7 +767,7 @@
       <div class="project-card">
         <div class="project-visual">
           <span class="project-year">2024</span>
-          <img src="assets/images/DHMEX.png" alt="Black Circuit">
+          <img src="assets/images/pICdH.png" alt="Black Circuit">
         </div>
         <div class="project-info">
           <div class="project-category">Hardware Drop</div>
@@ -707,7 +778,7 @@
       <div class="project-card">
         <div class="project-visual">
           <span class="project-year">2023</span>
-          <img src="assets/images/DHMEX.png" alt="Raw Frequency">
+          <img src="assets/images/plCdH.jpg" alt="Raw Frequency">
         </div>
         <div class="project-info">
           <div class="project-category">Sound Design</div>
@@ -718,7 +789,7 @@
       <div class="project-card">
         <div class="project-visual">
           <span class="project-year">2023</span>
-          <img src="assets/images/DHMEX.png" alt="Nocturne Run">
+          <img src="assets\images\pICdH.jpg" alt="Nocturne Run">
         </div>
         <div class="project-info">
           <div class="project-category">Event Series</div>
@@ -729,7 +800,7 @@
       <div class="project-card">
         <div class="project-visual">
           <span class="project-year">2022</span>
-          <img src="assets/images/DHMEX.png" alt="Null Object">
+          <img src="assets/images/plCdH.jpg" alt="Null Object">
         </div>
         <div class="project-info">
           <div class="project-category">Software</div>
@@ -754,8 +825,8 @@
   <footer>
     <div class="footer-logo">MAGNUS</div>
     <ul class="footer-links">
-      <li><a href="https://www.instagram.com/rawcocky/" target="_blank" rel="noopener">Instagram</a></li>
-      <li><a href="https://www.tiktok.com/@rawcocky?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+      <li><a href="https://www.instagram.com/magnustpt/" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.tiktok.com/@magnustpt?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
     </ul>
     <span class="footer-copy">© 2026 MAGNUS. ALL RIGHTS RESERVED.</span>
   </footer>

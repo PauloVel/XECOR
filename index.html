@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAGNUS — BREAK THE FORM</title>
+  <title>MAGNUS</title>
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,8 +23,12 @@
     }
 
     html {
-      scroll-behavior: auto;
+      scroll-behavior: smooth;
       overflow-x: hidden;
+    }
+
+    .aggressive-style, .linear-momentum, .collection, .ascend-wrapper {
+      margin-top: -5vh;
     }
 
     body {
@@ -166,112 +170,41 @@
       color: var(--red);
     }
 
-    /* Hero — Intro */
-    .hero {
-      position: relative;
-      min-height: 65vh;
-      width: 100%;
+    /* Intro Overlay */
+    .intro-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      z-index: 10000;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      overflow: hidden;
-      background: var(--black);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .hero-shard-field {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .hero-shard {
-      position: absolute;
-      top: 0;
-      left: 0;
-      background: var(--red);
-      pointer-events: none;
-      will-change: transform;
-      box-shadow: 0 0 8px rgba(255,26,26,0.5);
-    }
-
-    .hero-flash {
-      position: absolute;
-      inset: 0;
-      background: var(--red);
+    .intro-overlay.done {
       opacity: 0;
       pointer-events: none;
-      z-index: 4;
-      mix-blend-mode: overlay;
     }
 
-    .hero-flash.punch {
-      animation: heroFlash 0.12s ease-out;
-    }
-
-    @keyframes heroFlash {
-      0% { opacity: 0.45; }
-      100% { opacity: 0; }
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 3;
-      padding: 0 4vw;
-      transition: transform 0.08s ease-out;
-    }
-
-    .hero-title {
-      font-family: 'Anton', sans-serif;
-      font-size: clamp(5rem, 20vw, 18rem);
-      line-height: 0.85;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--white);
-      text-shadow: 0 0 60px rgba(255,26,26,0.3), 0 0 140px rgba(255,26,26,0.1);
-      position: relative;
-    }
-
-    .hero-title span {
-      display: inline-block;
+    .intro-logo {
+      width: clamp(200px, 35vw, 480px);
+      height: auto;
       opacity: 0;
-      transform: translateY(60px);
-      filter: blur(8px);
-      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-      cursor: default;
+      transform: scale(0.95);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      filter: brightness(0) invert(1);
     }
 
-    .hero-title.visible span {
+    .intro-overlay.show-logo .intro-logo {
       opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
+      transform: scale(1);
     }
 
-    .hero-title.visible span:nth-child(1) { transition-delay: 0.08s; }
-    .hero-title.visible span:nth-child(2) { transition-delay: 0.16s; }
-    .hero-title.visible span:nth-child(3) { transition-delay: 0.24s; }
-    .hero-title.visible span:nth-child(4) { transition-delay: 0.32s; }
-    .hero-title.visible span:nth-child(5) { transition-delay: 0.40s; }
-
-
-
-    .hero-tagline {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(0.8rem, 1.8vw, 1.2rem);
-      font-weight: 500;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-top: 2.5rem;
+    .intro-overlay.hide-logo .intro-logo {
       opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
-    }
-
-    .hero-tagline.visible {
-      opacity: 1;
-      transform: translateY(0);
+      transform: scale(1.02);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
     /* Manifesto Section — Rapid-Cut Video Montage */
@@ -284,6 +217,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      will-change: transform;
     }
 
     .manifesto-video-stack {
@@ -385,8 +319,9 @@
       color: var(--red);
       margin-bottom: 2rem;
       opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(30px);
+      transition: all 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform, opacity;
     }
 
     .manifesto-kicker.visible {
@@ -407,9 +342,10 @@
     .manifesto-headline .line {
       display: block;
       opacity: 0;
-      transform: translateY(50px) scale(0.95);
-      filter: blur(6px);
-      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(70px) scale(0.95);
+      filter: blur(12px);
+      transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform, opacity;
     }
 
     .manifesto-headline .line.visible {
@@ -426,41 +362,14 @@
       color: var(--white);
       opacity: 0;
       margin-top: 2.5rem;
-      transform: translateY(20px);
-      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(30px);
+      transition: all 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform, opacity;
     }
 
     .manifesto-sub.visible {
       opacity: 0.6;
       transform: translateY(0);
-    }
-
-    .manifesto-cta {
-      display: inline-block;
-      margin-top: 3rem;
-      padding: 1rem 3.5rem;
-      border: 1px solid var(--white);
-      color: var(--white);
-      text-decoration: none;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: 0.8rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    .manifesto-cta.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .manifesto-cta:hover {
-      background: var(--white);
-      color: var(--black);
-      border-color: var(--white);
     }
 
     .manifesto-red-line {
@@ -484,6 +393,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      z-index: 2;
     }
 
     .aggressive-style-image-stack {
@@ -540,8 +450,9 @@
       color: var(--red);
       text-shadow: 0 0 60px rgba(255, 26, 26, 0.35), 0 0 120px rgba(255, 26, 26, 0.15);
       opacity: 0;
-      transform: translateY(40px) scale(0.95);
-      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(60px) scale(0.95);
+      transition: all 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform, opacity;
     }
 
     .aggressive-style-text.visible {
@@ -556,6 +467,7 @@
       height: 100vh;
       overflow: hidden;
       background: var(--black);
+      z-index: 1;
     }
 
     .linear-momentum-bg {
@@ -588,6 +500,8 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
+      transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform, opacity;
     }
 
     .linear-momentum-title {
@@ -602,9 +516,10 @@
     .linear-momentum-title span {
       display: block;
       opacity: 0;
-      transform: translateX(60px);
-      filter: blur(8px);
-      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateX(80px);
+      filter: blur(14px);
+      transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform, opacity;
     }
 
     .linear-momentum-title.visible span {
@@ -626,6 +541,92 @@
 
     .linear-momentum-content.visible .linear-momentum-line {
       width: 80px;
+    }
+
+    /* Ascend Section — Pinned scroll-pan reveal */
+    .ascend-wrapper {
+      position: relative;
+      height: 300vh;
+      width: 100%;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .ascend-section {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      pointer-events: auto;
+    }
+
+    .ascend-frame {
+      position: relative;
+      width: min(80vw, 1200px);
+      aspect-ratio: 2497 / 1093;
+      border: 1px solid rgba(255,255,255,0.12);
+      overflow: visible;
+    }
+
+    .ascend-image-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .ascend-image {
+      width: 150%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      will-change: transform, filter;
+    }
+
+    .ascend-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: rgba(5,5,5,0);
+      pointer-events: none;
+    }
+
+    .ascend-title {
+      position: absolute;
+      left: 50%;
+      top: -0.52em;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(5rem, 15vw, 12rem);
+      line-height: 0.85;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: var(--red);
+      text-shadow: 0 0 40px rgba(255, 26, 26, 0.35), 0 0 80px rgba(255, 26, 26, 0.15);
+      opacity: 0;
+      will-change: opacity;
+    }
+
+    @media (max-width: 768px) {
+      .ascend-wrapper { height: 250vh; }
+      .ascend-frame {
+        width: 72vw;
+        aspect-ratio: 3 / 4;
+      }
+      .ascend-image {
+        width: 310%;
+      }
+      .ascend-title {
+        font-size: clamp(2.2rem, 10vw, 4.5rem);
+        top: -0.55em;
+      }
     }
 
     /* Collection Section */
@@ -668,13 +669,27 @@
       gap: 2rem;
     }
 
+    @keyframes cardFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
     .collection-card {
       position: relative;
+      display: block;
       aspect-ratio: 3/4;
       background: var(--gray);
       overflow: hidden;
       cursor: pointer;
+      animation: cardFloat 6s ease-in-out infinite;
+      will-change: transform;
+      text-decoration: none;
+      color: inherit;
     }
+
+    .collection-card:nth-child(1) { animation-delay: 0s; }
+    .collection-card:nth-child(2) { animation-delay: -2s; }
+    .collection-card:nth-child(3) { animation-delay: -4s; }
 
     .collection-card .card-glitch {
       position: absolute;
@@ -737,10 +752,109 @@
       letter-spacing: 0.05em;
     }
 
-    .card-price {
+    .card-issue {
       font-size: 0.85rem;
       opacity: 0.6;
       margin-top: 0.3rem;
+    }
+
+    /* Originals Promo Section */
+    .originals-promo {
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10vh 4vw;
+      overflow: hidden;
+      background: var(--black);
+      z-index: 1;
+    }
+
+    .originals-promo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 100%, rgba(26,26,26,0.5) 0%, var(--black) 60%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .originals-promo-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1.8rem;
+    }
+
+    .originals-promo-kicker {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      letter-spacing: 0.6em;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+
+    .originals-promo-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(6rem, 22vw, 18rem);
+      line-height: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--white);
+    }
+
+    .originals-promo-desc {
+      max-width: 480px;
+      font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+      line-height: 1.7;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      opacity: 0.55;
+    }
+
+    .originals-promo-btn {
+      position: relative;
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 1.2rem 4rem;
+      border: 1px solid var(--white);
+      color: var(--white);
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+
+    .originals-promo-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--red);
+      transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .originals-promo-btn:hover::before {
+      left: 0;
+    }
+
+    .originals-promo-btn:hover {
+      border-color: var(--red);
+      color: var(--white);
     }
 
     /* Footer CTA */
@@ -931,7 +1045,6 @@
       .nav-links { display: none; }
       .manifesto { min-height: 80vh; }
       .manifesto-headline { font-size: clamp(2.5rem, 14vw, 5rem); }
-      .manifesto-cta { padding: 0.8rem 2rem; font-size: 0.7rem; }
       .collection-desc { text-align: left; }
       .cursor, .cursor-follower { display: none; }
       body { cursor: auto; }
@@ -942,14 +1055,19 @@
         right: 4vw;
         bottom: 8vh;
       }
+      .originals-promo-title {
+        font-size: clamp(4.5rem, 18vw, 10rem);
+      }
       #aggressive-style-pc-stack { display: none; }
       #aggressive-style-phone-stack { display: block; }
-      .hero-red-pulse { width: 300px; height: 300px; }
-      .hero-red-line { top: 56%; }
     }
   </style>
 </head>
 <body>
+  <div class="intro-overlay" id="intro-overlay">
+    <img class="intro-logo" src="assets/images/logo.png" alt="MAGNUS">
+  </div>
+
   <div class="cursor"></div>
   <div class="cursor-follower"></div>
   <div class="noise"></div>
@@ -963,47 +1081,13 @@
     </ul>
   </nav>
 
-  <section class="hero" id="hero">
-    <div class="hero-shard-field" id="hero-shard-field"></div>
-    <div class="hero-flash" id="hero-flash"></div>
-    <div class="hero-content" id="hero-content">
-      <h1 class="hero-title" id="hero-title">
-        <span>M</span><span>A</span><span>G</span><span>N</span><span>U</span><span>S</span>
-      </h1>
-      <p class="hero-tagline">Risk it all for the unimaginable.</p>
-    </div>
-  </section>
-
-  <section class="aggressive-style" id="aggressive-style">
-    <div class="aggressive-style-image-stack" id="aggressive-style-pc-stack">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image1.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image2.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image3.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image4.png" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image5.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image6.jpeg" alt="">
-    </div>
-    <div class="aggressive-style-image-stack" id="aggressive-style-phone-stack">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image1.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image2.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image3.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image4.png" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image5.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image6.jpeg" alt="">
-    </div>
-    <div class="aggressive-style-overlay"></div>
-    <div class="aggressive-style-content">
-      <h2 class="aggressive-style-text" id="aggressive-style-text">AGRESSIVE STYLE</h2>
-    </div>
-  </section>
-
   <section class="manifesto" id="manifesto">
     <!-- 
       RAPID-CUT VIDEO MONTAGE — Stack multiple videos, they cycle aggressively.
       SWAP THESE SOURCES with your own footage: cars, soldiers, bull riding, etc.
       Place .mp4 files in assets/videos/ and update the src attributes below.
     -->
-    <div class="manifesto-video-stack" id="manifesto-video-stack">
+    <div class="manifesto-video-stack" id="manifesto-video-stack" data-parallax="0.15">
       <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
         <source src="assets/videos/Video1.mp4" type="video/mp4">
       </video>
@@ -1032,19 +1116,18 @@
     <div class="manifesto-grain"></div>
 
     <div class="manifesto-content">
-      <div class="manifesto-kicker" id="manifesto-kicker">Take the Big</div>
+      <div class="manifesto-kicker" id="manifesto-kicker">Go get it</div>
       <h2 class="manifesto-headline" id="manifesto-headline">
         <span class="line" data-index="0">NO COMPARISON</span>
       </h2>
       <p class="manifesto-sub" id="manifesto-sub">Dirt · Dream · Reach</p>
-      <a href="#collection" class="manifesto-cta" id="manifesto-cta">Witness the chaos</a>
     </div>
 
   </section>
 
   <section class="linear-momentum" id="linear-momentum">
-    <div class="linear-momentum-bg">
-      <img src="assets/images/LinearMimentum.png" alt="">
+    <div class="linear-momentum-bg" data-parallax="0.10">
+      <img src="assets/images/LinearMomentum.png" alt="">
     </div>
     <div class="linear-momentum-overlay"></div>
     <div class="linear-momentum-content" id="linear-momentum-content">
@@ -1056,57 +1139,124 @@
     </div>
   </section>
 
-  <section class="collection" id="collection">
-    <div class="collection-header">
-      <h2 class="collection-title glitch-text" data-text="SS / 26">SS / 26</h2>
-      <p class="collection-desc">
-        The new season drops hard. Monolithic silhouettes. Aggressive cuts. 
-        Zero noise, pure signal. Engineered for those who move different.
-      </p>
-    </div>
-    <div class="collection-grid">
-      <div class="collection-card">
-        <div class="card-glitch"></div>
-        <img src="https://cdn.cosmos.so/f2565b51-87f6-4f00-aa54-e2ea4bb8ceb9?format=jpeg" alt="Item 1">
-        <div class="card-info">
-          <div class="card-name">Arc Blade</div>
-          <div class="card-price">$420</div>
+  <section class="ascend-wrapper" id="ascend">
+    <div class="ascend-section" id="ascend-section">
+      <div class="ascend-frame">
+        <div class="ascend-image-wrap">
+          <img class="ascend-image" id="ascend-image" src="assets/images/ChetaahHuntingCroped.jpg" alt="">
         </div>
-      </div>
-      <div class="collection-card">
-        <div class="card-glitch"></div>
-        <img src="https://cdn.cosmos.so/13e21033-3c05-4aa2-98df-1edf49d80528?format=jpeg" alt="Item 2">
-        <div class="card-info">
-          <div class="card-name">Void Shell</div>
-          <div class="card-price">$380</div>
-        </div>
-      </div>
-      <div class="collection-card">
-        <div class="card-glitch"></div>
-        <img src="https://cdn.cosmos.so/eed1465f-b629-4aff-9b6a-a17889c6bc29?format=jpeg" alt="Item 3">
-        <div class="card-info">
-          <div class="card-name">Iron Weave</div>
-          <div class="card-price">$290</div>
-        </div>
+        <div class="ascend-overlay" id="ascend-overlay"></div>
+        <h2 class="ascend-title" id="ascend-title">ASCEND</h2>
       </div>
     </div>
   </section>
 
+  <section class="aggressive-style" id="aggressive-style">
+    <div class="aggressive-style-image-stack" id="aggressive-style-pc-stack">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/Image1.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/Image2.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/Image3.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/Image4.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/Image5.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/pc/image6.jpeg" alt="">
+    </div>
+    <div class="aggressive-style-image-stack" id="aggressive-style-phone-stack">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image1.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image2.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image3.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image4.png" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image5.jpeg" alt="">
+      <img class="aggressive-style-image-bg" src="assets/images/phone/image6.jpeg" alt="">
+    </div>
+    <div class="aggressive-style-overlay"></div>
+    <div class="aggressive-style-content">
+      <h2 class="aggressive-style-text" id="aggressive-style-text">AGGRESSIVE STYLE</h2>
+    </div>
+  </section>
+
+  <section class="originals-promo" id="originals">
+    <div class="originals-promo-content">
+      <div class="originals-promo-kicker">The Lab</div>
+      <h2 class="originals-promo-title glitch-text" data-text="ORIGINALS">ORIGINALS</h2>
+      <p class="originals-promo-desc">Projects born in the void</p>
+      <a href="originals.html" class="originals-promo-btn">Enter the Lab</a>
+    </div>
+  </section>
+
+  <section class="collection" id="collection">
+    <div class="collection-header">
+      <h2 class="collection-title glitch-text" data-text="SS / 26">SS / 26</h2>
+      <p class="collection-desc">
+        The new issue drops raw. Sexy, risky, aggressive, confident — a magazine 
+        for those who don't wait to be watched. Three issues. No permission needed.
+      </p>
+    </div>
+    <div class="collection-grid">
+      <a href="crib.html" class="collection-card">
+        <div class="card-glitch"></div>
+        <img src="https://cdn.cosmos.so/f2565b51-87f6-4f00-aa54-e2ea4bb8ceb9?format=jpeg" alt="Crib">
+        <div class="card-info">
+          <div class="card-name">Crib</div>
+          <div class="card-issue">Issue I</div>
+        </div>
+      </a>
+      <a href="katana.html" class="collection-card">
+        <div class="card-glitch"></div>
+        <img src="https://cdn.cosmos.so/13e21033-3c05-4aa2-98df-1edf49d80528?format=jpeg" alt="Katana">
+        <div class="card-info">
+          <div class="card-name">Katana</div>
+          <div class="card-issue">Issue II</div>
+        </div>
+      </a>
+      <a href="bitch.html" class="collection-card">
+        <div class="card-glitch"></div>
+        <img src="https://cdn.cosmos.so/eed1465f-b629-4aff-9b6a-a17889c6bc29?format=jpeg" alt="Bitch">
+        <div class="card-info">
+          <div class="card-name">Bitch</div>
+          <div class="card-issue">Issue III</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
   <section class="footer-cta" id="contact">
-    <h2 class="cta-title glitch-text" data-text="JOIN THE VOID">JOIN THE VOID</h2>
+    <h2 class="cta-title glitch-text" data-text="GO GET IT">GO GET IT</h2>
     <a href="contact.html" class="cta-btn">Enter Magnus</a>
   </section>
 
 <footer>
     <div class="footer-logo">MAGNUS</div>
     <ul class="footer-links">
-      <li><a href="https://www.instagram.com/rawcocky/" target="_blank" rel="noopener">Instagram</a></li>
-      <li><a href="https://www.tiktok.com/@rawcocky?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+      <li><a href="https://www.instagram.com/magnustpt/" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.tiktok.com/@magnustpt?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
     </ul>
     <span class="footer-copy">© 2026 MAGNUS. ALL RIGHTS RESERVED.</span>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script>
+    // Intro Sequence
+    const introOverlay = document.getElementById('intro-overlay');
+    if (introOverlay) {
+      setTimeout(() => introOverlay.classList.add('show-logo'), 300);
+      setTimeout(() => introOverlay.classList.add('hide-logo'), 1800);
+      setTimeout(() => introOverlay.classList.add('done'), 2600);
+      setTimeout(() => introOverlay.remove(), 3500);
+    }
+
+    // Parallax scroll effect
+    const parallaxElements = document.querySelectorAll('[data-parallax]');
+    function updateParallax() {
+      const scrollY = window.scrollY;
+      parallaxElements.forEach(el => {
+        const speed = parseFloat(el.dataset.parallax);
+        const offset = Math.round(scrollY * speed);
+        el.style.transform = `translateY(${offset}px)`;
+      });
+    }
+    window.addEventListener('scroll', () => requestAnimationFrame(updateParallax));
+
     // Custom Cursor
     const cursor = document.querySelector('.cursor');
     const follower = document.querySelector('.cursor-follower');
@@ -1132,7 +1282,7 @@
     }
     animateCursor();
 
-    document.querySelectorAll('a, .collection-card').forEach(el => {
+    document.querySelectorAll('a').forEach(el => {
       el.addEventListener('mouseenter', () => {
         cursor.classList.add('hover');
         follower.classList.add('hover');
@@ -1151,14 +1301,14 @@
     const manifestoKicker = document.getElementById('manifesto-kicker');
     const manifestoHeadline = document.getElementById('manifesto-headline');
     const manifestoSub = document.getElementById('manifesto-sub');
-    const manifestoCta = document.getElementById('manifesto-cta');
+
     const headlineLine = manifestoHeadline.querySelector('.line');
 
     const headlines = [
       { text: 'NO COMPARISON', sub: 'Dirt · Dream · Reach' },
       { text: 'NO MERCY', sub: 'Dominate Every Field' },
       { text: 'NO FEAR', sub: 'Models · Supercars · Hot' },
-      { text: 'BREAK THE FORM', sub: 'This is MAGNUS' }
+      { text: 'GO GET IT', sub: 'This is MAGNUS' }
     ];
 
     let activeVideoIndex = 0;
@@ -1226,7 +1376,6 @@
           setTimeout(() => manifestoKicker.classList.add('visible'), 200);
           setTimeout(() => headlineLine.classList.add('visible'), 400);
           setTimeout(() => manifestoSub.classList.add('visible'), 700);
-          setTimeout(() => manifestoCta.classList.add('visible'), 1000);
           startMontage();
           manifestoObserver.unobserve(manifestoSection);
         }
@@ -1344,141 +1493,6 @@
       });
     });
 
-    // Hero — Shrapnel Field
-    const heroSection = document.getElementById('hero');
-    const shardField = document.getElementById('hero-shard-field');
-    const heroFlash = document.getElementById('hero-flash');
-    const heroTitle = document.getElementById('hero-title');
-    const heroContent = document.getElementById('hero-content');
-    const heroTagline = document.querySelector('.hero-tagline');
-
-    const SHARD_COUNT = 50;
-    const shards = [];
-
-    function createShards() {
-      if (!shardField || !heroSection) return;
-      shardField.innerHTML = '';
-      shards.length = 0;
-      const w = heroSection.offsetWidth;
-      const h = heroSection.offsetHeight;
-      for (let i = 0; i < SHARD_COUNT; i++) {
-        const el = document.createElement('div');
-        el.className = 'hero-shard';
-        const isLine = Math.random() > 0.3;
-        const width = isLine ? 1 + Math.random() : 2 + Math.random() * 2;
-        const height = isLine ? 10 + Math.random() * 20 : 2 + Math.random() * 3;
-        el.style.width = `${width}px`;
-        el.style.height = `${height}px`;
-        el.style.opacity = `${0.25 + Math.random() * 0.75}`;
-        const x = Math.random() * w;
-        const y = Math.random() * h;
-        const vx = (Math.random() - 0.5) * 0.25;
-        const vy = (Math.random() - 0.5) * 0.25;
-        const rotation = Math.random() * 360;
-        const vRot = (Math.random() - 0.5) * 0.4;
-        shards.push({ el, x, y, vx, vy, rotation, vRot });
-        shardField.appendChild(el);
-      }
-    }
-
-    let heroMouseX = -9999, heroMouseY = -9999;
-    let rafId = null;
-
-    function animateShards() {
-      if (!heroSection) return;
-      const w = heroSection.offsetWidth;
-      const h = heroSection.offsetHeight;
-      for (const s of shards) {
-        s.x += s.vx;
-        s.y += s.vy;
-        s.rotation += s.vRot;
-
-        const dx = s.x - heroMouseX;
-        const dy = s.y - heroMouseY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const repelRadius = 160;
-        if (dist < repelRadius && dist > 0) {
-          const force = (repelRadius - dist) / repelRadius;
-          s.vx += (dx / dist) * force * 2.2;
-          s.vy += (dy / dist) * force * 2.2;
-          s.vRot += force * 2;
-        }
-
-        s.vx *= 0.955;
-        s.vy *= 0.955;
-        s.vRot *= 0.97;
-
-        if (s.x < -30) s.x = w + 30;
-        if (s.x > w + 30) s.x = -30;
-        if (s.y < -30) s.y = h + 30;
-        if (s.y > h + 30) s.y = -30;
-
-        s.el.style.transform = `translate(${s.x}px, ${s.y}px) rotate(${s.rotation}deg)`;
-      }
-      rafId = requestAnimationFrame(animateShards);
-    }
-
-    if (heroSection && shardField) {
-      createShards();
-      animateShards();
-
-      heroSection.addEventListener('mousemove', (e) => {
-        const rect = heroSection.getBoundingClientRect();
-        heroMouseX = e.clientX - rect.left;
-        heroMouseY = e.clientY - rect.top;
-        const offsetX = (heroMouseX - rect.width / 2) * -0.01;
-        const offsetY = (heroMouseY - rect.height / 2) * -0.01;
-        if (heroContent) heroContent.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-      });
-
-      heroSection.addEventListener('mouseleave', () => {
-        heroMouseX = -9999;
-        heroMouseY = -9999;
-        if (heroContent) heroContent.style.transform = 'translate(0,0)';
-      });
-
-      heroSection.addEventListener('click', (e) => {
-        if (heroFlash) {
-          heroFlash.classList.remove('punch');
-          void heroFlash.offsetWidth;
-          heroFlash.classList.add('punch');
-        }
-        const rect = heroSection.getBoundingClientRect();
-        const cx = e.clientX - rect.left;
-        const cy = e.clientY - rect.top;
-        for (const s of shards) {
-          const dx = s.x - cx;
-          const dy = s.y - cy;
-          const dist = Math.sqrt(dx * dx + dy * dy) + 1;
-          const force = 800 / (dist + 40);
-          s.vx += (dx / dist) * force * 1.8;
-          s.vy += (dy / dist) * force * 1.8;
-          s.vRot += (Math.random() - 0.5) * force * 0.5;
-        }
-      });
-
-      window.addEventListener('resize', () => {
-        shards.length = 0;
-        if (rafId) cancelAnimationFrame(rafId);
-        createShards();
-        animateShards();
-      });
-    }
-
-    const heroObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          if (heroTitle) heroTitle.classList.add('visible');
-          setTimeout(() => {
-            if (heroTagline) heroTagline.classList.add('visible');
-          }, 600);
-          heroObserver.unobserve(heroSection);
-        }
-      });
-    }, { threshold: 0.3 });
-
-    if (heroSection) heroObserver.observe(heroSection);
-
     // Collection Card Glitch on Hover
     document.querySelectorAll('.collection-card').forEach(card => {
       card.addEventListener('mouseenter', () => {
@@ -1488,6 +1502,40 @@
         glitch.style.animation = 'glitchFlash 0.4s ease';
       });
     });
+
+    // Ascend — GSAP ScrollTrigger pin + pan from gazelle (right) to cheetah (left)
+    gsap.registerPlugin(ScrollTrigger);
+
+    const isMobileAscend = window.innerWidth <= 768;
+    const ascendStartX = isMobileAscend ? -67.74 : -33.33;
+
+    const ascendTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.ascend-wrapper',
+        start: 'top top',
+        end: 'bottom bottom',
+        pin: '.ascend-section',
+        scrub: 1,
+        anticipatePin: 1
+      }
+    });
+
+    ascendTl
+      .fromTo('.ascend-image',
+        { xPercent: ascendStartX, filter: 'grayscale(0%) brightness(1) contrast(1)' },
+        { xPercent: 0, filter: 'grayscale(100%) brightness(0.4) contrast(1.3)', ease: 'none' },
+        0
+      )
+      .fromTo('.ascend-overlay',
+        { backgroundColor: 'rgba(5,5,5,0)' },
+        { backgroundColor: 'rgba(5,5,5,0.65)', ease: 'none' },
+        0
+      )
+      .fromTo('.ascend-title',
+        { opacity: 0 },
+        { opacity: 1, ease: 'none', duration: 0.2 },
+        0.35
+      );
 
     // Linear Momentum entrance
     const lmTitle = document.getElementById('linear-momentum-title');
