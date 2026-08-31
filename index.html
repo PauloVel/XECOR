@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAGNUS</title>
+  <title>EVRABO</title>
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,10 +24,10 @@
 
     html {
       scroll-behavior: smooth;
-      overflow-x: hidden;
+      overflow-x: clip;
     }
 
-    .aggressive-style, .linear-momentum, .collection, .ascend-wrapper {
+    .linear-momentum, .collection {
       margin-top: -5vh;
     }
 
@@ -35,7 +35,7 @@
       background: var(--black);
       color: var(--white);
       font-family: 'Space Grotesk', sans-serif;
-      overflow-x: hidden;
+      overflow-x: clip;
       cursor: none;
     }
 
@@ -188,23 +188,20 @@
     }
 
     .intro-logo {
-      width: clamp(200px, 35vw, 480px);
-      height: auto;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
       opacity: 0;
-      transform: scale(0.95);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-      filter: brightness(0) invert(1);
+      transition: opacity 0.8s ease;
     }
 
     .intro-overlay.show-logo .intro-logo {
       opacity: 1;
-      transform: scale(1);
     }
 
     .intro-overlay.hide-logo .intro-logo {
       opacity: 0;
-      transform: scale(1.02);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transition: opacity 0.6s ease;
     }
 
     /* Manifesto Section — Rapid-Cut Video Montage */
@@ -383,83 +380,6 @@
       opacity: 0.6;
     }
 
-    /* Aggressive Style Section */
-    .aggressive-style {
-      position: relative;
-      min-height: 100vh;
-      width: 100%;
-      overflow: hidden;
-      background: var(--black);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2;
-    }
-
-    .aggressive-style-image-stack {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
-
-    .aggressive-style-image-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transform: scale(1.08);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 3s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: opacity, transform;
-      filter: contrast(1.4) brightness(0.5) saturate(0.4);
-    }
-
-    .aggressive-style-image-bg.active {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .aggressive-style-overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      background:
-        linear-gradient(180deg, rgba(5,5,5,0.7) 0%, transparent 40%, transparent 60%, rgba(5,5,5,0.9) 100%),
-        radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(5,5,5,0.7) 70%, rgba(5,5,5,0.95) 100%);
-      pointer-events: none;
-    }
-
-    .aggressive-style-content {
-      position: relative;
-      z-index: 3;
-      text-align: center;
-      padding: 0 4vw;
-    }
-
-    .aggressive-style-text {
-      font-family: 'Anton', sans-serif;
-      font-size: clamp(5rem, 18vw, 16rem);
-      line-height: 0.85;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--red);
-      text-shadow: 0 0 60px rgba(255, 26, 26, 0.35), 0 0 120px rgba(255, 26, 26, 0.15);
-      opacity: 0;
-      transform: translateY(60px) scale(0.95);
-      transition: all 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      will-change: transform, opacity;
-    }
-
-    .aggressive-style-text.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
     /* Linear Momentum Section */
     .linear-momentum {
       position: relative;
@@ -541,92 +461,6 @@
 
     .linear-momentum-content.visible .linear-momentum-line {
       width: 80px;
-    }
-
-    /* Ascend Section — Pinned scroll-pan reveal */
-    .ascend-wrapper {
-      position: relative;
-      height: 300vh;
-      width: 100%;
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    .ascend-section {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      overflow: hidden;
-      background: var(--black);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 3;
-      pointer-events: auto;
-    }
-
-    .ascend-frame {
-      position: relative;
-      width: min(80vw, 1200px);
-      aspect-ratio: 2497 / 1093;
-      border: 1px solid rgba(255,255,255,0.12);
-      overflow: visible;
-    }
-
-    .ascend-image-wrap {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      overflow: hidden;
-    }
-
-    .ascend-image {
-      width: 150%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
-      will-change: transform, filter;
-    }
-
-    .ascend-overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      background: rgba(5,5,5,0);
-      pointer-events: none;
-    }
-
-    .ascend-title {
-      position: absolute;
-      left: 50%;
-      top: -0.52em;
-      transform: translateX(-50%);
-      z-index: 3;
-      font-family: 'Anton', sans-serif;
-      font-size: clamp(5rem, 15vw, 12rem);
-      line-height: 0.85;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      color: var(--red);
-      text-shadow: 0 0 40px rgba(255, 26, 26, 0.35), 0 0 80px rgba(255, 26, 26, 0.15);
-      opacity: 0;
-      will-change: opacity;
-    }
-
-    @media (max-width: 768px) {
-      .ascend-wrapper { height: 250vh; }
-      .ascend-frame {
-        width: 72vw;
-        aspect-ratio: 3 / 4;
-      }
-      .ascend-image {
-        width: 310%;
-      }
-      .ascend-title {
-        font-size: clamp(2.2rem, 10vw, 4.5rem);
-        top: -0.55em;
-      }
     }
 
     /* Collection Section */
@@ -1038,9 +872,49 @@
       80% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 1px); }
     }
 
-    #aggressive-style-phone-stack { display: none; }
+
+    /* Scroll-Driven 3:4 Vertical Image Sequence */
+    .image-sequence {
+      position: relative;
+      width: 100%;
+      background: var(--black);
+      z-index: 1;
+    }
+
+    .image-sequence-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      background: var(--black);
+    }
+
+    .image-sequence-sticky img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(1.4) rotate(2deg) translateY(3%);
+      filter: contrast(1.15) saturate(0.9) blur(15px) brightness(0.7);
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform, filter, object-position;
+      z-index: 0;
+    }
+
+    .image-sequence-sticky img.active {
+      opacity: 1;
+      transform: scale(1) rotate(0) translateY(0);
+      filter: contrast(1.1) saturate(0.85) blur(0) brightness(1);
+      z-index: 1;
+    }
 
     /* Responsive */
+
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .manifesto { min-height: 80vh; }
@@ -1058,14 +932,14 @@
       .originals-promo-title {
         font-size: clamp(4.5rem, 18vw, 10rem);
       }
-      #aggressive-style-pc-stack { display: none; }
-      #aggressive-style-phone-stack { display: block; }
     }
   </style>
 </head>
 <body>
   <div class="intro-overlay" id="intro-overlay">
-    <img class="intro-logo" src="assets/images/logo.png" alt="MAGNUS">
+    <video class="intro-logo" autoplay muted playsinline preload="auto">
+      <source src="assets/Video_EntradaEVRABO.mp4" type="video/mp4">
+    </video>
   </div>
 
   <div class="cursor"></div>
@@ -1074,7 +948,7 @@
   <div class="scanlines"></div>
 
   <nav>
-    <a href="#" class="nav-logo">MAGNUS</a>
+    <a href="#" class="nav-logo">EVRABO</a>
     <ul class="nav-links">
       <li><a href="originals.html">Originals</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -1087,7 +961,7 @@
       SWAP THESE SOURCES with your own footage: cars, soldiers, bull riding, etc.
       Place .mp4 files in assets/videos/ and update the src attributes below.
     -->
-    <div class="manifesto-video-stack" id="manifesto-video-stack" data-parallax="0.15">
+    <div class="manifesto-video-stack" id="manifesto-video-stack">
       <video class="manifesto-video-bg" autoplay muted loop playsinline preload="auto">
         <source src="assets/videos/Video1.mp4" type="video/mp4">
       </video>
@@ -1126,8 +1000,8 @@
   </section>
 
   <section class="linear-momentum" id="linear-momentum">
-    <div class="linear-momentum-bg" data-parallax="0.10">
-      <img src="assets/images/LinearMomentum.png" alt="">
+    <div class="linear-momentum-bg">
+      <img src="assets/images/LinearMomentum.jpg" alt="">
     </div>
     <div class="linear-momentum-overlay"></div>
     <div class="linear-momentum-content" id="linear-momentum-content">
@@ -1139,38 +1013,19 @@
     </div>
   </section>
 
-  <section class="ascend-wrapper" id="ascend">
-    <div class="ascend-section" id="ascend-section">
-      <div class="ascend-frame">
-        <div class="ascend-image-wrap">
-          <img class="ascend-image" id="ascend-image" src="assets/images/ChetaahHuntingCroped.jpg" alt="">
-        </div>
-        <div class="ascend-overlay" id="ascend-overlay"></div>
-        <h2 class="ascend-title" id="ascend-title">ASCEND</h2>
-      </div>
-    </div>
-  </section>
 
-  <section class="aggressive-style" id="aggressive-style">
-    <div class="aggressive-style-image-stack" id="aggressive-style-pc-stack">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image1.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image2.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image3.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image4.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image5.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/image6.jpeg" alt="">
-    </div>
-    <div class="aggressive-style-image-stack" id="aggressive-style-phone-stack">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image1.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image2.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image3.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image4.png" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image5.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image6.jpeg" alt="">
-    </div>
-    <div class="aggressive-style-overlay"></div>
-    <div class="aggressive-style-content">
-      <h2 class="aggressive-style-text" id="aggressive-style-text">AGGRESSIVE STYLE</h2>
+
+  <section class="image-sequence" id="image-sequence">
+    <div class="image-sequence-sticky">
+      <img class="active" src="assets/images/Indx/a.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/b.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/c.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/d.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/f.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/h.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/i.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/image%20%2812%29.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/j.jpg" alt="" loading="lazy" decoding="async">
     </div>
   </section>
 
@@ -1194,7 +1049,7 @@
     <div class="collection-grid">
       <a href="crib.html" class="collection-card">
         <div class="card-glitch"></div>
-        <img src="https://cdn.cosmos.so/f2565b51-87f6-4f00-aa54-e2ea4bb8ceb9?format=jpeg" alt="Crib">
+        <img src="https://cdn.cosmos.so/f2565b51-87f6-4f00-aa54-e2ea4bb8ceb9?format=jpeg" alt="Crib" loading="lazy" decoding="async">
         <div class="card-info">
           <div class="card-name">Crib</div>
           <div class="card-issue">Issue I</div>
@@ -1202,7 +1057,7 @@
       </a>
       <a href="katana.html" class="collection-card">
         <div class="card-glitch"></div>
-        <img src="https://cdn.cosmos.so/13e21033-3c05-4aa2-98df-1edf49d80528?format=jpeg" alt="Katana">
+        <img src="https://cdn.cosmos.so/13e21033-3c05-4aa2-98df-1edf49d80528?format=jpeg" alt="Katana" loading="lazy" decoding="async">
         <div class="card-info">
           <div class="card-name">Katana</div>
           <div class="card-issue">Issue II</div>
@@ -1210,7 +1065,7 @@
       </a>
       <a href="bitch.html" class="collection-card">
         <div class="card-glitch"></div>
-        <img src="https://cdn.cosmos.so/eed1465f-b629-4aff-9b6a-a17889c6bc29?format=jpeg" alt="Bitch">
+        <img src="https://cdn.cosmos.so/eed1465f-b629-4aff-9b6a-a17889c6bc29?format=jpeg" alt="Bitch" loading="lazy" decoding="async">
         <div class="card-info">
           <div class="card-name">Bitch</div>
           <div class="card-issue">Issue III</div>
@@ -1221,77 +1076,78 @@
 
   <section class="footer-cta" id="contact">
     <h2 class="cta-title glitch-text" data-text="GO GET IT">GO GET IT</h2>
-    <a href="contact.html" class="cta-btn">Enter Magnus</a>
+    <a href="contact.html" class="cta-btn">Enter Evrabo</a>
   </section>
 
 <footer>
-    <div class="footer-logo">MAGNUS</div>
+    <div class="footer-logo">EVRABO</div>
     <ul class="footer-links">
-      <li><a href="https://www.instagram.com/magnustpt/" target="_blank" rel="noopener">Instagram</a></li>
-      <li><a href="https://www.tiktok.com/@magnustpt?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+      <li><a href="https://www.instagram.com/evrabo_?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.tiktok.com/@evrabo_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
     </ul>
-    <span class="footer-copy">© 2026 MAGNUS. ALL RIGHTS RESERVED.</span>
+    <span class="footer-copy">© 2026 EVRABO. ALL RIGHTS RESERVED.</span>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script>
     // Intro Sequence
     const introOverlay = document.getElementById('intro-overlay');
+    const introVideo = introOverlay ? introOverlay.querySelector('video') : null;
     if (introOverlay) {
-      setTimeout(() => introOverlay.classList.add('show-logo'), 300);
-      setTimeout(() => introOverlay.classList.add('hide-logo'), 1800);
-      setTimeout(() => introOverlay.classList.add('done'), 2600);
-      setTimeout(() => introOverlay.remove(), 3500);
+      setTimeout(() => introOverlay.classList.add('show-logo'), 100);
+
+      const finishIntro = () => {
+        introOverlay.classList.add('hide-logo');
+        setTimeout(() => introOverlay.classList.add('done'), 600);
+        setTimeout(() => introOverlay.remove(), 1400);
+      };
+
+      if (introVideo) {
+        introVideo.addEventListener('ended', finishIntro, { once: true });
+        // Fallback if the video stalls or doesn't fire ended
+        setTimeout(finishIntro, 6000);
+      } else {
+        setTimeout(finishIntro, 3000);
+      }
     }
 
-    // Parallax scroll effect
-    const parallaxElements = document.querySelectorAll('[data-parallax]');
-    function updateParallax() {
-      const scrollY = window.scrollY;
-      parallaxElements.forEach(el => {
-        const speed = parseFloat(el.dataset.parallax);
-        const offset = Math.round(scrollY * speed);
-        el.style.transform = `translateY(${offset}px)`;
+    // Custom Cursor (disabled on touch devices)
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || window.innerWidth <= 768;
+    if (!isTouchDevice) {
+      const cursor = document.querySelector('.cursor');
+      const follower = document.querySelector('.cursor-follower');
+      let mouseX = 0, mouseY = 0;
+      let cursorX = 0, cursorY = 0;
+      let followerX = 0, followerY = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      function animateCursor() {
+        cursorX += (mouseX - cursorX) * 0.2;
+        cursorY += (mouseY - cursorY) * 0.2;
+        followerX += (mouseX - followerX) * 0.1;
+        followerY += (mouseY - followerY) * 0.1;
+
+        cursor.style.transform = `translate(${cursorX - 6}px, ${cursorY - 6}px)`;
+        follower.style.transform = `translate(${followerX - 20}px, ${followerY - 20}px)`;
+
+        requestAnimationFrame(animateCursor);
+      }
+      animateCursor();
+
+      document.querySelectorAll('a').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          cursor.classList.add('hover');
+          follower.classList.add('hover');
+        });
+        el.addEventListener('mouseleave', () => {
+          cursor.classList.remove('hover');
+          follower.classList.remove('hover');
+        });
       });
     }
-    window.addEventListener('scroll', () => requestAnimationFrame(updateParallax));
-
-    // Custom Cursor
-    const cursor = document.querySelector('.cursor');
-    const follower = document.querySelector('.cursor-follower');
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
-    let followerX = 0, followerY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
-    function animateCursor() {
-      cursorX += (mouseX - cursorX) * 0.2;
-      cursorY += (mouseY - cursorY) * 0.2;
-      followerX += (mouseX - followerX) * 0.1;
-      followerY += (mouseY - followerY) * 0.1;
-
-      cursor.style.transform = `translate(${cursorX - 6}px, ${cursorY - 6}px)`;
-      follower.style.transform = `translate(${followerX - 20}px, ${followerY - 20}px)`;
-
-      requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
-
-    document.querySelectorAll('a').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursor.classList.add('hover');
-        follower.classList.add('hover');
-      });
-      el.addEventListener('mouseleave', () => {
-        cursor.classList.remove('hover');
-        follower.classList.remove('hover');
-      });
-    });
 
     // Manifesto — Rapid-Cut Video Montage Engine
     const manifestoSection = document.getElementById('manifesto');
@@ -1308,7 +1164,7 @@
       { text: 'NO COMPARISON', sub: 'Dirt · Dream · Reach' },
       { text: 'NO MERCY', sub: 'Dominate Every Field' },
       { text: 'NO FEAR', sub: 'Models · Supercars · Hot' },
-      { text: 'GO GET IT', sub: 'This is MAGNUS' }
+      { text: 'GO GET IT', sub: 'This is EVRABO' }
     ];
 
     let activeVideoIndex = 0;
@@ -1399,67 +1255,6 @@
 
     manifestoVisibilityObserver.observe(manifestoSection);
 
-    // Aggressive Style — Image Background Cycle
-    const aggressiveStyleSection = document.getElementById('aggressive-style');
-    const pcStack = document.getElementById('aggressive-style-pc-stack');
-    const phoneStack = document.getElementById('aggressive-style-phone-stack');
-    const aggressiveText = document.getElementById('aggressive-style-text');
-    let activeImageIndex = 0;
-    let imageInterval = null;
-    let currentBgImages = [];
-
-    function getActiveStack() {
-      return window.innerWidth <= 768 ? phoneStack : pcStack;
-    }
-
-    function initImages() {
-      const stack = getActiveStack();
-      currentBgImages = stack.querySelectorAll('.aggressive-style-image-bg');
-      // Reset all images in both stacks
-      pcStack.querySelectorAll('.aggressive-style-image-bg').forEach(img => img.classList.remove('active'));
-      phoneStack.querySelectorAll('.aggressive-style-image-bg').forEach(img => img.classList.remove('active'));
-      activeImageIndex = 0;
-      if (currentBgImages.length) currentBgImages[0].classList.add('active');
-    }
-
-    function cycleImages() {
-      if (!currentBgImages.length) return;
-      currentBgImages[activeImageIndex].classList.remove('active');
-      activeImageIndex = (activeImageIndex + 1) % currentBgImages.length;
-      currentBgImages[activeImageIndex].classList.add('active');
-    }
-
-    initImages();
-
-    const aggressiveObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          aggressiveText.classList.add('visible');
-          if (!imageInterval) {
-            imageInterval = setInterval(cycleImages, 1200);
-          }
-        } else {
-          if (imageInterval) {
-            clearInterval(imageInterval);
-            imageInterval = null;
-          }
-        }
-      });
-    }, { threshold: 0.3 });
-
-    aggressiveObserver.observe(aggressiveStyleSection);
-
-    // Handle resize to swap stacks
-    let lastWidth = window.innerWidth;
-    window.addEventListener('resize', () => {
-      const isMobile = window.innerWidth <= 768;
-      const wasMobile = lastWidth <= 768;
-      if (isMobile !== wasMobile) {
-        lastWidth = window.innerWidth;
-        initImages();
-      }
-    });
-
     // Glitch Text Trigger
     const glitchTexts = document.querySelectorAll('.glitch-text');
     const glitchObserver = new IntersectionObserver((entries) => {
@@ -1483,7 +1278,7 @@
     });
 
     // Smooth scroll for nav links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
@@ -1503,40 +1298,6 @@
       });
     });
 
-    // Ascend — GSAP ScrollTrigger pin + pan from gazelle (right) to cheetah (left)
-    gsap.registerPlugin(ScrollTrigger);
-
-    const isMobileAscend = window.innerWidth <= 768;
-    const ascendStartX = isMobileAscend ? -67.74 : -33.33;
-
-    const ascendTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: '.ascend-wrapper',
-        start: 'top top',
-        end: 'bottom bottom',
-        pin: '.ascend-section',
-        scrub: 1,
-        anticipatePin: 1
-      }
-    });
-
-    ascendTl
-      .fromTo('.ascend-image',
-        { xPercent: ascendStartX, filter: 'grayscale(0%) brightness(1) contrast(1)' },
-        { xPercent: 0, filter: 'grayscale(100%) brightness(0.4) contrast(1.3)', ease: 'none' },
-        0
-      )
-      .fromTo('.ascend-overlay',
-        { backgroundColor: 'rgba(5,5,5,0)' },
-        { backgroundColor: 'rgba(5,5,5,0.65)', ease: 'none' },
-        0
-      )
-      .fromTo('.ascend-title',
-        { opacity: 0 },
-        { opacity: 1, ease: 'none', duration: 0.2 },
-        0.35
-      );
-
     // Linear Momentum entrance
     const lmTitle = document.getElementById('linear-momentum-title');
     const lmContent = document.getElementById('linear-momentum-content');
@@ -1552,6 +1313,39 @@
       }, { threshold: 0.3 });
       lmObserver.observe(lmContent);
     }
+    // Scroll-Revealed 3:4 Image Sequence
+    const imageSequence = document.getElementById('image-sequence');
+    const sequenceImages = imageSequence ? imageSequence.querySelectorAll('.image-sequence-sticky img') : [];
+    const scrollPerImageVH = 80;
+
+    if (imageSequence && sequenceImages.length) {
+      imageSequence.style.height = `${sequenceImages.length * scrollPerImageVH}vh`;
+    }
+
+    function updateImageSequence() {
+      if (!imageSequence || !sequenceImages.length) return;
+      const rect = imageSequence.getBoundingClientRect();
+      const sectionHeight = imageSequence.offsetHeight;
+      const viewportHeight = window.innerHeight;
+
+      let progress = -(rect.top) / (sectionHeight - viewportHeight);
+      progress = Math.max(0, Math.min(1, progress));
+
+      const rawIndex = progress * (sequenceImages.length - 1);
+      const frameIndex = Math.floor(rawIndex);
+      const localProgress = rawIndex - frameIndex;
+
+      sequenceImages.forEach((img, i) => {
+        const isActive = i === frameIndex;
+        img.classList.toggle('active', isActive);
+        if (isActive) {
+          img.style.objectPosition = `center ${30 + localProgress * 40}%`;
+        }
+      });
+    }
+
+    window.addEventListener('scroll', () => requestAnimationFrame(updateImageSequence), { passive: true });
+    updateImageSequence();
   </script>
 </body>
 </html>

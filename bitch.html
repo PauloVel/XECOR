@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAGNUS — BITCH</title>
+  <title>EVRABO</title>
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -166,80 +166,77 @@
       color: var(--red);
     }
 
-    /* Initiative Hero */
-    .initiative-hero {
+    /* Page Hero */
+    .page-hero {
       position: relative;
       min-height: 100vh;
       width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
       align-items: center;
-      padding: 10vh 4vw;
-      gap: 4rem;
-    }
-
-    .initiative-image {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 3/4;
+      justify-content: center;
+      text-align: center;
       overflow: hidden;
-      background: var(--gray);
+      padding: 10vh 4vw;
     }
 
-    .initiative-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: grayscale(100%) contrast(1.1);
-      transition: all 0.6s ease;
+    .page-hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: url('assets/images/LinearMomentum.jpg') center/cover no-repeat;
+      filter: brightness(0.35) contrast(1.2) grayscale(40%);
     }
 
-    .initiative-image:hover img {
-      filter: grayscale(0%) contrast(1.2);
-      transform: scale(1.03);
+    .page-hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(180deg, rgba(5,5,5,0.75) 0%, rgba(5,5,5,0.35) 50%, rgba(5,5,5,0.85) 100%),
+        radial-gradient(ellipse at 50% 50%, rgba(5,5,5,0.3) 0%, rgba(5,5,5,0.8) 100%);
     }
 
-    .initiative-info {
+    .page-hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1100px;
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 1.5rem;
     }
 
-    .initiative-label {
+    .page-kicker {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.85rem;
+      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
       letter-spacing: 0.5em;
       text-transform: uppercase;
       color: var(--red);
     }
 
-    .initiative-name {
+    .page-headline {
       font-family: 'Anton', sans-serif;
-      font-size: clamp(4rem, 12vw, 10rem);
-      line-height: 0.85;
+      font-size: clamp(3rem, 10vw, 9rem);
+      line-height: 0.9;
       text-transform: uppercase;
       letter-spacing: 0.02em;
     }
 
-    .initiative-tagline {
-      font-size: 1.2rem;
-      letter-spacing: 0.1em;
+    .page-sub {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       opacity: 0.7;
+      max-width: 600px;
     }
 
-    .initiative-editorial {
-      max-width: 480px;
-      font-size: 1rem;
-      line-height: 1.7;
-      opacity: 0.7;
-    }
-
-    .initiative-actions {
+    .hero-actions {
       display: flex;
       gap: 1.5rem;
-      margin-top: 1rem;
       flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 1rem;
     }
 
     .btn {
@@ -258,6 +255,7 @@
       position: relative;
       background: transparent;
       cursor: pointer;
+      z-index: 1;
     }
 
     .btn::before {
@@ -278,6 +276,72 @@
 
     .btn:hover {
       border-color: var(--red);
+    }
+
+    /* Access Section */
+    .access-section {
+      padding: 10vh 4vw;
+      border-top: 1px solid var(--gray);
+    }
+
+    .access-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .access-card {
+      border: 1px solid var(--gray);
+      padding: 3rem 2rem;
+      background: rgba(255,255,255,0.02);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: border-color 0.4s ease, transform 0.4s ease;
+    }
+
+    .access-card:hover {
+      border-color: var(--red);
+      transform: translateY(-8px);
+    }
+
+    .access-card h3 {
+      font-family: 'Anton', sans-serif;
+      font-size: 2rem;
+      text-transform: uppercase;
+      color: var(--red);
+      letter-spacing: 0.05em;
+    }
+
+    .access-card p {
+      font-size: 1rem;
+      line-height: 1.6;
+      opacity: 0.7;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: auto;
+      padding-top: 1rem;
+    }
+
+    .social-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      transition: opacity 0.3s ease, color 0.3s ease;
+    }
+
+    .social-links a:hover {
+      opacity: 1;
+      color: var(--red);
     }
 
     /* Statement Section */
@@ -364,14 +428,7 @@
     /* Responsive */
     @media (max-width: 768px) {
       .nav-links { display: none; }
-      .initiative-hero {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-        padding-top: 15vh;
-      }
-      .initiative-image {
-        aspect-ratio: 1/1;
-      }
+      .page-headline { font-size: clamp(2.5rem, 14vw, 5rem); }
       .cursor, .cursor-follower { display: none; }
       body { cursor: auto; }
     }
@@ -384,45 +441,63 @@
   <div class="scanlines"></div>
 
   <nav>
-    <a href="index.html" class="nav-logo">MAGNUS</a>
+    <a href="index.html" class="nav-logo">EVRABO</a>
     <ul class="nav-links">
-      <li><a href="index.html#collection">Issues</a></li>
       <li><a href="originals.html">Originals</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
   </nav>
 
-  <section class="initiative-hero">
-    <div class="initiative-image">
-      <img src="https://cdn.cosmos.so/eed1465f-b629-4aff-9b6a-a17889c6bc29?format=jpeg" alt="Bitch">
-    </div>
-    <div class="initiative-info">
-      <div class="initiative-label">SS / 26 — Issue III</div>
-      <h1 class="initiative-name">BITCH</h1>
-      <div class="initiative-tagline">Wear it like a crown.</div>
-      <p class="initiative-editorial">
-        They'll say it like it's an insult. You take it as a title. Unbothered, unreachable, 
-        undeniable. The moment you stop apologizing for the space you take, the whole room 
-        rearranges itself around you.
-      </p>
-      <div class="initiative-actions">
-        <a href="contact.html" class="btn">Enter</a>
-        <a href="index.html#collection" class="btn">Back to Issues</a>
+  <section class="page-hero" id="enter-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <div class="page-kicker">SS / 26 — ISSUE III</div>
+      <h1 class="page-headline">GET INSIDE</h1>
+      <p class="page-sub">Subscribe. Follow. Buy the issue. Join the ones who don't wait.</p>
+      <div class="hero-actions">
+        <a href="contact.html" class="btn">Subscribe</a>
+        <a href="contact.html" class="btn">Buy Issue</a>
       </div>
     </div>
   </section>
 
-  <section class="statement">
-    <h2 class="statement-text">Make them <span>watch you win</span></h2>
+  <section class="access-section">
+    <div class="access-grid">
+      <article class="access-card">
+        <h3>SUBSCRIBE</h3>
+        <p>First drops, private links, no spam.</p>
+        <a href="contact.html" class="btn">Join</a>
+      </article>
+      <article class="access-card">
+        <h3>BUY THE ISSUE</h3>
+        <p>Limited run. Ships worldwide.</p>
+        <a href="contact.html" class="btn">Pre-order</a>
+      </article>
+      <article class="access-card">
+        <h3>FOLLOW</h3>
+        <p>Daily cuts, behind the scenes, the real tone.</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/evrabo_?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.tiktok.com/@evrabo_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a>
+        </div>
+      </article>
+    </div>
   </section>
 
+  <section class="statement">
+    <h2 class="statement-text">MEMBERS GET THE <span>FIRST CUT</span></h2>
+  </section>
+
+
+
   <footer>
-    <div class="footer-logo">MAGNUS</div>
+    <div class="footer-logo">EVRABO</div>
     <ul class="footer-links">
-      <li><a href="https://www.instagram.com/magnustpt/" target="_blank" rel="noopener">Instagram</a></li>
-      <li><a href="https://www.tiktok.com/@magnustpt?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+      <li><a href="https://www.instagram.com/evrabo_?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.tiktok.com/@evrabo_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
     </ul>
-    <span class="footer-copy">© 2026 MAGNUS. ALL RIGHTS RESERVED.</span>
+    <span class="footer-copy">© 2026 EVRABO. ALL RIGHTS RESERVED.</span>
   </footer>
 
   <script>
@@ -462,5 +537,6 @@
       });
     });
   </script>
+
 </body>
 </html>

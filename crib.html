@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAGNUS — CRIB</title>
+  <title>EVRABO</title>
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -166,118 +166,69 @@
       color: var(--red);
     }
 
-    /* Initiative Hero */
-    .initiative-hero {
+    /* Page Hero */
+    .page-hero {
       position: relative;
       min-height: 100vh;
       width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
       align-items: center;
-      padding: 10vh 4vw;
-      gap: 4rem;
-    }
-
-    .initiative-image {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 3/4;
+      justify-content: center;
+      text-align: center;
       overflow: hidden;
-      background: var(--gray);
+      padding: 10vh 4vw;
     }
 
-    .initiative-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: grayscale(100%) contrast(1.1);
-      transition: all 0.6s ease;
+    .page-hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: url('assets/images/LinearMomentum.jpg') center/cover no-repeat;
+      filter: brightness(0.35) contrast(1.2) grayscale(40%);
     }
 
-    .initiative-image:hover img {
-      filter: grayscale(0%) contrast(1.2);
-      transform: scale(1.03);
+    .page-hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(180deg, rgba(5,5,5,0.75) 0%, rgba(5,5,5,0.35) 50%, rgba(5,5,5,0.85) 100%),
+        radial-gradient(ellipse at 50% 50%, rgba(5,5,5,0.3) 0%, rgba(5,5,5,0.8) 100%);
     }
 
-    .initiative-info {
+    .page-hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1100px;
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 1.5rem;
     }
 
-    .initiative-label {
+    .page-kicker {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.85rem;
+      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
       letter-spacing: 0.5em;
       text-transform: uppercase;
       color: var(--red);
     }
 
-    .initiative-name {
+    .page-headline {
       font-family: 'Anton', sans-serif;
-      font-size: clamp(4rem, 12vw, 10rem);
-      line-height: 0.85;
+      font-size: clamp(3rem, 10vw, 9rem);
+      line-height: 0.9;
       text-transform: uppercase;
       letter-spacing: 0.02em;
     }
 
-    .initiative-tagline {
-      font-size: 1.2rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      opacity: 0.7;
-    }
-
-    .initiative-editorial {
-      max-width: 480px;
-      font-size: 1rem;
-      line-height: 1.7;
-      opacity: 0.7;
-    }
-
-    .initiative-actions {
-      display: flex;
-      gap: 1.5rem;
-      margin-top: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 1rem 3rem;
-      border: 1px solid var(--white);
-      color: var(--white);
-      text-decoration: none;
+    .page-sub {
       font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: 0.85rem;
-      letter-spacing: 0.25em;
+      font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      overflow: hidden;
-      position: relative;
-      background: transparent;
-      cursor: pointer;
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: var(--red);
-      transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      z-index: -1;
-    }
-
-    .btn:hover::before {
-      left: 0;
-    }
-
-    .btn:hover {
-      border-color: var(--red);
+      opacity: 0.7;
+      max-width: 600px;
     }
 
     /* Statement Section */
@@ -315,6 +266,118 @@
     .statement-text span {
       color: var(--red);
       text-shadow: 0 0 60px rgba(255, 26, 26, 0.35);
+    }
+
+    /* Values Grid */
+    .values-section {
+      padding: 10vh 4vw;
+      border-top: 1px solid var(--gray);
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .value-card {
+      border: 1px solid var(--gray);
+      padding: 3rem 2rem;
+      background: rgba(255,255,255,0.02);
+      transition: border-color 0.4s ease, transform 0.4s ease;
+    }
+
+    .value-card:hover {
+      border-color: var(--red);
+      transform: translateY(-8px);
+    }
+
+    .value-card h3 {
+      font-family: 'Anton', sans-serif;
+      font-size: 2rem;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    .value-card p {
+      font-size: 1rem;
+      line-height: 1.6;
+      opacity: 0.7;
+    }
+
+    /* Ascend Section — Pinned scroll-pan reveal */
+    .ascend-wrapper {
+      position: relative;
+      height: 300vh;
+      width: 100%;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .ascend-section {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      pointer-events: auto;
+    }
+
+    .ascend-frame {
+      position: relative;
+      width: min(80vw, 1200px);
+      aspect-ratio: 2497 / 1093;
+      border: 1px solid rgba(255,255,255,0.12);
+      overflow: visible;
+    }
+
+    .ascend-image-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .ascend-image {
+      width: 150%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      will-change: transform, filter;
+    }
+
+    .ascend-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: rgba(5,5,5,0);
+      pointer-events: none;
+    }
+
+    .ascend-title {
+      position: absolute;
+      left: 50%;
+      top: -0.52em;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(5rem, 15vw, 12rem);
+      line-height: 0.85;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: var(--red);
+      text-shadow: 0 0 40px rgba(255, 26, 26, 0.35), 0 0 80px rgba(255, 26, 26, 0.15);
+      opacity: 0;
+      will-change: opacity;
     }
 
     /* Footer */
@@ -364,13 +427,18 @@
     /* Responsive */
     @media (max-width: 768px) {
       .nav-links { display: none; }
-      .initiative-hero {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-        padding-top: 15vh;
+      .page-headline { font-size: clamp(2.5rem, 14vw, 5rem); }
+      .ascend-wrapper { height: 250vh; }
+      .ascend-frame {
+        width: 72vw;
+        aspect-ratio: 3 / 4;
       }
-      .initiative-image {
-        aspect-ratio: 1/1;
+      .ascend-image {
+        width: 310%;
+      }
+      .ascend-title {
+        font-size: clamp(2.2rem, 10vw, 4.5rem);
+        top: -0.55em;
       }
       .cursor, .cursor-follower { display: none; }
       body { cursor: auto; }
@@ -384,45 +452,63 @@
   <div class="scanlines"></div>
 
   <nav>
-    <a href="index.html" class="nav-logo">MAGNUS</a>
+    <a href="index.html" class="nav-logo">EVRABO</a>
     <ul class="nav-links">
-      <li><a href="index.html#collection">Issues</a></li>
       <li><a href="originals.html">Originals</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
   </nav>
 
-  <section class="initiative-hero">
-    <div class="initiative-image">
-      <img src="https://cdn.cosmos.so/f2565b51-87f6-4f00-aa54-e2ea4bb8ceb9?format=jpeg" alt="Crib">
-    </div>
-    <div class="initiative-info">
-      <div class="initiative-label">SS / 26 — Issue I</div>
-      <h1 class="initiative-name">CRIB</h1>
-      <div class="initiative-tagline">Close the door. Turn the lock.</div>
-      <p class="initiative-editorial">
-        A private world built for closeness, tension, and the kind of silence that speaks 
-        louder than words. This is where desire gets comfortable — and dangerous. What happens 
-        next is yours.
-      </p>
-      <div class="initiative-actions">
-        <a href="contact.html" class="btn">Enter</a>
-        <a href="index.html#collection" class="btn">Back to Issues</a>
-      </div>
+  <section class="page-hero" id="manifesto-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <div class="page-kicker">SS / 26 — ISSUE I</div>
+      <h1 class="page-headline">WE ARE NOT WAITING TO BE WATCHED</h1>
+      <p class="page-sub">A magazine for the ones who move first. No permission. No apology.</p>
     </div>
   </section>
 
   <section class="statement">
-    <h2 class="statement-text">Make them <span>watch you win</span></h2>
+    <h2 class="statement-text">THE WORLD BELONGS TO THE <span>AGGRESSIVE</span></h2>
+  </section>
+
+  <section class="ascend-wrapper" id="ascend">
+    <div class="ascend-section" id="ascend-section">
+      <div class="ascend-frame">
+        <div class="ascend-image-wrap">
+          <img class="ascend-image" id="ascend-image" src="assets/images/ChetaahHuntingCroped.jpg" alt="">
+        </div>
+        <div class="ascend-overlay" id="ascend-overlay"></div>
+        <h2 class="ascend-title" id="ascend-title">ASCEND</h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="values-section">
+    <div class="values-grid">
+      <article class="value-card">
+        <h3>NO PERMISSION</h3>
+        <p>We don't ask. We take the shot.</p>
+      </article>
+      <article class="value-card">
+        <h3>NO APOLOGY</h3>
+        <p>Confidence is not arrogance. It's evidence.</p>
+      </article>
+      <article class="value-card">
+        <h3>NO AUDIENCE REQUIRED</h3>
+        <p>We create for ourselves. The right ones follow.</p>
+      </article>
+    </div>
   </section>
 
   <footer>
-    <div class="footer-logo">MAGNUS</div>
+    <div class="footer-logo">EVRABO</div>
     <ul class="footer-links">
-      <li><a href="https://www.instagram.com/magnustpt/" target="_blank" rel="noopener">Instagram</a></li>
-      <li><a href="https://www.tiktok.com/@magnustpt?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+      <li><a href="https://www.instagram.com/evrabo_?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.tiktok.com/@evrabo_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
     </ul>
-    <span class="footer-copy">© 2026 MAGNUS. ALL RIGHTS RESERVED.</span>
+    <span class="footer-copy">© 2026 EVRABO. ALL RIGHTS RESERVED.</span>
   </footer>
 
   <script>
@@ -461,6 +547,45 @@
         follower.classList.remove('hover');
       });
     });
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script>
+    // Ascend — GSAP ScrollTrigger pin + pan
+    gsap.registerPlugin(ScrollTrigger);
+
+    const isMobileAscend = window.innerWidth <= 768;
+    const ascendStartX = isMobileAscend ? -67.74 : -33.33;
+
+    const ascendTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.ascend-wrapper',
+        start: 'top top',
+        end: 'bottom bottom',
+        pin: '.ascend-section',
+        scrub: 1,
+        anticipatePin: 1
+      }
+    });
+
+    ascendTl
+      .fromTo('.ascend-image',
+        { xPercent: ascendStartX, filter: 'grayscale(0%) brightness(1) contrast(1)' },
+        { xPercent: 0, filter: 'grayscale(100%) brightness(1) contrast(1.8)', ease: 'none' },
+        0
+      )
+      .fromTo('.ascend-overlay',
+        { backgroundColor: 'rgba(5,5,5,0)' },
+        { backgroundColor: 'rgba(5,5,5,0)', ease: 'none' },
+        0
+      )
+      .fromTo('.ascend-title',
+        { opacity: 0 },
+        { opacity: 1, ease: 'none', duration: 0.2 },
+        0.35
+      );
+
   </script>
 </body>
 </html>

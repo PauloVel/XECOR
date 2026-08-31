@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAGNUS — ORIGINALS</title>
+  <title>EVRABO</title>
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -356,23 +356,17 @@
       transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .project-main-link {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      text-decoration: none;
-      color: inherit;
+    .project-btn-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.4rem;
     }
 
-    .project-card-has-proposal .project-info {
-      pointer-events: none;
-    }
-
-    .project-proposal-btn {
+    .project-btn {
       position: relative;
       display: inline-flex;
       align-self: flex-start;
-      margin-top: 0.4rem;
       padding: 0.85rem 2.2rem;
       border: 1px solid var(--white);
       color: var(--white);
@@ -389,7 +383,7 @@
       z-index: 4;
     }
 
-    .project-proposal-btn::before {
+    .project-btn::before {
       content: '';
       position: absolute;
       top: 0;
@@ -401,15 +395,16 @@
       z-index: -1;
     }
 
-    .project-proposal-btn:hover::before {
+    .project-btn:hover::before {
       left: 0;
     }
 
-    .project-proposal-btn:hover {
+    .project-btn:hover {
       color: var(--black);
     }
 
-    .project-card:nth-child(3n+2) .project-proposal-btn {
+    .project-card:nth-child(3n+2) .project-btn-group {
+      justify-content: flex-end;
       align-self: flex-end;
     }
 
@@ -474,6 +469,20 @@
     .project-card:hover .project-year {
       opacity: 1;
       color: var(--red);
+    }
+
+    .cooking-soon {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(4rem, 15vw, 12rem);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--red);
+      text-shadow: 0 0 60px rgba(255, 26, 26, 0.35), 0 0 120px rgba(255, 26, 26, 0.15);
     }
 
     /* Marquee */
@@ -696,6 +705,18 @@
       .project-desc {
         font-size: 0.8rem;
       }
+      .project-btn-group {
+        justify-content: flex-start !important;
+        align-self: flex-start !important;
+      }
+      .project-btn {
+        padding: 0.75rem 1.6rem;
+        font-size: 0.65rem;
+      }
+      .cooking-soon {
+        min-height: 40vh;
+        font-size: clamp(3rem, 12vw, 6rem);
+      }
     }
   </style>
 </head>
@@ -706,9 +727,9 @@
   <div class="scanlines"></div>
 
   <nav>
-    <a href="index.html" class="nav-logo">MAGNUS</a>
+    <a href="index.html" class="nav-logo">EVRABO</a>
     <ul class="nav-links">
-      <li><a href="originals.html" class="active">Originals</a></li>
+      <li><a href="originals.html">Originals</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
   </nav>
@@ -724,90 +745,40 @@
       <h2 class="projects-title glitch-text" data-text="ARCHIVE">ARCHIVE</h2>
       <p class="projects-desc">
         Every build starts with a spark. These are the experiments, prototypes, 
-        and full-scale drops that defined the MAGNUS identity.
+        and full-scale drops that defined the EVRABO identity.
       </p>
     </div>
     <div class="projects-grid">
-      <div class="project-card project-card-has-proposal">
-        <a href="https://leonardou-lab.github.io/WEB-DOWNHILL_03/index.html" target="_blank" rel="noopener noreferrer" class="project-main-link">
-          <div class="project-visual">
-            <span class="project-year">2025</span>
-            <img src="assets\images\pICdH.jpg" alt="Downhill Mexico">
-          </div>
-        </a>
+      <div class="project-card" id="downhill-card">
+        <div class="project-visual">
+          <span class="project-year">2025</span>
+          <img src="assets\images\pICdH.jpg" alt="Downhill Mexico">
+        </div>
         <div class="project-info">
           <div class="project-category">Presentation</div>
           <div class="project-name">Downhill Mexico</div>
           <div class="project-desc">Full prosual identity, motion direction, and campaign strategy.</div>
-          <a href="https://canva.link/9erall72rpquqm5" target="_blank" rel="noopener noreferrer" class="project-proposal-btn">View Proposal</a>
+          <div class="project-btn-group">
+            <a href="https://leonardou-lab.github.io/WEB-DOWNHILL_03/index.html" target="_blank" rel="noopener noreferrer" class="project-btn">View Webpage</a>
+            <a href="https://canva.link/9erall72rpquqm5" target="_blank" rel="noopener noreferrer" class="project-btn">View Proposal</a>
+          </div>
         </div>
       </div>
       <div class="project-card">
         <div class="project-visual">
           <span class="project-year">2025</span>
-          <img src="assets\images\pICdH.jpg" alt="Void Protocol">
+          <img src="assets/images/AID.png" alt="AID Abrasive Shorts">
         </div>
         <div class="project-info">
-          <div class="project-category">Digital Infrastructure</div>
-          <div class="project-name">Void Protocol</div>
-          <div class="project-desc">Decentralized distribution layer for independent creators. Zero gatekeepers.</div>
+          <div class="project-category">Abrasive Shorts</div>
+          <div class="project-name">AID Abrasive Shorts</div>
+          <div class="project-desc">Raw, unfiltered short-form content. Built for attention.</div>
+          <div class="project-btn-group">
+            <a href="https://www.instagram.com/abrasivetmt?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="project-btn">View Instagram</a>
+          </div>
         </div>
       </div>
-      <div class="project-card">
-        <div class="project-visual">
-          <span class="project-year">2024</span>
-          <img src="assets/images/pICdH.png" alt="Signal Frame">
-        </div>
-        <div class="project-info">
-          <div class="project-category">Visual System</div>
-          <div class="project-name">Signal Frame</div>
-          <div class="project-desc">Real-time generative identity engine. Typography that reacts to data.</div>
-        </div>
-      </div>
-      <div class="project-card">
-        <div class="project-visual">
-          <span class="project-year">2024</span>
-          <img src="assets/images/pICdH.png" alt="Black Circuit">
-        </div>
-        <div class="project-info">
-          <div class="project-category">Hardware Drop</div>
-          <div class="project-name">Black Circuit</div>
-          <div class="project-desc">Limited run of machined aluminum wearables. CNC-cut, hand-finished.</div>
-        </div>
-      </div>
-      <div class="project-card">
-        <div class="project-visual">
-          <span class="project-year">2023</span>
-          <img src="assets/images/plCdH.jpg" alt="Raw Frequency">
-        </div>
-        <div class="project-info">
-          <div class="project-category">Sound Design</div>
-          <div class="project-name">Raw Frequency</div>
-          <div class="project-desc">24-hour ambient noise composition for focus and disruption.</div>
-        </div>
-      </div>
-      <div class="project-card">
-        <div class="project-visual">
-          <span class="project-year">2023</span>
-          <img src="assets\images\pICdH.jpg" alt="Nocturne Run">
-        </div>
-        <div class="project-info">
-          <div class="project-category">Event Series</div>
-          <div class="project-name">Nocturne Run</div>
-          <div class="project-desc">Underground showcases in Tokyo, Berlin, and Mexico City. No cameras. No press.</div>
-        </div>
-      </div>
-      <div class="project-card">
-        <div class="project-visual">
-          <span class="project-year">2022</span>
-          <img src="assets/images/plCdH.jpg" alt="Null Object">
-        </div>
-        <div class="project-info">
-          <div class="project-category">Software</div>
-          <div class="project-name">Null Object</div>
-          <div class="project-desc">Open-source toolkit for building brutalist web experiences. MIT licensed.</div>
-        </div>
-      </div>
+      <div class="cooking-soon">COOKING...</div>
     </div>
   </section>
 
@@ -819,16 +790,16 @@
 
   <section class="footer-cta">
     <h2 class="cta-title glitch-text" data-text="JOIN THE VOID">JOIN THE VOID</h2>
-    <a href="contact.html" class="cta-btn">Enter Magnus</a>
+    <a href="contact.html" class="cta-btn">Enter Evrabo</a>
   </section>
 
   <footer>
-    <div class="footer-logo">MAGNUS</div>
+    <div class="footer-logo">EVRABO</div>
     <ul class="footer-links">
-      <li><a href="https://www.instagram.com/magnustpt/" target="_blank" rel="noopener">Instagram</a></li>
-      <li><a href="https://www.tiktok.com/@magnustpt?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+      <li><a href="https://www.instagram.com/evrabo_?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.tiktok.com/@evrabo_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
     </ul>
-    <span class="footer-copy">© 2026 MAGNUS. ALL RIGHTS RESERVED.</span>
+    <span class="footer-copy">© 2026 EVRABO. ALL RIGHTS RESERVED.</span>
   </footer>
 
   <script>
@@ -867,6 +838,16 @@
         follower.classList.remove('hover');
       });
     });
+
+    // Downhill Mexico — whole card click to webpage
+    const downhillCard = document.getElementById('downhill-card');
+    if (downhillCard) {
+      downhillCard.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return;
+        window.open('https://leonardou-lab.github.io/WEB-DOWNHILL_03/index.html', '_blank', 'noopener,noreferrer');
+      });
+      downhillCard.style.cursor = 'pointer';
+    }
 
     // Glitch Text Trigger
     const glitchTexts = document.querySelectorAll('.glitch-text');

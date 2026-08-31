@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAGNUS — KATANA</title>
+  <title>EVRABO</title>
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -258,6 +258,7 @@
       position: relative;
       background: transparent;
       cursor: pointer;
+      z-index: 1;
     }
 
     .btn::before {
@@ -280,41 +281,54 @@
       border-color: var(--red);
     }
 
-    /* Statement Section */
-    .statement {
-      position: relative;
-      min-height: 60vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
+    /* Editorial Gallery */
+    .editorial-gallery {
       padding: 10vh 4vw;
+      border-top: 1px solid var(--gray);
+    }
+
+    .gallery-feature {
+      width: 100%;
+      aspect-ratio: 16 / 9;
       overflow: hidden;
+      background: var(--gray);
+      margin-bottom: 1.5rem;
     }
 
-    .statement::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 50% 50%, rgba(26,26,26,0.5) 0%, var(--black) 70%);
-      z-index: 0;
+    .gallery-feature video,
+    .gallery-feature img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: contrast(1.1) brightness(0.9) saturate(0.8);
     }
 
-    .statement-text {
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .gallery-item {
       position: relative;
-      z-index: 1;
-      font-family: 'Anton', sans-serif;
-      font-size: clamp(3rem, 10vw, 8rem);
-      line-height: 0.9;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--white);
-      max-width: 1200px;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      background: var(--gray);
     }
 
-    .statement-text span {
-      color: var(--red);
-      text-shadow: 0 0 60px rgba(255, 26, 26, 0.35);
+    .gallery-item img,
+    .gallery-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(1.1);
+      transition: all 0.6s ease;
+    }
+
+    .gallery-item:hover img,
+    .gallery-item:hover video {
+      filter: grayscale(0%) contrast(1.2);
+      transform: scale(1.05);
     }
 
     /* Aggressive Style Section */
@@ -396,6 +410,62 @@
 
     #aggressive-style-phone-stack { display: none; }
 
+    /* Contributors */
+    .contributors {
+      padding: 10vh 4vw;
+      border-top: 1px solid var(--gray);
+      text-align: center;
+    }
+
+    .section-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2rem, 6vw, 4rem);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 3rem;
+      color: var(--red);
+    }
+
+    .contributors-list {
+      list-style: none;
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .contributors-list li {
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    .contributors-list li span {
+      color: var(--red);
+      font-weight: 600;
+    }
+
+    /* Specs */
+    .specs {
+      padding: 10vh 4vw;
+      border-top: 1px solid var(--gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .specs-text {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(1.5rem, 5vw, 3rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      line-height: 1.2;
+      opacity: 0.9;
+    }
+
     /* Footer */
     footer {
       padding: 4rem 4vw;
@@ -465,9 +535,8 @@
   <div class="scanlines"></div>
 
   <nav>
-    <a href="index.html" class="nav-logo">MAGNUS</a>
+    <a href="index.html" class="nav-logo">EVRABO</a>
     <ul class="nav-links">
-      <li><a href="index.html#collection">Issues</a></li>
       <li><a href="originals.html">Originals</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
@@ -475,26 +544,72 @@
 
   <section class="initiative-hero">
     <div class="initiative-image">
-      <img src="https://cdn.cosmos.so/13e21033-3c05-4aa2-98df-1edf49d80528?format=jpeg" alt="Katana">
+      <img src="assets/images/pc/Image1.jpeg" alt="The Work">
     </div>
     <div class="initiative-info">
-      <div class="initiative-label">SS / 26 — Issue II</div>
-      <h1 class="initiative-name">KATANA</h1>
-      <div class="initiative-tagline">One clean cut. No warning.</div>
+      <div class="initiative-label">SS / 26 — ISSUE II</div>
+      <h1 class="initiative-name">THE WORK</h1>
+      <div class="initiative-tagline">Photography, film, and writing built without compromise.</div>
       <p class="initiative-editorial">
-        Precision, edge, and the kind of presence that parts crowds without asking. Sharp isn't 
-        a look. It's a warning. The room doesn't belong to the loudest — it belongs to the ones 
-        who move like blades.
+        A visual archive of motion, tension, and controlled chaos. Every frame is deliberate.
+        Every cut carries intent. This is proof — not promise.
       </p>
       <div class="initiative-actions">
-        <a href="contact.html" class="btn">Enter</a>
-        <a href="index.html#collection" class="btn">Back to Issues</a>
+        <a href="bitch.html" class="btn">Get Access</a>
+        <a href="contact.html" class="btn">Contact</a>
       </div>
     </div>
   </section>
 
-  <section class="statement">
-    <h2 class="statement-text">Make them <span>watch you win</span></h2>
+  <section class="editorial-gallery">
+    <div class="gallery-feature">
+      <video autoplay muted loop playsinline preload="auto">
+        <source src="assets/videos/Video3.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <picture>
+          <source media="(max-width: 768px)" srcset="assets/images/phone/image1.jpeg">
+          <img src="assets/images/pc/Image1.jpeg" alt="">
+        </picture>
+      </div>
+      <div class="gallery-item">
+        <picture>
+          <source media="(max-width: 768px)" srcset="assets/images/phone/image2.jpeg">
+          <img src="assets/images/pc/Image2.jpeg" alt="">
+        </picture>
+      </div>
+      <div class="gallery-item">
+        <picture>
+          <source media="(max-width: 768px)" srcset="assets/images/phone/image3.jpeg">
+          <img src="assets/images/pc/Image3.jpeg" alt="">
+        </picture>
+      </div>
+      <div class="gallery-item">
+        <picture>
+          <source media="(max-width: 768px)" srcset="assets/images/phone/image4.png">
+          <img src="assets/images/pc/Image4.jpeg" alt="">
+        </picture>
+      </div>
+      <div class="gallery-item">
+        <picture>
+          <source media="(max-width: 768px)" srcset="assets/images/phone/image5.jpeg">
+          <img src="assets/images/pc/Image5.jpeg" alt="">
+        </picture>
+      </div>
+      <div class="gallery-item">
+        <picture>
+          <source media="(max-width: 768px)" srcset="assets/images/phone/image6.jpeg">
+          <img src="assets/images/pc/image6.jpeg" alt="">
+        </picture>
+      </div>
+    </div>
+    <div class="gallery-feature" style="margin-top: 1.5rem;">
+      <video autoplay muted loop playsinline preload="auto">
+        <source src="assets/videos/Video2.mp4" type="video/mp4">
+      </video>
+    </div>
   </section>
 
   <section class="aggressive-style" id="aggressive-style">
@@ -520,13 +635,30 @@
     </div>
   </section>
 
-  <footer>
-    <div class="footer-logo">MAGNUS</div>
-    <ul class="footer-links">
-      <li><a href="https://www.instagram.com/magnustpt/" target="_blank" rel="noopener">Instagram</a></li>
-      <li><a href="https://www.tiktok.com/@magnustpt?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+  <section class="contributors">
+    <h2 class="section-title">CONTRIBUTORS</h2>
+    <ul class="contributors-list">
+      <li><span>Photography</span> — Alex R.</li>
+      <li><span>Director</span> — Marcos T.</li>
+      <li><span>Stylist</span> — Lena V.</li>
+      <li><span>Models</span> — Sia K. &amp; Jordan P.</li>
+      <li><span>Writer</span> — Diego M.</li>
     </ul>
-    <span class="footer-copy">© 2026 MAGNUS. ALL RIGHTS RESERVED.</span>
+  </section>
+
+  <section class="specs">
+    <p class="specs-text">48 PAGES / PERFECT BOUND / LIMITED RUN / SS/26</p>
+  </section>
+
+
+
+  <footer>
+    <div class="footer-logo">EVRABO</div>
+    <ul class="footer-links">
+      <li><a href="https://www.instagram.com/evrabo_?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.tiktok.com/@evrabo_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 EVRABO. ALL RIGHTS RESERVED.</span>
   </footer>
 
   <script>
@@ -625,5 +757,6 @@
       }
     });
   </script>
+
 </body>
 </html>
