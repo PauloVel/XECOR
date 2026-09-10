@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EVRABO</title>
+  <title>Evrabo-Bitch</title>
+  <meta name="description" content="Subscribe, follow, buy the issue. EVRABO — limited run, ships worldwide. Members get the first cut. First drops, private links, no spam.">
+  <meta property="og:title" content="GET INSIDE — EVRABO Issue III">
+  <meta property="og:description" content="Join the ones who don't wait. Limited run. Ships worldwide.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://evrabo.com/bitch.html">
+  <meta property="og:image" content="https://evrabo.com/assets/images/LinearMomentum.jpg">
+  <meta name="theme-color" content="#050505">
+  <link rel="canonical" href="https://evrabo.com/bitch.html">
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -425,9 +433,86 @@
       letter-spacing: 0.05em;
     }
 
+
+    /* Mobile Menu Toggle */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      width: 32px;
+      height: 32px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 200;
+      padding: 0;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--white);
+      transition: all 0.3s ease;
+    }
+
+    .nav-toggle.active span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .nav-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-toggle.active span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .nav-mobile {
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .nav-mobile.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .nav-mobile-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .nav-mobile-links a {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.5rem, 10vw, 5rem);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .nav-mobile-links a:hover {
+      color: var(--red);
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .nav-links { display: none; }
+      .nav-toggle { display: flex; }
       .page-headline { font-size: clamp(2.5rem, 14vw, 5rem); }
       .cursor, .cursor-follower { display: none; }
       body { cursor: auto; }
@@ -446,7 +531,19 @@
       <li><a href="originals.html">Originals</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </nav>
+  <div class="nav-mobile">
+    <ul class="nav-mobile-links">
+      <li><a href="originals.html">Originals</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+
 
   <section class="page-hero" id="enter-hero">
     <div class="page-hero-bg"></div>
@@ -536,6 +633,28 @@
         follower.classList.remove('hover');
       });
     });
+  
+    // Mobile menu toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMobile = document.querySelector('.nav-mobile');
+    if (navToggle && navMobile) {
+      navToggle.addEventListener('click', () => {
+        const isOpen = navMobile.classList.toggle('open');
+        navToggle.classList.toggle('active');
+        navToggle.setAttribute('aria-expanded', isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      });
+
+      navMobile.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navMobile.classList.remove('open');
+          navToggle.classList.remove('active');
+          navToggle.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = '';
+        });
+      });
+    }
+
   </script>
 
 </body>

@@ -3,7 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EVRABO</title>
+  <title>Evrabo</title>
+  <meta name="description" content="EVRABO — Dirt · Dream · Reach. No comparison. No mercy. No fear. Explore the originals.">
+  <meta property="og:title" content="EVRABO">
+  <meta property="og:description" content="Dirt · Dream · Reach. No comparison. No mercy. No fear.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://evrabo.com/">
+  <meta property="og:image" content="https://evrabo.com/assets/images/LinearMomentum.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#050505">
+  <link rel="canonical" href="https://evrabo.com/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "EVRABO",
+    "url": "https://evrabo.com/",
+    "logo": "https://evrabo.com/assets/images/favicon.png",
+    "description": "EVRABO — a magazine for the ones who move first. Photography, film, and writing built without compromise.",
+    "sameAs": [
+      "https://instagram.com/evrabo_",
+      "https://tiktok.com/@evrabo_"
+    ]
+  }
+  </script>
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -913,10 +936,87 @@
       z-index: 1;
     }
 
+
+    /* Mobile Menu Toggle */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      width: 32px;
+      height: 32px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 200;
+      padding: 0;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--white);
+      transition: all 0.3s ease;
+    }
+
+    .nav-toggle.active span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .nav-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-toggle.active span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .nav-mobile {
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .nav-mobile.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .nav-mobile-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .nav-mobile-links a {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.5rem, 10vw, 5rem);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .nav-mobile-links a:hover {
+      color: var(--red);
+    }
+
     /* Responsive */
 
     @media (max-width: 768px) {
       .nav-links { display: none; }
+      .nav-toggle { display: flex; }
       .manifesto { min-height: 80vh; }
       .manifesto-headline { font-size: clamp(2.5rem, 14vw, 5rem); }
       .collection-desc { text-align: left; }
@@ -933,12 +1033,32 @@
         font-size: clamp(4.5rem, 18vw, 10rem);
       }
     }
+
+    /* Only affects users who opted into reduced motion at the OS level */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .manifesto-cut-flash.punch,
+      .manifesto-shake { animation: none; }
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
   </style>
 </head>
 <body>
+  <h1 class="sr-only">EVRABO — Dirt · Dream · Reach</h1>
   <div class="intro-overlay" id="intro-overlay">
-    <video class="intro-logo" autoplay muted playsinline preload="auto">
-      <source src="assets/Video_EntradaEVRABO.mp4" type="video/mp4">
+    <video class="intro-logo" id="intro-video" muted playsinline preload="auto">
+      <source id="intro-source" src="assets/Video_Entrada.mp4" type="video/mp4">
     </video>
   </div>
 
@@ -953,7 +1073,19 @@
       <li><a href="originals.html">Originals</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </nav>
+  <div class="nav-mobile">
+    <ul class="nav-mobile-links">
+      <li><a href="originals.html">Originals</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+
 
   <section class="manifesto" id="manifesto">
     <!-- 
@@ -1091,7 +1223,16 @@
   <script>
     // Intro Sequence
     const introOverlay = document.getElementById('intro-overlay');
-    const introVideo = introOverlay ? introOverlay.querySelector('video') : null;
+    const introVideo = document.getElementById('intro-video');
+    const introSource = document.getElementById('intro-source');
+
+    // Load mobile or desktop intro video
+    if (introSource) {
+      const isMobileIntro = window.matchMedia('(max-width: 768px)').matches || window.matchMedia('(pointer: coarse)').matches;
+      introSource.src = isMobileIntro ? 'assets/Video_EntradaCelular.mp4' : 'assets/Video_Entrada.mp4';
+      if (introVideo) introVideo.load();
+    }
+
     if (introOverlay) {
       setTimeout(() => introOverlay.classList.add('show-logo'), 100);
 
@@ -1103,6 +1244,7 @@
 
       if (introVideo) {
         introVideo.addEventListener('ended', finishIntro, { once: true });
+        introVideo.play().catch(() => {});
         // Fallback if the video stalls or doesn't fire ended
         setTimeout(finishIntro, 6000);
       } else {
@@ -1175,7 +1317,7 @@
 
     // Activate first video
     videos[0].classList.add('active');
-    videos.forEach(v => v.play().catch(() => {}));
+    videos[0].play().catch(() => {});
 
     function punchCut() {
       // Trigger red flash overlay
@@ -1188,10 +1330,12 @@
       void manifestoSection.offsetWidth;
       manifestoSection.classList.add('manifesto-shake');
 
-      // Swap video
+      // Swap video — pause the hidden one, play the one now visible
       videos[activeVideoIndex].classList.remove('active');
+      videos[activeVideoIndex].pause();
       activeVideoIndex = (activeVideoIndex + 1) % videos.length;
       videos[activeVideoIndex].classList.add('active');
+      videos[activeVideoIndex].play().catch(() => {});
 
       // Randomize next cut timing — faster for aggression
       if (isMontageRunning) {
@@ -1214,7 +1358,7 @@
     function startMontage() {
       if (isMontageRunning) return;
       isMontageRunning = true;
-      videos.forEach(v => v.play().catch(() => {}));
+      videos[activeVideoIndex].play().catch(() => {});
       montageInterval = setInterval(punchCut, 900);
       headlineInterval = setInterval(rotateHeadline, 2500);
     }
@@ -1247,7 +1391,7 @@
           stopMontage();
           videos.forEach(v => v.pause());
         } else {
-          videos.forEach(v => v.play().catch(() => {}));
+          videos[activeVideoIndex].play().catch(() => {});
           startMontage();
         }
       });
@@ -1346,6 +1490,28 @@
 
     window.addEventListener('scroll', () => requestAnimationFrame(updateImageSequence), { passive: true });
     updateImageSequence();
+  
+    // Mobile menu toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMobile = document.querySelector('.nav-mobile');
+    if (navToggle && navMobile) {
+      navToggle.addEventListener('click', () => {
+        const isOpen = navMobile.classList.toggle('open');
+        navToggle.classList.toggle('active');
+        navToggle.setAttribute('aria-expanded', isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      });
+
+      navMobile.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navMobile.classList.remove('open');
+          navToggle.classList.remove('active');
+          navToggle.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = '';
+        });
+      });
+    }
+
   </script>
 </body>
 </html>
