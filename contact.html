@@ -14,7 +14,9 @@
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/fonts/Anton-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/fonts/anton.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -181,134 +183,146 @@
       width: 100%;
     }
 
-    /* Word Wall */
-    .word-wall {
-      position: relative;
+    /* Contact: sharp split. White panel (reach us) / black panel (photo + form). */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 10vh 4vw;
-      overflow: hidden;
+      --red: #f0f0f0; /* no red here: white accents */
     }
 
-    .word-wall::before {
+    .split-left {
+      background: var(--white);
+      color: var(--black);
+      padding: 16vh 4vw 6vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 4rem;
+    }
+
+    .split-title {
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      font-size: clamp(4.5rem, 13vw, 11rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+    }
+
+    .split-title span {
+      display: block;
+      overflow: hidden;
+      margin-bottom: -0.04em;
+    }
+
+    .split-title span:nth-child(2) { padding-left: 1.2em; }
+
+    .split-title i {
+      display: block;
+      font-style: normal;
+      animation: line-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .split-title span:nth-child(2) i { animation-delay: 0.1s; }
+    .split-title span:nth-child(3) i { animation-delay: 0.2s; }
+
+    @keyframes line-in {
+      from { transform: translateY(105%); }
+      to { transform: translateY(0); }
+    }
+
+    .rows { border-top: 3px solid var(--black); }
+
+    .row {
+      display: grid;
+      grid-template-columns: 6.5rem 1fr auto;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.1rem 0.8rem;
+      border-bottom: 1px solid var(--black);
+      color: var(--black);
+      text-decoration: none;
+      transition: background 0.25s ease, color 0.25s ease, padding 0.25s ease;
+    }
+
+    .row-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      opacity: 0.55;
+    }
+
+    .row-value {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      overflow-wrap: anywhere;
+    }
+
+    .row-arrow { font-size: 1.4rem; line-height: 1; }
+
+    .row:hover { background: var(--black); color: var(--white); padding-left: 1.4rem; }
+    .row:hover .row-label { opacity: 0.7; }
+
+    .split-right {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .split-photo {
+      position: relative;
+      height: 38vh;
+      min-height: 260px;
+      overflow: hidden;
+      border-bottom: 3px solid var(--white);
+      pointer-events: none;
+    }
+
+    .split-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 30% 40%;
+      filter: grayscale(100%) contrast(1.25) brightness(0.8);
+    }
+
+    .split-photo::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 50% 50%, rgba(26,26,26,0.5) 0%, var(--black) 70%);
-      z-index: 0;
+      background: linear-gradient(to bottom, rgba(5,5,5,0.9) 0%, rgba(5,5,5,0) 50%);
     }
 
-    .word-wall-kicker {
-      position: relative;
+    .split-photo figcaption {
       z-index: 1;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
-      letter-spacing: 0.5em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 3rem;
-    }
-
-    .word-wall-headline {
-      position: relative;
-      z-index: 1;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      padding: 0.6rem 1.2rem;
+      background: var(--white);
+      color: var(--black);
       font-family: 'Anton', sans-serif;
-      font-size: clamp(5rem, 18vw, 16rem);
-      line-height: 0.85;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--white);
-      min-height: 1.1em;
-    }
-
-    .word-wall-sub {
-      position: relative;
-      z-index: 1;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(0.85rem, 1.5vw, 1.1rem);
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--white);
-      opacity: 0.5;
-      margin-top: 2.5rem;
-    }
-
-    /* Contact Section */
-    .contact-section {
-      position: relative;
-      padding: 15vh 4vw;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6rem;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .contact-info h2 {
-      font-family: 'Anton', sans-serif;
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      line-height: 0.9;
-      text-transform: uppercase;
-      margin-bottom: 2rem;
-    }
-
-    .contact-info p {
-      font-size: 0.95rem;
-      line-height: 1.7;
-      opacity: 0.7;
-      max-width: 400px;
-      margin-bottom: 3rem;
-    }
-
-    .contact-channel {
-      margin-bottom: 1.5rem;
-    }
-
-    .contact-channel-label {
-      font-size: 0.75rem;
+      font-size: 1rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 0.3rem;
     }
 
-    .contact-channel a {
-      color: var(--white);
-      text-decoration: none;
-      font-size: 1rem;
-      transition: color 0.3s ease;
+    .contact-right { min-width: 0; padding: 5vh 4vw 8vh; }
+
+    @media (max-width: 900px) {
+      .split { grid-template-columns: 1fr; }
+      .split-left { padding-top: 14vh; }
+      .split-title span:nth-child(2) { padding-left: 0.6em; }
+      .row { grid-template-columns: 1fr auto; }
+      .row-label { grid-column: 1 / -1; }
+      .mode-switch { width: 100%; }
+      .mode-switch button { flex: 1; padding: 0.9rem 0.6rem; letter-spacing: 0.15em; }
     }
 
-    .contact-channel a:hover {
-      color: var(--red);
-    }
-
-    .social-row {
-      display: flex;
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-
-    .social-row a {
-      color: var(--white);
-      text-decoration: none;
-      font-size: 0.8rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      opacity: 0.6;
-      transition: opacity 0.3s ease, color 0.3s ease;
-      border: 1px solid rgba(255,255,255,0.2);
-      padding: 0.6rem 1.4rem;
-    }
-
-    .social-row a:hover {
-      opacity: 1;
-      color: var(--red);
-      border-color: var(--red);
+    @media (prefers-reduced-motion: reduce) {
+      .split-title i { animation: none; }
     }
 
     /* Brutalist Form */
@@ -359,8 +373,9 @@
       align-self: flex-start;
       padding: 1rem 3.5rem;
       border: 1px solid var(--white);
-      background: transparent;
-      color: var(--white);
+      border-radius: 0;
+      background: var(--white);
+      color: var(--black);
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 600;
       font-size: 0.85rem;
@@ -371,17 +386,71 @@
     }
 
     .form-submit:hover {
-      background: var(--white);
-      color: var(--black);
+      background: var(--black);
+      color: var(--white);
     }
 
-    /* Red Line Divider */
-    .red-line {
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--red), transparent);
-      opacity: 0.4;
+    /* Mode switch: General contact vs Free prototype */
+    .mode-switch {
+      display: flex;
+      gap: 0;
+      margin-bottom: 2.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      width: fit-content;
     }
+
+    .mode-switch button {
+      padding: 0.9rem 1.8rem;
+      background: transparent;
+      border: 0;
+      color: rgba(240, 240, 240, 0.55);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .mode-switch button + button { border-left: 1px solid rgba(255, 255, 255, 0.25); }
+    .mode-switch button:hover { color: var(--white); }
+    .mode-switch button[aria-selected="true"] { background: var(--white); color: var(--black); }
+
+    .form-pane { display: flex; flex-direction: column; gap: 2rem; }
+    .form-pane[hidden] { display: none; }
+
+    .form-group select {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+      border-radius: 0;
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      padding: 0.8rem 0;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .form-group select:focus { border-bottom-color: var(--red); }
+    .form-group select option { background: #050505; color: var(--white); }
+
+    .form-steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.6rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(240, 240, 240, 0.5);
+    }
+
+    .form-steps b { color: var(--white); font-weight: 600; margin-right: 0.5em; }
+
+    .form-status { font-size: 0.85rem; line-height: 1.6; color: rgba(240, 240, 240, 0.7); }
+    .form-status[hidden] { display: none; }
+    .form-status a { color: var(--white); }
 
     /* Footer */
     footer {
@@ -588,52 +657,74 @@
   </div>
 
 
-  <section class="word-wall">
-    <div class="word-wall-kicker"> We </div>
-    <h1 class="word-wall-headline glitch-text" id="word-wall-headline" data-text="SEDUCE">SEDUCE</h1>
-    <p class="word-wall-sub" id="word-wall-sub">Make them watch you win</p>
-
-  </section>
-
-  <div class="red-line"></div>
-
-  <section class="contact-section">
-    <div class="contact-info">
-      <h2 class="glitch-text" data-text="MAKE CONTACT">MAKE CONTACT</h2>
-      <p>
-        Everyone wants to see you, make it be. No Hesitation. No Doubt. 
-        Make sure they hear from you. Partnerships, collaborations, 
-        open the channel.
-      </p>
-      <div class="contact-channel">
-        <div class="contact-channel-label">Email</div>
-        <a href="mailto:paulo_velez@outlook.com">paulo_velez@outlook.com</a>
+  <main class="split">
+    <section class="split-left" id="reserve">
+      <h1 class="split-title"><span><i>Get</i></span><span><i>in</i></span><span><i>touch</i></span></h1>
+      <div class="rows">
+        <a class="row" href="mailto:EVRABO@outlook.com"><span class="row-label">Email</span><span class="row-value">EVRABO@outlook.com</span><span class="row-arrow">&#8599;</span></a>
+        <a class="row" href="https://wa.me/522215292879?text=For%20EVRABO%3A%20LETS%20COOK" target="_blank" rel="noopener"><span class="row-label">WhatsApp</span><span class="row-value">+52 2215292879</span><span class="row-arrow">&#8599;</span></a>
+        <a class="row" href="https://www.instagram.com/evrabo_?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener"><span class="row-label">Instagram</span><span class="row-value">@evrabo_</span><span class="row-arrow">&#8599;</span></a>
+        <a class="row" href="https://www.tiktok.com/@evrabo_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener"><span class="row-label">TikTok</span><span class="row-value">@evrabo_</span><span class="row-arrow">&#8599;</span></a>
       </div>
-      <div class="contact-channel">
-        <div class="contact-channel-label">Phone</div>
-        <a href="tel:2215292879">2215292879</a>
+    </section>
+
+    <section class="split-right">
+      <figure class="split-photo" aria-hidden="true">
+        <img src="assets/images/pc/Image1.jpeg" alt="" decoding="async">
+        <figcaption>SS / 26</figcaption>
+      </figure>
+    <div class="contact-right">
+      <div class="mode-switch" role="tablist" aria-label="What do you need">
+        <button type="button" role="tab" id="tab-general" aria-selected="true" aria-controls="form-general">Message</button>
+        <button type="button" role="tab" id="tab-prototype" aria-selected="false" aria-controls="form-prototype">Free prototype</button>
       </div>
-      <div class="social-row">
-        <a href="https://www.instagram.com/evrabo_?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://www.tiktok.com/@evrabo_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a>
-      </div>
+
+      <form class="contact-form form-pane" id="form-general" role="tabpanel" aria-labelledby="tab-general">
+        <div class="form-group">
+          <input type="text" id="name" name="name" placeholder="Name" aria-label="Name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Your message" required></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send</button>
+      </form>
+
+      <form class="contact-form form-pane" id="form-prototype" role="tabpanel" aria-labelledby="tab-prototype" hidden>
+        <div class="form-group">
+          <label for="p-company">Company name</label>
+          <input type="text" id="p-company" name="company" placeholder="Your company" autocomplete="organization" required>
+        </div>
+        <div class="form-group">
+          <label for="p-email">Email</label>
+          <input type="email" id="p-email" name="email" placeholder="you@email.com" autocomplete="email" required>
+        </div>
+        <div class="form-group">
+          <label for="p-type">What should we prototype?</label>
+          <select id="p-type" name="type" required>
+            <option value="" disabled selected>Choose one</option>
+            <option>Website or online shop</option>
+            <option>Internal tool</option>
+            <option>App</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="p-link">Your site or social (optional)</label>
+          <input type="text" id="p-link" name="link" placeholder="https://" autocomplete="url">
+        </div>
+        <button type="submit" class="form-submit">Reserve</button>
+        <div class="form-steps" aria-label="What happens next"><span><b>1</b>Send your company</span><span><b>2</b>We reply and pick</span><span><b>3</b>We build your prototype</span></div>
+      </form>
+
+      <p class="form-status" id="form-status" role="status" hidden></p>
     </div>
-
-    <form class="contact-form" onsubmit="event.preventDefault(); alert('Signal transmitted.');">
-      <div class="form-group">
-        <input type="text" id="name" name="name" placeholder="Who are you" aria-label="Name" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="your@signal.com" required>
-      </div>
-      <div class="form-group">
-        <label for="message">Message</label>
-        <textarea id="message" name="message" placeholder="Hand us your intent..." required></textarea>
-      </div>
-      <button type="submit" class="form-submit">Transmit</button>
-    </form>
-  </section>
+    </section>
+  </main>
 
   <footer>
     <div class="footer-logo">EVRABO</div>
@@ -645,6 +736,60 @@
   </footer>
 
   <script>
+    // Contact: General / Free prototype switch, and delivery by email
+    (function () {
+      const tabs = { general: document.getElementById('tab-general'), prototype: document.getElementById('tab-prototype') };
+      const panes = { general: document.getElementById('form-general'), prototype: document.getElementById('form-prototype') };
+      const status = document.getElementById('form-status');
+      if (!tabs.general || !panes.general) return;
+      const TO = 'EVRABO@outlook.com';
+      const qs = new URLSearchParams(location.search);
+      const styleBrief = (qs.get('style') || '').slice(0, 80);
+      const pc = document.getElementById('p-company');
+      if (pc && qs.get('company')) pc.value = qs.get('company').slice(0, 60);
+
+      const setMode = (mode) => {
+        for (const k of Object.keys(panes)) {
+          const on = k === mode;
+          tabs[k].setAttribute('aria-selected', on ? 'true' : 'false');
+          panes[k].hidden = !on;
+          panes[k].querySelectorAll('input, select, textarea').forEach(el => { el.disabled = !on; });
+        }
+        status.hidden = true;
+      };
+
+      Object.keys(tabs).forEach(k => tabs[k].addEventListener('click', () => {
+        setMode(k);
+        history.replaceState(null, '', k === 'prototype' ? '#reserve' : location.pathname);
+      }));
+
+      const sendMail = (subject, lines) => {
+        window.location.href = `mailto:${TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
+        status.innerHTML = `Your email app should have opened with everything ready to send. If it didn't, write to <a href="mailto:${TO}">${TO}</a>.`;
+        status.hidden = false;
+      };
+
+      panes.general.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const d = new FormData(panes.general);
+        sendMail(`Contact: ${d.get('name')}`, [`Name: ${d.get('name')}`, `Email: ${d.get('email')}`, '', d.get('message')]);
+        panes.general.reset();
+      });
+
+      panes.prototype.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const d = new FormData(panes.prototype);
+        const lines = [`Company: ${d.get('company')}`, `Email: ${d.get('email')}`, `Prototype: ${d.get('type')}`];
+        if (d.get('link')) lines.push(`Link: ${d.get('link')}`);
+        if (styleBrief) lines.push(`Poster style: ${styleBrief}`);
+        sendMail(`Prototype reservation: ${d.get('company')}`, lines);
+        panes.prototype.reset();
+      });
+
+      setMode(location.hash === '#reserve' ? 'prototype' : 'general');
+      window.addEventListener('hashchange', () => { if (location.hash === '#reserve') setMode('prototype'); });
+    })();
+
     // Custom Cursor
     const cursor = document.querySelector('.cursor');
     const follower = document.querySelector('.cursor-follower');
@@ -680,27 +825,6 @@
         follower.classList.remove('hover');
       });
     });
-
-    // Word Wall — Cycle the 7 core words
-    const words = ['Seduce', 'Dominate', 'Risk', 'Compete', 'Obsess', 'Wild', 'Raw'];
-    const headlineEl = document.getElementById('word-wall-headline');
-    let wordIndex = 0;
-
-    function cycleWord() {
-      wordIndex = (wordIndex + 1) % words.length;
-      const nextWord = words[wordIndex];
-
-      // Glitch transition on headline
-      headlineEl.classList.add('active');
-      setTimeout(() => {
-        headlineEl.textContent = nextWord;
-        headlineEl.setAttribute('data-text', nextWord);
-        headlineEl.classList.remove('active');
-      }, 150);
-    }
-
-    // Start cycling
-    setInterval(cycleWord, 2000);
 
     // Glitch Text Trigger on scroll
     const glitchTexts = document.querySelectorAll('.glitch-text');

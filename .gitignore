@@ -1,1 +1,6 @@
 tools/
+# dead / unused assets (not referenced by any page)
+assets/images/Indx/f.png
+assets/images/Indx/h.png
+assets/Video_Entrada.mp4
+assets/Video_EntradaCelular.mp4

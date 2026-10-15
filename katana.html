@@ -15,7 +15,9 @@
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/fonts/Anton-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/fonts/anton.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -339,84 +341,6 @@
       transform: scale(1.05);
     }
 
-    /* Aggressive Style Section */
-    .aggressive-style {
-      position: relative;
-      min-height: 100vh;
-      width: 100%;
-      overflow: hidden;
-      background: var(--black);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2;
-    }
-
-    .aggressive-style-image-stack {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
-
-    .aggressive-style-image-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transform: scale(1.08);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 3s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: opacity, transform;
-      filter: contrast(1.4) brightness(0.5) saturate(0.4);
-    }
-
-    .aggressive-style-image-bg.active {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .aggressive-style-overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      background:
-        linear-gradient(180deg, rgba(5,5,5,0.7) 0%, transparent 40%, transparent 60%, rgba(5,5,5,0.9) 100%),
-        radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(5,5,5,0.7) 70%, rgba(5,5,5,0.95) 100%);
-      pointer-events: none;
-    }
-
-    .aggressive-style-content {
-      position: relative;
-      z-index: 3;
-      text-align: center;
-      padding: 0 4vw;
-    }
-
-    .aggressive-style-text {
-      font-family: 'Anton', sans-serif;
-      font-size: clamp(5rem, 18vw, 16rem);
-      line-height: 0.85;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--red);
-      text-shadow: 0 0 60px rgba(255, 26, 26, 0.35), 0 0 120px rgba(255, 26, 26, 0.15);
-      opacity: 0;
-      transform: translateY(60px) scale(0.95);
-      transition: all 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      will-change: transform, opacity;
-    }
-
-    .aggressive-style-text.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    #aggressive-style-phone-stack { display: none; }
 
     /* Contributors */
     .contributors {
@@ -606,8 +530,6 @@
       .initiative-image {
         aspect-ratio: 1/1;
       }
-      #aggressive-style-pc-stack { display: none; }
-      #aggressive-style-phone-stack { display: block; }
       .cursor, .cursor-follower { display: none; }
       body { cursor: auto; }
     }
@@ -709,29 +631,6 @@
     </div>
   </section>
 
-  <section class="aggressive-style" id="aggressive-style">
-    <div class="aggressive-style-image-stack" id="aggressive-style-pc-stack">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image1.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image2.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image3.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image4.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/Image5.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/pc/image6.jpeg" alt="">
-    </div>
-    <div class="aggressive-style-image-stack" id="aggressive-style-phone-stack">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image1.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image2.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image3.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image4.png" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image5.jpeg" alt="">
-      <img class="aggressive-style-image-bg" src="assets/images/phone/image6.jpeg" alt="">
-    </div>
-    <div class="aggressive-style-overlay"></div>
-    <div class="aggressive-style-content">
-      <h2 class="aggressive-style-text" id="aggressive-style-text">AGGRESSIVE STYLE</h2>
-    </div>
-  </section>
-
   <section class="contributors">
     <h2 class="section-title">CONTRIBUTORS</h2>
     <ul class="contributors-list">
@@ -795,65 +694,6 @@
       });
     });
 
-    // Aggressive Style — Image Background Cycle
-    const aggressiveStyleSection = document.getElementById('aggressive-style');
-    const pcStack = document.getElementById('aggressive-style-pc-stack');
-    const phoneStack = document.getElementById('aggressive-style-phone-stack');
-    const aggressiveText = document.getElementById('aggressive-style-text');
-    let activeImageIndex = 0;
-    let imageInterval = null;
-    let currentBgImages = [];
-
-    function getActiveStack() {
-      return window.innerWidth <= 768 ? phoneStack : pcStack;
-    }
-
-    function initImages() {
-      const stack = getActiveStack();
-      currentBgImages = stack.querySelectorAll('.aggressive-style-image-bg');
-      pcStack.querySelectorAll('.aggressive-style-image-bg').forEach(img => img.classList.remove('active'));
-      phoneStack.querySelectorAll('.aggressive-style-image-bg').forEach(img => img.classList.remove('active'));
-      activeImageIndex = 0;
-      if (currentBgImages.length) currentBgImages[0].classList.add('active');
-    }
-
-    function cycleImages() {
-      if (!currentBgImages.length) return;
-      currentBgImages[activeImageIndex].classList.remove('active');
-      activeImageIndex = (activeImageIndex + 1) % currentBgImages.length;
-      currentBgImages[activeImageIndex].classList.add('active');
-    }
-
-    initImages();
-
-    const aggressiveObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          aggressiveText.classList.add('visible');
-          if (!imageInterval) {
-            imageInterval = setInterval(cycleImages, 1200);
-          }
-        } else {
-          if (imageInterval) {
-            clearInterval(imageInterval);
-            imageInterval = null;
-          }
-        }
-      });
-    }, { threshold: 0.3 });
-
-    aggressiveObserver.observe(aggressiveStyleSection);
-
-    let lastWidth = window.innerWidth;
-    window.addEventListener('resize', () => {
-      const isMobile = window.innerWidth <= 768;
-      const wasMobile = lastWidth <= 768;
-      if (isMobile !== wasMobile) {
-        lastWidth = window.innerWidth;
-        initImages();
-      }
-    });
-  
     // Mobile menu toggle
     const navToggle = document.querySelector('.nav-toggle');
     const navMobile = document.querySelector('.nav-mobile');

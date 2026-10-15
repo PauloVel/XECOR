@@ -1,0 +1,18 @@
+/* EVRABO entrance: black screen, EVRABO®, then the page. */
+#ev-intro {
+  position: fixed; inset: 0; z-index: 10000; background: #000; color: #f2f0ea;
+  display: flex; align-items: center; justify-content: center;
+}
+#ev-intro span {
+  font-family: 'Anton', sans-serif; font-size: clamp(1.6rem, 4vw, 3rem);
+  letter-spacing: .4em; transform: translateX(.2em);
+  opacity: 0; transition: opacity .3s ease;
+}
+#ev-intro.ready span { opacity: 1; }
+
+/* Hard cut + red punch flash, like evrabo.html */
+.ev-punch {
+  position: fixed; inset: 0; z-index: 10001; background: #e0271a; pointer-events: none;
+  animation: ev-punch .14s ease-out forwards;
+}
+@keyframes ev-punch { from { opacity: 1; } to { opacity: 0; } }
