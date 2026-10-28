@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="assets/fonts/anton.css">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    html { font-variant-emoji: text; }
     *, *::before, *::after {
       margin: 0;
       padding: 0;
@@ -638,7 +639,7 @@
   <div class="scanlines"></div>
 
   <nav>
-    <a href="index.html" class="nav-logo">EVRABO</a>
+    <a href="/" class="nav-logo">EVRABO</a>
     <ul class="nav-links">
       <li><a href="originals.html">Originals</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -661,10 +662,10 @@
     <section class="split-left" id="reserve">
       <h1 class="split-title"><span><i>Get</i></span><span><i>in</i></span><span><i>touch</i></span></h1>
       <div class="rows">
-        <a class="row" href="mailto:EVRABO@outlook.com"><span class="row-label">Email</span><span class="row-value">EVRABO@outlook.com</span><span class="row-arrow">&#8599;</span></a>
-        <a class="row" href="https://wa.me/522215292879?text=For%20EVRABO%3A%20LETS%20COOK" target="_blank" rel="noopener"><span class="row-label">WhatsApp</span><span class="row-value">+52 2215292879</span><span class="row-arrow">&#8599;</span></a>
-        <a class="row" href="https://www.instagram.com/evrabo_?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener"><span class="row-label">Instagram</span><span class="row-value">@evrabo_</span><span class="row-arrow">&#8599;</span></a>
-        <a class="row" href="https://www.tiktok.com/@evrabo_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener"><span class="row-label">TikTok</span><span class="row-value">@evrabo_</span><span class="row-arrow">&#8599;</span></a>
+        <a class="row" href="mailto:EVRABO@outlook.com"><span class="row-label">Email</span><span class="row-value">EVRABO@outlook.com</span><span class="row-arrow"><svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;width:1em;height:1em;vertical-align:-0.12em"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg></span></a>
+        <a class="row" href="https://wa.me/522215292879?text=For%20EVRABO%3A%20LETS%20COOK" target="_blank" rel="noopener"><span class="row-label">WhatsApp</span><span class="row-value">+52 2215292879</span><span class="row-arrow"><svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;width:1em;height:1em;vertical-align:-0.12em"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg></span></a>
+        <a class="row" href="https://www.instagram.com/evrabo_?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener"><span class="row-label">Instagram</span><span class="row-value">@evrabo_</span><span class="row-arrow"><svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;width:1em;height:1em;vertical-align:-0.12em"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg></span></a>
+        <a class="row" href="https://www.tiktok.com/@evrabo_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener"><span class="row-label">TikTok</span><span class="row-value">@evrabo_</span><span class="row-arrow"><svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;width:1em;height:1em;vertical-align:-0.12em"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg></span></a>
       </div>
     </section>
 
@@ -732,7 +733,7 @@
       <li><a href="https://www.instagram.com/evrabo_?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Instagram</a></li>
       <li><a href="https://www.tiktok.com/@evrabo_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
     </ul>
-    <span class="footer-copy">© 2026 EVRABO. ALL RIGHTS RESERVED.</span>
+    <span class="footer-copy">©︎ 2026 EVRABO. ALL RIGHTS RESERVED.</span>
   </footer>
 
   <script>
@@ -747,6 +748,8 @@
       const styleBrief = (qs.get('style') || '').slice(0, 80);
       const pc = document.getElementById('p-company');
       if (pc && qs.get('company')) pc.value = qs.get('company').slice(0, 60);
+      const pt = document.getElementById('p-type');
+      if (pt && qs.get('type')) { pt.value = qs.get('type'); if (pt.value !== qs.get('type')) pt.value = ''; }
 
       const setMode = (mode) => {
         for (const k of Object.keys(panes)) {
@@ -781,7 +784,7 @@
         const d = new FormData(panes.prototype);
         const lines = [`Company: ${d.get('company')}`, `Email: ${d.get('email')}`, `Prototype: ${d.get('type')}`];
         if (d.get('link')) lines.push(`Link: ${d.get('link')}`);
-        if (styleBrief) lines.push(`Poster style: ${styleBrief}`);
+        if (styleBrief) lines.push(`Style: ${styleBrief}`);
         sendMail(`Prototype reservation: ${d.get('company')}`, lines);
         panes.prototype.reset();
       });

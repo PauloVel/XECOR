@@ -18,7 +18,9 @@
   <link rel="preload" href="assets/fonts/Anton-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/fonts/anton.css">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400&display=swap" rel="stylesheet">
   <style>
+    html { font-variant-emoji: text; }
     *, *::before, *::after {
       margin: 0;
       padding: 0;
@@ -498,172 +500,345 @@
       width: 100%;
       overflow: hidden;
       background: var(--black);
-      padding: 14vh 4vw;
+      padding: 5vh 3vw 5vh;
       z-index: 2;
     }
 
-    .oven-overlay {
+    /* Title: plain Anton at a readable size, left-aligned with the panels */
+    .oven-mast {
+      position: relative;
+      z-index: 3;
+      margin: 0;
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      font-size: clamp(2.6rem, 10vw, 10rem);
+      line-height: 0.95;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    /* Each project gets its own photo, full bleed, separated by a sliver of black.
+       The photo is gray and dark until the cursor is on it, then the whole image turns to colour. */
+    .oven-panels {
+      position: relative;
+      margin: 3vh -3vw 0;
+    }
+
+    .oven-panel {
+      position: relative;
+      overflow: hidden;
+      height: clamp(200px, 34vh, 340px);
+      background: #101010;
+      display: flex;
+      align-items: center;
+      padding: 0 3vw;
+    }
+
+    .oven-panel + .oven-panel { margin-top: 1vw; }
+    .oven-panel-a { --dim: 0.4; --lit: 0.55; }
+    .oven-panel-b { --dim: 0.5; --lit: 0.6; justify-content: center; }
+
+    .oven-img {
       position: absolute;
       inset: 0;
-      z-index: 1;
-      background: linear-gradient(180deg, var(--black) 0%, rgba(5,5,5,0.35) 22%, rgba(5,5,5,0.35) 78%, var(--black) 100%);
-      pointer-events: none;
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.05);
+      filter: grayscale(1) brightness(var(--dim));
+      transition: filter 0.8s ease, transform 1.2s ease;
     }
 
-    .oven-inner { position: relative; z-index: 3; max-width: 1400px; margin: 0 auto; }
+    .oven-panel-a .oven-img { background-image: url("assets/Originals/ProtoBike_mtb.jpg"); background-position: center 30%; background-position-y: 80%; }
+    .oven-panel-b .oven-img { background-image: url("assets/Originals/Kado_sand.jpg"); }
 
-    .oven-title {
-      display: inline-block;
-      font-family: 'Anton', sans-serif;
-      font-size: clamp(3.5rem, 11vw, 9rem);
-      line-height: 0.95;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      background: var(--white);
-      color: var(--black);
-      padding: 0.04em 0.18em 0;
-      margin-bottom: 6vh;
+    .oven-panel.is-lit .oven-img {
+      filter: grayscale(0) brightness(var(--lit));
+      transform: scale(1);
     }
 
-    .oven-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; }
+    @media (hover: hover) {
+      .oven-panel:hover .oven-img {
+        filter: grayscale(0) brightness(var(--lit));
+        transform: scale(1);
+      }
+    }
 
-    .oven-card {
-      background: rgba(5,5,5,0.94);
-      border: 1px solid var(--white);
-      padding: clamp(1.5rem, 3vw, 2.6rem);
+    .oven-mark { position: relative; z-index: 2; margin: 0; }
+
+    /* ProtoBike_white.png (1000x1250), cropped tight to the mark: window x150-850, y480-780.
+       screen: the image's black drops out so the photo shows through. */
+    .oven-logo {
+      position: relative;
+      overflow: hidden;
+      width: 36vw;
+      aspect-ratio: 7 / 3;
+      mix-blend-mode: screen;
+    }
+
+    .oven-logo img {
+      position: absolute;
+      display: block;
+      width: 142.86%;
+      height: auto;
+      left: -21.43%;
+      top: -160%;
+    }
+
+    /* Kado: same as the index page. Light gothic, soft tracking, katakana underneath. */
+    .oven-kado {
       display: flex;
       flex-direction: column;
-      gap: 1.4rem;
-      min-height: 22rem;
+      align-items: center;
+      gap: 1.2rem;
+      font-family: 'Zen Kaku Gothic New', 'Space Grotesk', sans-serif;
+      font-weight: 300;
+      color: var(--white);
+    }
+
+    .oven-kado span { font-size: clamp(3rem, 7vw, 6rem); line-height: 1; letter-spacing: 0.12em; padding-left: 0.12em; }
+    .oven-kado small { font-size: 1rem; letter-spacing: 0.6em; padding-left: 0.6em; opacity: 0.6; }
+
+    /* The stage, written upright beside the pillar, reading bottom to top */
+    .oven-tag {
+      position: absolute;
+      z-index: 2;
+      right: calc(3vw + 6px + 0.9rem);
+      bottom: 1.4rem;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(1.1rem, 2vw, 1.8rem);
+      line-height: 1;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    /* Skinny pillar on the right: fills from the bottom to the project's progress */
+    .oven-bar {
+      position: absolute;
+      z-index: 2;
+      right: 3vw;
+      top: 1.4rem;
+      bottom: 1.4rem;
+      width: 6px;
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .oven-bar i {
+      position: absolute;
+      inset: 0;
+      background: #fff;
+      transform-origin: 50% 100%;
+      transform: scaleY(var(--p));
+    }
+
+    @supports (animation-timeline: view()) {
+      .oven-bar i {
+        animation: ovenBar linear both;
+        animation-timeline: view();
+        animation-range: entry 20% cover 45%;
+      }
+    }
+
+    @keyframes ovenBar {
+      from { transform: scaleY(0); }
+      to { transform: scaleY(var(--p)); }
+    }
+
+    @media (max-width: 640px) {
+      .oven { padding: 4vh 5vw 4vh; }
+      .oven-mast { font-size: 14vw; }
+      .oven-panels { margin: 2vh -5vw 0; }
+      .oven-panel { height: 24vh; min-height: 170px; padding: 0 5vw; }
+      .oven-logo { width: 60vw; }
+      .oven-bar { right: 5vw; }
+      .oven-tag { right: calc(5vw + 6px + 0.8rem); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .oven-img { transition: none; }
+      .oven-bar i { animation: none; }
+    }
+
+    /* Your space: the prototype builder */
+    .pb {
+      position: relative;
+      background: var(--black);
+      padding: 8vh 4vw 12vh;
+      z-index: 2;
+    }
+
+    .pb-inner { max-width: 1400px; margin: 0 auto; }
+
+    .pb-title {
+      margin: 0;
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      font-size: clamp(3.5rem, 12vw, 11rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+    }
+
+    .pb-sub { margin: 1.2rem 0 6vh; font-size: 1rem; opacity: 0.7; }
+
+    .pb-body { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 5vw; align-items: start; }
+
+    /* Live preview: drawn in container units so it scales as one piece */
+    .pb-screen {
+      --bg: #050505; --fg: #f0f0f0; --acc: #f0f0f0;
+      --ff: 'Anton', sans-serif; --tt: uppercase; --ls: 0.02em; --fw: 400;
+      container-type: inline-size;
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      background: var(--bg);
+      color: var(--fg);
+      outline: 1px solid rgba(240, 240, 240, 0.25);
       transition: background 0.35s ease, color 0.35s ease;
     }
 
-    .oven-card:hover { background: var(--white); color: var(--black); }
+    .pb-screen[data-vibe="clean"] { --bg: #f0f0f0; --fg: #050505; --acc: #050505; --ff: 'Space Grotesk', sans-serif; --tt: none; --ls: -0.04em; --fw: 600; }
+    .pb-screen[data-vibe="loud"] { --acc: #ff1a1a; }
 
-    .oven-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; }
-    .oven-no { font-family: 'Anton', sans-serif; font-size: 1.6rem; letter-spacing: 0.05em; }
-
-    .oven-name {
-      font-family: 'Anton', sans-serif;
-      font-size: clamp(3rem, 7vw, 6rem);
-      line-height: 0.9;
-      text-transform: uppercase;
-      margin-top: auto;
+    .pb-mock {
+      position: absolute;
+      inset: 0;
+      padding: 4cqw;
+      display: none;
+      flex-direction: column;
+      font-family: var(--ff);
+      font-weight: var(--fw);
+      text-transform: var(--tt);
+      letter-spacing: var(--ls);
     }
 
-    .oven-desc { font-size: 0.95rem; line-height: 1.5; opacity: 0.75; max-width: 28rem; }
+    .pb-screen[data-type="website"] .pb-website,
+    .pb-screen[data-type="shop"] .pb-shop,
+    .pb-screen[data-type="tool"] .pb-tool,
+    .pb-screen[data-type="app"] .pb-app { display: flex; }
 
-    .oven-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
-    .oven-bar i { height: 8px; border: 1px solid currentColor; }
-    .oven-bar i.on { background: currentColor; }
-    .oven-bar i.live { animation: ovenPulse 1.2s steps(2) infinite; }
-    @keyframes ovenPulse { 50% { background: currentColor; } }
+    .pb-mock b { font-weight: inherit; font-size: 3cqw; line-height: 1; }
 
-    .oven-foot { display: flex; justify-content: space-between; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; }
+    .pb-nav { display: flex; align-items: center; gap: 2cqw; }
+    .pb-nav b { margin-right: auto; }
+    .pb-nav i { width: 6cqw; height: 0.6cqw; background: var(--fg); opacity: 0.5; }
 
-    /* Your space (playground) */
-    .space {
-      padding: 14vh 4vw;
-      background: var(--black);
-      border-top: 1px solid rgba(240,240,240,0.2);
-    }
+    .pb-hero { margin-top: auto; }
+    .pb-hero h3 { margin: 0; font-size: var(--fs, 14cqw); font-weight: inherit; line-height: 0.92; overflow-wrap: anywhere; }
 
-    .space-inner { max-width: 1400px; margin: 0 auto; }
+    .pb-bar { display: block; height: 1.2cqw; margin-top: 1.6cqw; background: var(--fg); opacity: 0.35; }
+    .w20 { width: 20%; } .w30 { width: 30%; } .w40 { width: 40%; } .w60 { width: 60%; }
+    .pb-cta { display: block; width: 16cqw; height: 4.6cqw; margin-top: 3cqw; background: var(--acc); }
 
-    .space-title {
-      font-family: 'Anton', sans-serif;
-      font-size: clamp(3.5rem, 11vw, 9rem);
-      line-height: 0.95;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
+    .pb-grid { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 1.6cqw; margin-top: 3cqw; }
+    .pb-tile { position: relative; }
+    .pb-tile::before { content: ""; position: absolute; inset: 0; background: var(--fg); opacity: 0.14; }
+    .pb-tile.hot::before { background: var(--acc); opacity: 1; }
+    .pb-tile em { position: absolute; left: 1.4cqw; bottom: 1cqw; font-style: normal; font-size: 2.2cqw; }
+    .pb-tile.hot em { color: var(--bg); }
 
-    .space-sub { margin: 1.2rem 0 6vh; font-size: 1rem; opacity: 0.7; }
+    .pb-tool { flex-direction: row; gap: 3cqw; }
+    .pb-side { width: 18cqw; display: flex; flex-direction: column; gap: 1.6cqw; }
+    .pb-side b { margin-bottom: 2cqw; }
+    .pb-side i { height: 1.4cqw; background: var(--fg); opacity: 0.35; }
+    .pb-table { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 1.2cqw; }
+    .pb-row { display: flex; align-items: center; gap: 2cqw; padding: 1.8cqw 2cqw; background: color-mix(in srgb, var(--fg) 9%, transparent); }
+    .pb-row .pb-bar { margin: 0; }
+    .pb-row em { margin-left: auto; font-style: normal; font-size: 2.2cqw; }
+    .pb-row.hot { background: var(--acc); }
+    .pb-row.hot .pb-bar { background: var(--bg); opacity: 0.6; }
+    .pb-row.hot em { color: var(--bg); }
 
-    .space-body { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr); gap: 4vw; align-items: start; }
+    .pb-app { align-items: center; justify-content: center; }
+    .pb-phone { height: 100%; aspect-ratio: 9 / 17; border: 0.5cqw solid var(--fg); border-radius: 3cqw; padding: 2.4cqw; display: flex; flex-direction: column; gap: 2cqw; }
+    .pb-phone b { font-size: 2.6cqw; margin-bottom: 1cqw; }
+    .pb-item { display: flex; align-items: center; gap: 1.6cqw; }
+    .pb-item .pb-bar { margin: 0; }
+    .pb-dot { width: 3.4cqw; height: 3.4cqw; background: var(--fg); opacity: 0.35; flex: none; }
+    .pb-item.hot .pb-dot { background: var(--acc); opacity: 1; }
+    .pb-tabs { margin-top: auto; display: flex; justify-content: space-around; }
+    .pb-tabs i { width: 3cqw; height: 0.6cqw; background: var(--fg); opacity: 0.5; }
 
-    .space-poster {
-      width: 100%;
-      aspect-ratio: 4 / 5;
-      max-height: 80vh;
-      border: 1px solid var(--white);
-      background: #000;
-    }
+    /* Controls */
+    .pb-ctl { margin-bottom: 2.4rem; }
 
-    .space-poster canvas { display: block; width: 100%; height: 100%; }
-
-    .space-controls { display: flex; flex-direction: column; gap: 1.8rem; }
-
-    .ctl label, .ctl-label {
+    .pb-label {
       display: block;
-      font-size: 0.68rem;
-      letter-spacing: 0.3em;
+      margin-bottom: 0.9rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
       text-transform: uppercase;
-      opacity: 0.6;
-      margin-bottom: 0.7rem;
+      color: #8a8a8a;
     }
 
-    .ctl input[type="text"] {
-      width: 100%;
-      background: transparent;
-      border: 0;
-      border-bottom: 1px solid var(--white);
-      color: var(--white);
+    .pb-label b { font-family: 'Anton', sans-serif; font-weight: 400; letter-spacing: 0.1em; margin-right: 0.8em; color: var(--white); }
+
+    .pb-seg { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+    .pb-seg button {
       font-family: 'Anton', sans-serif;
-      font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+      font-size: 1.5rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.45rem 1.1rem;
+      background: transparent;
+      color: #8a8a8a;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .pb-seg button:hover { color: var(--white); }
+    .pb-seg button[aria-pressed="true"] { background: var(--white); color: var(--black); }
+    .pb-seg button:focus-visible, .pb-name:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
+
+    .pb-name {
+      width: 100%;
+      padding: 0.3rem 0;
+      font-family: 'Anton', sans-serif;
+      font-size: 2.2rem;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      padding: 0.3rem 0;
-      border-radius: 0;
-      outline: none;
-    }
-
-    .ctl input[type="text"]:focus { border-bottom-width: 3px; }
-
-    .seg { display: flex; flex-wrap: wrap; gap: 2px; }
-
-    .seg button {
       background: transparent;
-      border: 1px solid var(--white);
       color: var(--white);
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      padding: 0.8rem 1.2rem;
-      cursor: pointer;
+      border: 0;
+      border-bottom: 2px solid var(--white);
       border-radius: 0;
-      transition: background 0.2s ease, color 0.2s ease;
     }
 
-    .seg button:hover { background: rgba(240,240,240,0.18); }
-    .seg button[aria-pressed="true"] { background: var(--white); color: var(--black); }
-
-    .seg .sw { width: 3.2rem; height: 3.2rem; padding: 0; position: relative; }
-    .seg .sw span { position: absolute; inset: 5px; display: block; }
-    .seg .sw[aria-pressed="true"] { outline: 3px solid var(--white); outline-offset: 2px; background: transparent; }
-
-    .space-actions { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 0.4rem; }
-
-    .space-btn {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: 0.8rem;
-      letter-spacing: 0.2em;
+    .pb-go {
+      display: block;
+      margin-top: 2.8rem;
+      padding: 1.5rem;
+      text-align: center;
+      font-family: 'Anton', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
+      background: var(--white);
+      color: var(--black);
       text-decoration: none;
-      padding: 1.1rem 1.8rem;
-      border: 1px solid var(--white);
-      background: transparent;
-      color: var(--white);
-      cursor: pointer;
-      border-radius: 0;
-      transition: background 0.25s ease, color 0.25s ease;
     }
 
-    .space-btn:hover { background: var(--white); color: var(--black); }
-    .space-btn.main { background: var(--white); color: var(--black); flex: 1 1 100%; text-align: center; padding: 1.5rem; font-size: 0.95rem; order: -1; }
-    .space-btn.main:hover { background: var(--black); color: var(--white); }
+    .pb-go:hover { background: var(--black); color: var(--white); outline: 2px solid var(--white); }
+
+    .pb-shuffle {
+      margin-top: 1rem;
+      padding: 0.4rem 0;
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      background: none;
+      border: 0;
+      color: #8a8a8a;
+      cursor: pointer;
+    }
+
+    .pb-shuffle:hover { color: var(--white); }
+
+    @media (max-width: 900px) { .pb-body { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { .pb-screen { transition: none; } }
 
     /* Footer CTA */
     .footer-cta {
@@ -904,9 +1079,6 @@
       .nav-links { display: none; }
       .nav-toggle { display: flex; }
       .projects-desc { text-align: left; }
-      .oven-grid, .space-body { grid-template-columns: 1fr; }
-      .oven-card { min-height: 18rem; }
-      .space-poster { max-height: none; }
       .cursor, .cursor-follower { display: none; }
       body { cursor: auto; }
       .project-card {
@@ -948,7 +1120,7 @@
   <div class="scanlines"></div>
 
   <nav>
-    <a href="index.html" class="nav-logo">EVRABO</a>
+    <a href="/" class="nav-logo">EVRABO</a>
     <ul class="nav-links">
       <li><a href="originals.html">Originals</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -1015,51 +1187,73 @@
   </section>
 
   <section class="oven" id="oven">
-    <div class="oven-overlay"></div>
-    <div class="oven-inner">
-      <span class="sec-kicker">02 — Still in the lab</span>
-      <h2 class="oven-title">In the oven</h2>
-      <div class="oven-grid">
-        <article class="oven-card">
-          <div class="oven-top"><span class="oven-no">003</span><span>Product</span></div>
-          <h3 class="oven-name">Protobike</h3>
-          <p class="oven-desc">Built in public. New cuts land here first.</p>
-          <div class="oven-bar" role="img" aria-label="Phase 3 of 5"><i class="on"></i><i class="on"></i><i class="on live"></i><i></i><i></i></div>
-          <div class="oven-foot"><span>Phase 03 / 05</span><span>Building</span></div>
-        </article>
-        <article class="oven-card">
-          <div class="oven-top"><span class="oven-no">004</span><span>App</span></div>
-          <h3 class="oven-name">Kado</h3>
-          <p class="oven-desc">Built in public. New cuts land here first.</p>
-          <div class="oven-bar" role="img" aria-label="Phase 2 of 5"><i class="on"></i><i class="on live"></i><i></i><i></i><i></i></div>
-          <div class="oven-foot"><span>Phase 02 / 05</span><span>Designing</span></div>
-        </article>
+    <h2 class="oven-mast">In the oven</h2>
+    <div class="oven-panels">
+      <div class="oven-panel oven-panel-a">
+        <div class="oven-img" aria-hidden="true"></div>
+        <span class="oven-bar" style="--p:0.68" role="progressbar" aria-label="Protobike progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="68"><i></i></span>
+        <div class="oven-mark oven-logo"><img src="assets/Originals/ProtoBike_white.png" alt="Protobike" loading="lazy"></div>
+        <span class="oven-tag">Building</span>
+      </div>
+      <div class="oven-panel oven-panel-b">
+        <div class="oven-img" aria-hidden="true"></div>
+        <span class="oven-bar" style="--p:0.34" role="progressbar" aria-label="Kado progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="34"><i></i></span>
+        <h3 class="oven-mark oven-kado"><span>Kado</span><small>カド</small></h3>
+        <span class="oven-tag">Designing</span>
       </div>
     </div>
   </section>
 
-  <section class="space" id="space">
-    <div class="space-inner">
+  <section class="pb" id="space">
+    <div class="pb-inner">
       <span class="sec-kicker">03 — Open to you</span>
-      <h2 class="space-title">Your space</h2>
-      <p class="space-sub">Type your brand. Make it yours. Ten seconds.</p>
-      <div class="space-body">
-        <div class="space-poster"><canvas id="poster" width="800" height="1000" role="img" aria-label="Your brand poster"></canvas></div>
-        <div class="space-controls">
-          <div class="ctl"><label for="sp-name">Brand name</label><input type="text" id="sp-name" value="Your Brand" maxlength="28" autocomplete="off" spellcheck="false"></div>
-          <div class="ctl"><span class="ctl-label">Type</span><div class="seg" data-key="font"><button type="button" data-v="anton" aria-pressed="true">Heavy</button><button type="button" data-v="grotesk" aria-pressed="false">Clean</button><button type="button" data-v="mono" aria-pressed="false">Code</button></div></div>
-          <div class="ctl"><span class="ctl-label">Shape</span><div class="seg" data-key="shape"><button type="button" data-v="tri" aria-pressed="true">Triangle</button><button type="button" data-v="sq" aria-pressed="false">Square</button><button type="button" data-v="cir" aria-pressed="false">Circle</button><button type="button" data-v="cross" aria-pressed="false">Cross</button></div></div>
-          <div class="ctl"><span class="ctl-label">Colour</span><div class="seg" data-key="pal">
-            <button type="button" class="sw" data-v="void" aria-label="Void" aria-pressed="true"><span style="background:linear-gradient(135deg,#050505 50%,#f0f0f0 50%)"></span></button>
-            <button type="button" class="sw" data-v="paper" aria-label="Paper" aria-pressed="false"><span style="background:linear-gradient(135deg,#f0f0f0 50%,#050505 50%)"></span></button>
-            <button type="button" class="sw" data-v="steel" aria-label="Steel" aria-pressed="false"><span style="background:linear-gradient(135deg,#8c8c8c 50%,#050505 50%)"></span></button>
-            <button type="button" class="sw" data-v="signal" aria-label="Signal" aria-pressed="false"><span style="background:linear-gradient(135deg,#ff1a1a 50%,#050505 50%)"></span></button>
-          </div></div>
-          <div class="space-actions">
-            <a class="space-btn main" id="sp-real" href="contact.html#reserve">Make it real ↗</a>
-            <button type="button" class="space-btn" id="sp-shuffle">Shuffle</button>
-            <button type="button" class="space-btn" id="sp-save">Download</button>
+      <h2 class="pb-title">Your space</h2>
+      <p class="pb-sub">Pick what you need. Watch it take shape.</p>
+      <div class="pb-body">
+        <div class="pb-stage">
+          <div class="pb-screen" id="pb-screen" data-type="website" data-vibe="raw" role="img" aria-label="Live preview of your prototype">
+            <div class="pb-mock pb-website">
+              <div class="pb-nav"><b data-pb-name></b><i></i><i></i><i></i></div>
+              <div class="pb-hero"><h3 data-pb-name></h3><span class="pb-bar w60"></span><span class="pb-bar w40"></span><span class="pb-cta"></span></div>
+            </div>
+            <div class="pb-mock pb-shop">
+              <div class="pb-nav"><b data-pb-name></b><i></i><i></i></div>
+              <div class="pb-grid">
+                <div class="pb-tile"><em>$48</em></div><div class="pb-tile hot"><em>$62</em></div><div class="pb-tile"><em>$30</em></div>
+                <div class="pb-tile"><em>$75</em></div><div class="pb-tile"><em>$54</em></div><div class="pb-tile"><em>$39</em></div>
+              </div>
+            </div>
+            <div class="pb-mock pb-tool">
+              <div class="pb-side"><b data-pb-name></b><i></i><i></i><i></i><i></i></div>
+              <div class="pb-table">
+                <div class="pb-row"><span class="pb-bar w30"></span><span class="pb-bar w20"></span><em>128</em></div>
+                <div class="pb-row hot"><span class="pb-bar w40"></span><span class="pb-bar w20"></span><em>96</em></div>
+                <div class="pb-row"><span class="pb-bar w30"></span><span class="pb-bar w30"></span><em>212</em></div>
+                <div class="pb-row"><span class="pb-bar w20"></span><span class="pb-bar w20"></span><em>64</em></div>
+                <div class="pb-row"><span class="pb-bar w40"></span><span class="pb-bar w30"></span><em>180</em></div>
+              </div>
+            </div>
+            <div class="pb-mock pb-app">
+              <div class="pb-phone">
+                <b data-pb-name></b>
+                <div class="pb-item hot"><span class="pb-dot"></span><span class="pb-bar w60"></span></div>
+                <div class="pb-item"><span class="pb-dot"></span><span class="pb-bar w40"></span></div>
+                <div class="pb-item"><span class="pb-dot"></span><span class="pb-bar w60"></span></div>
+                <div class="pb-item"><span class="pb-dot"></span><span class="pb-bar w30"></span></div>
+                <div class="pb-tabs"><i></i><i></i><i></i></div>
+              </div>
+            </div>
           </div>
+        </div>
+        <div class="pb-controls">
+          <div class="pb-ctl"><span class="pb-label"><b>01</b>What</span>
+            <div class="pb-seg" data-key="type"><button type="button" data-v="website" aria-pressed="true">Website</button><button type="button" data-v="shop" aria-pressed="false">Shop</button><button type="button" data-v="tool" aria-pressed="false">Tool</button><button type="button" data-v="app" aria-pressed="false">App</button></div></div>
+          <div class="pb-ctl"><span class="pb-label"><b>02</b>Feel</span>
+            <div class="pb-seg" data-key="vibe"><button type="button" data-v="raw" aria-pressed="true">Raw</button><button type="button" data-v="clean" aria-pressed="false">Clean</button><button type="button" data-v="loud" aria-pressed="false">Loud</button></div></div>
+          <div class="pb-ctl"><label class="pb-label" for="pb-name"><b>03</b>Name</label>
+            <input class="pb-name" id="pb-name" type="text" value="Your Brand" maxlength="28" autocomplete="off" spellcheck="false"></div>
+          <a class="pb-go" id="pb-go" href="contact.html#reserve">Reserve this prototype <svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;width:1em;height:1em;vertical-align:-0.12em"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg></a>
+          <button type="button" class="pb-shuffle" id="pb-shuffle">Shuffle</button>
         </div>
       </div>
     </div>
@@ -1076,10 +1270,9 @@
       <li><a href="https://www.instagram.com/evrabo_?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Instagram</a></li>
       <li><a href="https://www.tiktok.com/@evrabo_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
     </ul>
-    <span class="footer-copy">© 2026 EVRABO. ALL RIGHTS RESERVED.</span>
+    <span class="footer-copy">©︎ 2026 EVRABO. ALL RIGHTS RESERVED.</span>
   </footer>
 
-  <script src="assets/faulty-terminal.js"></script>
   <script>
     // Custom Cursor
     const cursor = document.querySelector('.cursor');
@@ -1130,102 +1323,40 @@
       visual.addEventListener('click', () => window.open(url, '_blank', 'noopener,noreferrer'));
     });
 
-    // In the oven: FaultyTerminal behind the cards
-    FaultyTerminal.mount(document.getElementById('oven'), {
-      tint: '#ffffff', glyphs: 'triangles', scale: 1.5, digitSize: 1.2, timeScale: 0.5,
-      brightness: 0.75, glow: 0.5, persistence: 0.5, mouseStrength: 0.5, mouseGlow: 0.6,
-      curvature: 0.1, vignette: 0.25, clickEffect: 'glitch',
-      dpr: 1, fps: 40
-    });
+    // Oven section is pure markup/CSS — no script.
 
-    // Your space: brand poster playground
+    // Your space: the prototype builder. Choices feed the preview and the Free prototype form.
     (function () {
-      const cv = document.getElementById('poster');
-      if (!cv) return;
-      const ctx = cv.getContext('2d');
-      const W = cv.width, H = cv.height;
-      const PALS = { void: ['#050505', '#f0f0f0'], paper: ['#f0f0f0', '#050505'], steel: ['#8c8c8c', '#050505'], signal: ['#ff1a1a', '#050505'] };
-      const st = { name: 'Your Brand', font: 'anton', shape: 'tri', pal: 'void', seed: 7 };
-      const rng = (n) => () => { n = (Math.imul(n, 1664525) + 1013904223) >>> 0; return n / 4294967296; };
-      const fontStr = (px) => st.font === 'anton' ? `${px}px 'Anton', sans-serif`
-        : st.font === 'grotesk' ? `700 ${px}px 'Space Grotesk', sans-serif`
-        : `700 ${px}px 'Courier New', monospace`;
+      var screen = document.getElementById('pb-screen');
+      if (!screen) return;
+      var go = document.getElementById('pb-go'), nameIn = document.getElementById('pb-name');
+      var st = { type: 'website', vibe: 'raw' };
+      var TYPES = { website: 'Website or online shop', shop: 'Website or online shop', tool: 'Internal tool', app: 'App' };
+      var VIBES = ['raw', 'clean', 'loud'], KINDS = Object.keys(TYPES);
 
-      const drawShape = (shape, x, y, s, r) => {
-        ctx.save(); ctx.translate(x, y); ctx.rotate(r); ctx.beginPath();
-        if (shape === 'tri') { ctx.moveTo(-s / 2, -s / 2); ctx.lineTo(s / 2, s / 2); ctx.lineTo(-s / 2, s / 2); ctx.closePath(); }
-        else if (shape === 'sq') ctx.rect(-s / 2, -s / 2, s, s);
-        else if (shape === 'cir') ctx.arc(0, 0, s / 2, 0, Math.PI * 2);
-        else { const t = s / 5; ctx.rect(-t / 2, -s / 2, t, s); ctx.rect(-s / 2, -t / 2, s, t); }
-        ctx.fill(); ctx.restore();
-      };
-
-      const draw = () => {
-        const [bg, fg] = PALS[st.pal];
-        const rand = rng(st.seed * 9973 + 13);
-        ctx.globalAlpha = 1; ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
-        ctx.fillStyle = fg;
-        const cell = 100;
-        for (let y = 0; y < H / cell; y++) for (let x = 0; x < W / cell; x++) {
-          const p = rand(), rot = Math.floor(rand() * 4) * Math.PI / 2, sz = cell * (0.5 + rand() * 0.9), a = rand();
-          if (p > 0.5) continue;
-          ctx.globalAlpha = p < 0.12 ? 1 : 0.14 + a * 0.2;
-          drawShape(st.shape, (x + 0.5) * cell, (y + 0.5) * cell, sz, rot);
-        }
-        ctx.globalAlpha = 1;
-
-        // name: one word per line, each fitted to the width, stacked from the bottom
-        const words = (st.name.trim() || 'Brand').toUpperCase().split(/\s+/).slice(0, 4);
-        const maxW = W - 100;
-        ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
-        const lines = words.map(w => {
-          ctx.font = fontStr(100);
-          return { w, px: Math.min(100 * maxW / (ctx.measureText(w).width || 1), 420) };
+      function render() {
+        var n = nameIn.value.trim() || 'Your Brand';
+        screen.dataset.type = st.type;
+        screen.dataset.vibe = st.vibe;
+        screen.style.setProperty('--fs', Math.min(14, 145 / n.length) + 'cqw');
+        screen.querySelectorAll('[data-pb-name]').forEach(function (el) { el.textContent = n; });
+        go.href = 'contact.html?company=' + encodeURIComponent(n) + '&type=' + encodeURIComponent(TYPES[st.type]) +
+          '&style=' + encodeURIComponent(st.vibe + ' ' + st.type) + '#reserve';
+        document.querySelectorAll('.pb-seg').forEach(function (seg) {
+          seg.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', String(st[seg.dataset.key] === b.dataset.v)); });
         });
-        const totalH = lines.reduce((a, l) => a + l.px * 0.86, 0);
-        const k = Math.min(1, (H - 260) / totalH);
-        let y = H - 60;
-        for (let i = lines.length - 1; i >= 0; i--) {
-          const px = lines[i].px * k;
-          ctx.font = fontStr(px);
-          ctx.fillStyle = bg; ctx.fillText(lines[i].w, 44, y + 6); // knock-out so the name reads over shapes
-          ctx.fillStyle = fg; ctx.fillText(lines[i].w, 50, y);
-          y -= px * 0.86;
-        }
-        ctx.font = "600 22px 'Space Grotesk', sans-serif";
-        ctx.fillStyle = fg;
-        ctx.lineWidth = 8; ctx.lineJoin = 'round'; ctx.strokeStyle = bg;
-        ctx.strokeText('EVRABO / YOUR SPACE', 50, 70); ctx.fillText('EVRABO / YOUR SPACE', 50, 70);
-        ctx.textAlign = 'right';
-        ctx.strokeText('SS / 26', W - 50, 70); ctx.fillText('SS / 26', W - 50, 70);
-        ctx.textAlign = 'left';
-      };
-
-      draw();
-      if (document.fonts && document.fonts.load) {
-        Promise.all([document.fonts.load("100px 'Anton'"), document.fonts.load("700 20px 'Space Grotesk'")]).then(draw).catch(() => {});
       }
 
-      document.getElementById('sp-name').addEventListener('input', (e) => { st.name = e.target.value; draw(); });
-      document.querySelectorAll('.space .seg').forEach(seg => {
-        seg.addEventListener('click', (e) => {
-          const b = e.target.closest('button'); if (!b) return;
-          seg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
-          st[seg.dataset.key] = b.dataset.v; draw();
-        });
+      document.querySelectorAll('.pb-seg button').forEach(function (b) {
+        b.addEventListener('click', function () { st[b.parentNode.dataset.key] = b.dataset.v; render(); });
       });
-      document.getElementById('sp-shuffle').addEventListener('click', () => { st.seed = Math.floor(Math.random() * 100000); draw(); });
-      document.getElementById('sp-save').addEventListener('click', () => {
-        const a = document.createElement('a');
-        a.download = (st.name.trim() || 'brand').replace(/[^a-z0-9]+/gi, '-').toLowerCase() + '-evrabo.png';
-        a.href = cv.toDataURL('image/png'); a.click();
+      nameIn.addEventListener('input', render);
+      document.getElementById('pb-shuffle').addEventListener('click', function () {
+        st.type = KINDS[Math.floor(Math.random() * KINDS.length)];
+        st.vibe = VIBES[Math.floor(Math.random() * VIBES.length)];
+        render();
       });
-      const real = document.getElementById('sp-real');
-      const syncLink = () => {
-        const q = new URLSearchParams({ company: st.name.trim(), style: `${st.font} / ${st.shape} / ${st.pal}` });
-        real.href = 'contact.html?' + q.toString() + '#reserve';
-      };
-      ['click', 'focus', 'pointerenter'].forEach(ev => real.addEventListener(ev, syncLink));
+      render();
     })();
 
     // Glitch Text Trigger
@@ -1270,6 +1401,15 @@
       });
     }
 
+  </script>
+  <script>
+    // In the oven: on touch screens (no hover) a photo turns to colour while it is on screen
+    if (window.matchMedia && window.matchMedia('(hover: none)').matches && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { en.target.classList.toggle('is-lit', en.isIntersecting); });
+      }, { threshold: 0.6 });
+      document.querySelectorAll('.oven-panel').forEach(function (p) { io.observe(p); });
+    }
   </script>
 </body>
 </html>

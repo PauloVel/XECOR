@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="data:,">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Huracán GT3 EVO2 — 3D showroom</title>
+<style>
+  :root{--accent:#ffb000;--paint:#ff6a00;--speed:0;--ink:#f4f4f8}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:#050509;color:var(--ink);overflow:hidden;
+    font-family:"Bahnschrift","DIN Condensed","Arial Narrow","Roboto Condensed",system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+  #stage{position:fixed;inset:0}
+  #stage canvas{display:block;width:100%;height:100%;touch-action:none;filter:saturate(.5) contrast(1.14) brightness(.9)}
+  /* film grain + crushed vignette */
+  #grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;opacity:.14;mix-blend-mode:screen;animation:grain .7s steps(7) infinite}
+  @keyframes grain{0%{transform:translate(0,0)}14%{transform:translate(-7%,5%)}28%{transform:translate(4%,-9%)}42%{transform:translate(-11%,-3%)}57%{transform:translate(8%,10%)}71%{transform:translate(-4%,8%)}85%{transform:translate(10%,-6%)}100%{transform:translate(0,0)}}
+  #vig2{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 46%,transparent 28%,rgb(0 0 0 / .72) 100%)}
+  #hud,#hint{display:none!important}   /* essentials only: no gauges, no captions */
+  /* speed vignette */
+  #vig{position:fixed;inset:0;pointer-events:none;
+    background:radial-gradient(ellipse at center,transparent 45%,rgb(0 0 0 / calc(var(--speed)*.75)) 100%)}
+  .ui{position:fixed;pointer-events:none}
+  .ui *{pointer-events:auto}
+  /* HUD */
+  #hud{left:max(20px,env(safe-area-inset-left));top:max(18px,env(safe-area-inset-top))}
+  .kmh{font-size:clamp(52px,9vw,104px);font-weight:700;line-height:.9;letter-spacing:-.02em;font-variant-numeric:tabular-nums;
+    text-shadow:0 0 calc(var(--speed)*38px) var(--accent)}
+  .kmh small{font-size:.2em;letter-spacing:.2em;margin-left:.6em;opacity:.55;font-weight:500}
+  .row{display:flex;align-items:center;gap:14px;margin-top:10px}
+  #colorname{font-size:13px;letter-spacing:.28em;text-transform:uppercase;opacity:.65;margin-top:12px}
+  /* tachometer */
+  #tach{width:clamp(190px,21vw,270px);margin-top:10px;filter:drop-shadow(0 0 14px rgb(0 0 0 / .6))}
+  #tach svg{display:block;width:100%;height:auto;overflow:visible}
+  #tach .tk{fill:#ffffff26} #tach .tk.on{fill:var(--accent)} #tach .tk.rl{fill:#ff2a2a40} #tach .tk.rl.on{fill:#ff2a2a}
+  #tach .num{fill:#ffffffa6;font:700 13px "Bahnschrift","DIN Condensed","Arial Narrow",system-ui,sans-serif;text-anchor:middle;dominant-baseline:central} #tach .num.rl{fill:#ff4a4a}
+  #tach .gearn{fill:#fff;font:800 54px "Bahnschrift","DIN Condensed","Arial Narrow",system-ui,sans-serif;text-anchor:middle;dominant-baseline:central;font-style:italic}
+  #tach .unit{fill:#ffffff80;font:600 10px system-ui,sans-serif;letter-spacing:.25em;text-anchor:middle}
+  #tach .rpmv{fill:var(--accent);font:700 15px "Bahnschrift","DIN Condensed",system-ui,sans-serif;text-anchor:middle;font-variant-numeric:tabular-nums;letter-spacing:.06em}
+  #tach .needle{fill:var(--accent);filter:drop-shadow(0 0 6px var(--accent))}
+  #tach .ring{fill:none;stroke:var(--accent);stroke-width:3;filter:drop-shadow(0 0 5px var(--accent))}
+  #tach.shift .needle,#tach.shift .ring{fill:#ff2a2a;stroke:#ff2a2a;animation:blink .09s steps(2) infinite}
+  #tach.shift .gearn{fill:#ff2a2a}
+  @keyframes blink{50%{opacity:.25}}
+  /* controls */
+  #ctl{left:0;right:0;bottom:max(22px,env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;gap:16px}
+  #go{font:inherit;font-weight:700;font-size:18px;letter-spacing:.2em;color:#000;border:0;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:none;
+    padding:18px 54px;background:var(--accent);clip-path:polygon(22px 0,100% 0,calc(100% - 22px) 100%,0 100%);
+    transition:transform .08s,filter .2s;filter:drop-shadow(0 0 0 transparent)}
+  #go.held{transform:scale(.96);background:#fff}
+  #swatches{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:0 16px}
+  .tri{position:relative;width:38px;height:34px;border:0;padding:0;cursor:pointer;background:#ffffff2e;clip-path:polygon(50% 0,100% 100%,0 100%);transition:background .2s,transform .15s}
+  .tri i{position:absolute;inset:7px 9px 3px;background:linear-gradient(100deg,var(--c) 0 52%,var(--c2,var(--c)) 52% 100%);clip-path:polygon(50% 0,100% 100%,0 100%)}
+  .tri:hover{transform:translateY(-3px)} .tri.on{background:#fff;transform:translateY(-5px) scale(1.12)}
+  #sound{position:fixed;right:max(18px,env(safe-area-inset-right));top:max(18px,env(safe-area-inset-top));font:inherit;font-size:12px;letter-spacing:.22em;color:var(--ink);
+    background:#ffffff14;border:1px solid #ffffff30;padding:9px 16px;cursor:pointer;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+  #hint{right:max(18px,env(safe-area-inset-right));top:max(64px,calc(env(safe-area-inset-top) + 46px));font-size:12px;letter-spacing:.14em;opacity:.45;text-align:right;text-transform:uppercase;max-width:240px}
+  #credit{position:fixed;left:max(20px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom));max-width:none;font-size:9px;line-height:1.4;letter-spacing:.06em;opacity:.28;font-family:system-ui,sans-serif}
+  #credit a{color:inherit}
+  @media (max-width:640px){#tach{width:150px} #hint,#credit{display:none} #go{padding:16px 40px;font-size:16px}.tri{width:32px;height:29px}.tri i{inset:6px 8px 3px}}
+  /* loading */
+  #loading{position:fixed;inset:0;z-index:5;display:grid;place-items:center;background:#050509;transition:opacity .8s}
+  #loading.done{opacity:0;pointer-events:none}
+  #loading div{text-align:center;letter-spacing:.3em;font-size:13px;text-transform:uppercase;opacity:.8}
+  #loadbarwrap{width:min(280px,70vw);height:4px;margin:18px auto 0;background:#ffffff18;overflow:hidden}
+  #loadbar{height:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .2s}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="vig"></div><div id="vig2"></div><div id="grain"></div>
+
+<div id="hud" class="ui">
+  <div class="kmh"><span id="kmh">0</span><small>KM/H</small></div>
+  <div id="tach"></div>
+  <div id="colorname"></div>
+</div>
+<button id="sound" class="ui">SOUND OFF</button>
+<div id="hint" class="ui">Drag to orbit · hold the button or SPACE to accelerate</div>
+
+<div id="ctl" class="ui">
+  <button id="go">HOLD TO ACCELERATE</button>
+  <div id="swatches"></div>
+</div>
+<div id="credit">Model by <a href="https://sketchfab.com/3d-models/2023-lamborghini-huracan-gt3-evo2-f8a58f112f544a4f96f2281e0f26eccd" target="_blank" rel="noopener">Dave Love</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></div>
+
+<div id="loading"><div><span id="loadtxt">Loading</span><div id="loadbarwrap"><div id="loadbar"></div></div></div></div>
+
+<script>(function(){var c=document.createElement('canvas');c.width=c.height=256;var x=c.getContext('2d'),d=x.createImageData(256,256);for(var i=0;i<d.data.length;i+=4){var r=Math.random(),v=Math.pow(r,2.2)*255;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255}x.putImageData(d,0,0);document.getElementById('grain').style.backgroundImage='url('+c.toDataURL()+')'})();</script>
+<!--MODEL_SCRIPT-->
+<script src="app.js"></script>
+</body>
+</html>

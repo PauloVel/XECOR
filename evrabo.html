@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EVRABO® — Style / Code / Views</title>
+<title>EVRABO®︎ — Style / Code / Views</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500&family=Rubik+Spray+Paint&display=swap" rel="stylesheet">
 <style>
+    html { font-variant-emoji: text; }
 :root{
   --bg:#0b0b0b; --ink:#f2f0ea; --gray:#8a8a85; --line:#262624; --red:#e0271a;
   --gx:0; --gy:0;
@@ -156,7 +157,7 @@ footer .nav span:hover{color:var(--ink);}
 </head>
 <body>
 
-<div class="loader" id="loader"><span>EVRABO®</span></div>
+<div class="loader" id="loader"><span>EVRABO®︎</span></div>
 
 <canvas id="field"></canvas>
 
@@ -189,7 +190,7 @@ footer .nav span:hover{color:var(--ink);}
 <div class="vignette"></div>
 
 <header>
-  <div class="brand">EVRABO<sup>®</sup></div>
+  <div class="brand">EVRABO<sup>®︎</sup></div>
   <div class="issue">CALIDAD <b>/</b> SS·26</div>
 </header>
 
@@ -215,7 +216,7 @@ footer .nav span:hover{color:var(--ink);}
 </div>
 
 <footer>
-  <span>© EVRABO — PROJECTS BORN IN THE VOID</span>
+  <span>©︎ EVRABO — PROJECTS BORN IN THE VOID</span>
   <div class="nav"><span>ORIGINALS</span><span>CONTACT</span></div>
 </footer>
 <div id="bar"></div>
@@ -246,7 +247,7 @@ els.forEach((el,i)=>{[...WORDS[i].text].forEach(c=>{
 [...'EVRABO'].forEach(c=>{
   const f=document.createElement('span');f.className='ch';f.textContent=c;finalword.appendChild(f);
 });
-const sup=document.createElement('sup');sup.textContent='®';finalword.appendChild(sup);
+const sup=document.createElement('sup');sup.textContent='®︎';finalword.appendChild(sup);
 
 function setMeta(i){
   idxEl.textContent=String(i+1).padStart(2,'0')+' / 03';
@@ -256,8 +257,8 @@ function setMeta(i){
 
 const TERM_LINES=[
   {t:'> evrabo build --production',cls:''},
-  {t:'  ✓ compilado en 0.42s',cls:'ok'},
-  {t:'  ✓ 0 errores · 0 warnings',cls:'ok'},
+  {t:'  ✓︎ compilado en 0.42s',cls:'ok'},
+  {t:'  ✓︎ 0 errores · 0 warnings',cls:'ok'},
   {t:'> ship it --no-permission',cls:''},
 ];
 function runTerminal(){
