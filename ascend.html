@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Ascend — EVRABO</title>
+  <meta name="description" content="Ascend. The EVRABO film, with sound.">
+  <meta property="og:title" content="Ascend — EVRABO">
+  <meta property="og:description" content="The EVRABO film, with sound.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://evrabo.com/ascend.html">
+  <meta property="og:image" content="https://evrabo.com/assets/images/ascend-poster.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#050505">
+  <link rel="canonical" href="https://evrabo.com/ascend.html">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/fonts/Anton-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/images/ascend-poster.jpg" as="image">
+  <link rel="stylesheet" href="assets/fonts/anton.css">
+  <script>
+    // Arrived from the blast on the home page: paint white from the very first frame, then fade into the film
+    try { if (sessionStorage.getItem('ascend-boom')) { sessionStorage.removeItem('ascend-boom'); document.documentElement.classList.add('boom'); } } catch (e) {}
+  </script>
+  <style>
+    html { font-variant-emoji: text; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root { --black: #050505; --white: #f0f0f0; }
+
+    html, body { height: 100%; background: var(--black); color: var(--white); overflow: hidden; }
+    body { font-family: 'Space Grotesk', sans-serif; }
+
+    /* Arrives lit by the blast from the home page, then settles into the film */
+    .flash { position: fixed; inset: 0; z-index: 20; background: var(--white); pointer-events: none; opacity: 0; }
+    html.boom .flash { opacity: 1; animation: settle 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.05s forwards; }
+    @keyframes settle { to { opacity: 0; } }
+
+    .film { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; background: var(--black); }
+
+    /* Top bar: way home, and the mute button */
+    .bar {
+      position: fixed;
+      z-index: 5;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: max(1.6rem, env(safe-area-inset-top)) max(4vw, env(safe-area-inset-right)) 0 max(4vw, env(safe-area-inset-left));
+    }
+
+    .home {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.15em;
+      color: var(--white);
+      text-decoration: none;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6);
+    }
+
+    .btn {
+      padding: 9px 16px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: rgba(5, 5, 5, 0.35);
+      border: 1px solid rgba(240, 240, 240, 0.45);
+      cursor: pointer;
+      text-decoration: none;
+      clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    }
+
+    .btn:hover { background: var(--white); color: var(--black); }
+    .btn:focus-visible, .home:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
+
+    /* The words: one beat at a time, hard cut, with a punch on every entry */
+    .words {
+      position: fixed;
+      z-index: 3;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 5vw;
+      pointer-events: none;
+      text-align: center;
+    }
+
+    .word {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3.4rem, 15vw, 16rem);
+      line-height: 0.9;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-shadow: 0 6px 40px rgba(0, 0, 0, 0.55);
+      opacity: 0;
+    }
+
+    .word.on { opacity: 1; animation: punch 0.22s cubic-bezier(0.1, 0.9, 0.2, 1) both; }
+
+    @keyframes punch {
+      0% { transform: scale(1.5); filter: brightness(2.2); }
+      55% { transform: scale(0.97); filter: brightness(1.2); }
+      100% { transform: scale(1); filter: brightness(1); }
+    }
+
+    /* Start gate (only shown if the browser refuses to play with sound) */
+    .gate {
+      position: fixed;
+      z-index: 8;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1.6rem;
+      background: var(--black);
+    }
+
+    .gate.show { display: flex; }
+
+    .gate button {
+      position: relative;
+      width: clamp(15rem, 34vmin, 24rem);
+      aspect-ratio: 1.12;
+      color: var(--black);
+      background: var(--white);
+      border: 0;
+      cursor: pointer;
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    }
+
+    .gate button span {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 10%;
+      text-align: center;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(1.3rem, 4vmin, 2.4rem);
+      letter-spacing: 0.08em;
+      text-indent: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .gate small { font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.6; }
+
+    /* After the film */
+    .after {
+      position: fixed;
+      z-index: 6;
+      left: 0; right: 0;
+      bottom: max(5vh, env(safe-area-inset-bottom));
+      display: none;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .after.show { display: flex; }
+
+    @media (max-width: 640px) { .home { font-size: 1.5rem; } }
+    @media (prefers-reduced-motion: reduce) { .word.on { animation: none; } }
+  </style>
+</head>
+<body>
+  <div class="flash" id="flash"></div>
+  <video class="film" id="film" src="assets/videos/EVRABO_hero.mp4" poster="assets/images/ascend-poster.jpg" playsinline preload="auto"></video>
+
+  <div class="words" aria-live="off"><div class="word" id="word"></div></div>
+
+  <div class="bar">
+    <a class="home" href="/">EVRABO</a>
+    <button type="button" class="btn" id="mute" aria-pressed="false">Mute</button>
+  </div>
+
+  <div class="gate" id="gate">
+    <button type="button" id="go" aria-label="Ascend"><span>Ascend</span></button>
+    <small>Sound on</small>
+  </div>
+
+  <div class="after" id="after">
+    <button type="button" class="btn" id="replay">Replay</button>
+    <a class="btn" href="/">Enter EVRABO</a>
+  </div>
+
+  <script>
+    // Beats: each line chains into the next, so the film reads as one sentence.
+    // The words stop at STOP, because the film carries its own words from there.
+    var STOP = 52;
+    var CUES = [
+      [2.0, 'No one'], [3.2, 'Gave us'], [4.4, 'A seat.'],
+      [6.0, 'So we'], [7.2, 'Built'], [8.4, 'The table.'],
+      [10.2, 'Then'], [11.2, 'The room.'], [12.8, 'Then'], [13.8, 'The name.'],
+      [15.6, 'Not luck.'], [17.0, 'Dirt.'], [18.2, 'Dream.'], [19.4, 'Reach.'],
+      [21.2, 'They said'], [22.6, 'Wait.'], [24.0, 'We said'], [25.4, 'No.'],
+      [27.0, 'No fear.'], [28.6, 'No brakes.'], [30.2, 'No permission.'],
+      [32.2, 'Faster'], [33.4, 'Than doubt.'], [35.2, 'Louder'], [36.4, 'Than noise.'],
+      [38.2, 'Every move'], [39.8, 'Is a signal.'],
+      [41.8, 'Watch'], [43.0, 'Closer.'],
+      [44.8, "This isn't"], [46.0, 'A brand.'], [47.4, "It's a climb."],
+      [49.4, 'Go'], [50.4, 'Get it.']
+    ];
+
+    var film = document.getElementById('film');
+    var word = document.getElementById('word');
+    var gate = document.getElementById('gate');
+    var after = document.getElementById('after');
+    var muteBtn = document.getElementById('mute');
+    var shown = -2;
+
+
+    function beat(time) {
+      var i = -1;
+      if (time < STOP) for (var k = 0; k < CUES.length; k++) { if (CUES[k][0] <= time) i = k; else break; }
+      if (i === shown) return;
+      shown = i;
+      word.classList.remove('on');
+      if (i < 0) { word.textContent = ''; return; }
+      word.textContent = CUES[i][1];
+      void word.offsetWidth;            // restart the punch
+      word.classList.add('on');
+    }
+
+    function loop() {
+      beat(film.currentTime);
+      requestAnimationFrame(loop);
+    }
+
+    function start() {
+      gate.classList.remove('show');
+      after.classList.remove('show');
+      film.currentTime = 0;
+      film.muted = false;
+      muteBtn.textContent = 'Mute';
+      muteBtn.setAttribute('aria-pressed', 'false');
+      film.play().catch(function () { gate.classList.add('show'); });
+    }
+
+    muteBtn.addEventListener('click', function () {
+      film.muted = !film.muted;
+      muteBtn.textContent = film.muted ? 'Unmute' : 'Mute';
+      muteBtn.setAttribute('aria-pressed', String(film.muted));
+    });
+
+    document.getElementById('go').addEventListener('click', start);
+    document.getElementById('replay').addEventListener('click', start);
+    film.addEventListener('ended', function () { beat(STOP); after.classList.add('show'); });
+
+    // Always from zero. If the browser blocks sound without a tap, the gate asks for one.
+    film.currentTime = 0;
+    film.muted = false;
+    film.play().catch(function () { gate.classList.add('show'); });
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>

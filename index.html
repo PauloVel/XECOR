@@ -33,6 +33,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Zen+Kaku+Gothic+New:wght@300;400&family=Bebas+Neue&display=swap" rel="stylesheet">
   <link rel="preload" href="assets/fonts/Anton-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/images/hero-poster.jpg" as="image">
+  <link rel="prefetch" href="ascend.html">
+  <link rel="prefetch" href="assets/images/ascend-poster.jpg" as="image">
   <link rel="stylesheet" href="assets/fonts/anton.css">
   <link rel="stylesheet" href="assets/intro.css">
   <style>
@@ -182,8 +184,8 @@
       color: var(--red);
     }
 
-    /* Manifesto Section — Rapid-Cut Video Montage */
-    .manifesto {
+    /* Hero Section — Rapid-Cut Video Montage */
+    .hero {
       position: relative;
       min-height: 100vh;
       width: 100%;
@@ -195,7 +197,7 @@
       will-change: transform;
     }
 
-    .manifesto-video-stack {
+    .hero-video-stack {
       position: absolute;
       top: 0;
       left: 0;
@@ -204,7 +206,7 @@
       z-index: 1;
     }
 
-    .manifesto-video-bg {
+    .hero-video-bg {
       position: absolute;
       top: 0;
       left: 0;
@@ -215,10 +217,10 @@
       transition: opacity 0.15s linear;
     }
 
-    .manifesto-video-bg.active { opacity: 1; }
+    .hero-video-bg.active { opacity: 1; }
 
     /* Light vignette, edges only */
-    .manifesto-vignette {
+    .hero-vignette {
       position: absolute;
       inset: 0;
       z-index: 3;
@@ -226,28 +228,65 @@
       background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(5, 5, 5, 0.5) 100%);
     }
 
-    .hero-sound {
+    /* Ascend: the way into the film (own page, with sound) */
+    .hero-ascend {
       position: absolute;
       z-index: 6;
-      right: max(18px, 3vw);
-      bottom: max(18px, 4vh);
-      padding: 9px 16px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
+      right: max(18px, 4vw);
+      bottom: max(22px, 5vh);
+      width: clamp(6.5rem, 10vw, 9rem);
+      aspect-ratio: 1.12;
+      display: block;
       color: var(--white);
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      cursor: pointer;
-      clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+      text-decoration: none;
     }
 
-    .hero-sound[hidden] { display: none; }
-    .hero-sound:hover { background: var(--white); color: var(--black); }
-    .hero-sound:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
+    .hero-ascend svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 
-    .manifesto-content {
+    .hero-ascend polygon {
+      fill: rgba(5, 5, 5, 0.25);
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linejoin: miter;
+      vector-effect: non-scaling-stroke;
+      transition: fill 0.25s ease;
+    }
+
+    .hero-ascend span {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 14%;
+      text-align: center;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(0.9rem, 1.3vw, 1.15rem);
+      letter-spacing: 0.14em;
+      text-indent: 0.14em;
+      text-transform: uppercase;
+      transition: color 0.25s ease;
+    }
+
+    .hero-ascend:hover polygon { fill: var(--white); }
+    .hero-ascend:hover span { color: var(--black); }
+    .hero-ascend:focus-visible { outline: 2px solid var(--white); outline-offset: 6px; }
+
+    /* The blast: a white triangle grows from the button until it covers the screen, then Ascend opens */
+    .hero-boom {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: var(--white);
+      pointer-events: none;
+      clip-path: polygon(var(--bx) var(--by), var(--bx) var(--by), var(--bx) var(--by));
+    }
+
+    .hero-boom.go { animation: heroBoom 0.55s cubic-bezier(0.7, 0, 0.9, 0.4) forwards; }
+
+    @keyframes heroBoom {
+      to { clip-path: polygon(calc(var(--bx) - 260vmax) calc(var(--by) + 160vmax), var(--bx) calc(var(--by) - 280vmax), calc(var(--bx) + 260vmax) calc(var(--by) + 160vmax)); }
+    }
+
+    .hero-content {
       position: relative;
       z-index: 5;
       text-align: center;
@@ -255,7 +294,7 @@
       padding: 0 4vw;
     }
 
-    .manifesto-kicker {
+    .hero-kicker {
       font-family: 'Space Grotesk', sans-serif;
       font-size: clamp(0.7rem, 1.2vw, 0.9rem);
       letter-spacing: 0.5em;
@@ -268,12 +307,12 @@
       will-change: transform, opacity;
     }
 
-    .manifesto-kicker.visible {
+    .hero-kicker.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    .manifesto-headline {
+    .hero-headline {
       font-family: 'Anton', sans-serif;
       font-size: clamp(3.5rem, 12vw, 11rem);
       line-height: 0.9;
@@ -283,7 +322,7 @@
       min-height: 1.1em;
     }
 
-    .manifesto-headline .line {
+    .hero-headline .line {
       display: block;
       opacity: 0;
       transform: translateY(70px) scale(0.95);
@@ -291,12 +330,12 @@
       will-change: transform, opacity;
     }
 
-    .manifesto-headline .line.visible {
+    .hero-headline .line.visible {
       opacity: 1;
       transform: translateY(0) scale(1);
     }
 
-    .manifesto-sub {
+    .hero-sub {
       font-family: 'Space Grotesk', sans-serif;
       font-size: clamp(0.85rem, 1.5vw, 1.1rem);
       letter-spacing: 0.25em;
@@ -309,12 +348,12 @@
       will-change: transform, opacity;
     }
 
-    .manifesto-sub.visible {
+    .hero-sub.visible {
       opacity: 0.6;
       transform: translateY(0);
     }
 
-    .manifesto-red-line {
+    .hero-red-line {
       position: absolute;
       bottom: 0;
       left: 0;
@@ -820,6 +859,65 @@
       mix-blend-mode: difference;
     }
 
+    /* Looks like a product, does nothing: wordmark, nav, button, scroll bar and page marks. */
+    .offer-ui {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      user-select: none;
+      padding: 0 4vw;
+    }
+
+    .offer-ui-top {
+      position: absolute;
+      left: 4vw;
+      right: 4vw;
+      top: 5.6rem;
+      display: flex;
+      align-items: center;
+      gap: 3vw;
+      padding-top: 1.1rem;
+      border-top: 1px solid rgba(240, 240, 240, 0.35);
+    }
+
+    .offer-ui-top b {
+      margin-right: auto;
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+      opacity: 0.85;
+    }
+
+    .offer-ui-links { display: flex; gap: 1.6rem; }
+    .offer-ui-links i { width: 3.2rem; height: 3px; background: var(--white); opacity: 0.55; }
+    .offer-ui-cta { width: 5.5rem; height: 1.9rem; border: 1px solid rgba(240, 240, 240, 0.8); }
+
+    .offer-ui-scroll {
+      position: absolute;
+      right: 1.2vw;
+      top: 28%;
+      bottom: 28%;
+      width: 3px;
+      background: rgba(240, 240, 240, 0.25);
+    }
+
+    .offer-ui-scroll i { position: absolute; left: 0; right: 0; top: 18%; height: 30%; background: var(--white); }
+
+    .offer-ui-bottom { position: absolute; left: 4vw; right: 4vw; bottom: 3vh; display: flex; gap: 0.6rem; justify-content: flex-end; }
+    .offer-ui-bottom i { width: 2.2rem; height: 3px; background: var(--white); opacity: 0.35; }
+    .offer-ui-bottom i.on { opacity: 1; }
+
+    @media (max-width: 640px) {
+      .offer-ui-top { top: 5rem; gap: 4vw; }
+      .offer-ui-links { display: none; }
+      .offer-ui-scroll { display: none; }
+      .offer-ui-cta { width: 3.8rem; height: 1.6rem; }
+    }
+
     .offer-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; }
 
     .offer-for {
@@ -981,8 +1079,8 @@
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .nav-toggle { display: flex; }
-      .manifesto { min-height: 80vh; }
-      .manifesto-headline { font-size: clamp(2.5rem, 14vw, 5rem); }
+      .hero { min-height: 80vh; }
+      .hero-headline { font-size: clamp(2.5rem, 14vw, 5rem); }
       .collection-desc { text-align: left; }
       .cursor, .cursor-follower { display: none; }
       body { cursor: auto; }
@@ -1269,25 +1367,25 @@
   </div>
 
 
-  <section class="manifesto" id="manifesto">
+  <section class="hero" id="hero">
     <!--
       SINGLE LOOPING HERO VIDEO — one file, no cut logic, no lag.
       To swap: edit your montage into one .mp4 and replace the src below.
     -->
-    <div class="manifesto-video-stack">
-      <video class="manifesto-video-bg" muted loop playsinline preload="none" poster="assets/images/hero-poster.jpg" data-src="assets/videos/EVRABO_hero.mp4"></video>
+    <div class="hero-video-stack">
+      <video class="hero-video-bg" muted loop playsinline preload="none" poster="assets/images/hero-poster.jpg" data-src="assets/videos/EVRABO_hero.mp4"></video>
     </div>
 
-    <div class="manifesto-vignette"></div>
+    <div class="hero-vignette"></div>
 
-    <button type="button" class="hero-sound" id="hero-sound" hidden>Sound off</button>
+    <a class="hero-ascend" href="ascend.html" aria-label="Ascend"><svg viewBox="0 0 100 90" preserveAspectRatio="none" aria-hidden="true"><polygon points="50,2 98,88 2,88"/></svg><span>Ascend</span></a>
 
-    <div class="manifesto-content">
-      <div class="manifesto-kicker" id="manifesto-kicker">Go get it</div>
-      <h2 class="manifesto-headline" id="manifesto-headline">
+    <div class="hero-content">
+      <div class="hero-kicker" id="hero-kicker">Go get it</div>
+      <h2 class="hero-headline" id="hero-headline">
         <span class="line" data-index="0">FUTURE IS ON</span>
       </h2>
-      <p class="manifesto-sub" id="manifesto-sub">Dirt · Dream · Reach</p>
+      <p class="hero-sub" id="hero-sub">Dirt · Dream · Reach</p>
     </div>
 
   </section>
@@ -1347,6 +1445,15 @@
     <div class="offer-build" id="offer-build">
       <video src="assets/videos/DHMEX-web.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
       <canvas id="offer-canvas" aria-hidden="true"></canvas>
+    </div>
+    <div class="offer-ui" aria-hidden="true">
+      <div class="offer-ui-top">
+        <b>Your Brand</b>
+        <span class="offer-ui-links"><i></i><i></i><i></i><i></i></span>
+        <span class="offer-ui-cta"></span>
+      </div>
+      <span class="offer-ui-scroll"><i></i></span>
+      <div class="offer-ui-bottom"><i class="on"></i><i></i><i></i><i></i></div>
     </div>
     <div class="offer-content">
       <div class="offer-for">For selected brands</div>
@@ -1456,9 +1563,9 @@
       });
     }
 
-    // Manifesto — single looping video, headline rotation, pause when off-screen
-    const manifestoSection = document.getElementById('manifesto');
-    const heroVideo = document.querySelector('.manifesto-video-bg');
+    // Hero — single looping video, headline rotation, pause when off-screen
+    const heroSection = document.getElementById('hero');
+    const heroVideo = document.querySelector('.hero-video-bg');
 
     // The hero video is large: start it after the page has loaded, at full 1080p everywhere (a phone crops it to portrait, so a lower resolution looks soft);
     // data-saver, 2G and reduced-motion keep the poster frame.
@@ -1472,21 +1579,11 @@
       if (document.readyState === 'complete') start();
       else window.addEventListener('load', () => setTimeout(start, 300));
     })();
-    const manifestoKicker = document.getElementById('manifesto-kicker');
-    const manifestoHeadline = document.getElementById('manifesto-headline');
-    const manifestoSub = document.getElementById('manifesto-sub');
+    const heroKicker = document.getElementById('hero-kicker');
+    const heroHeadline = document.getElementById('hero-headline');
+    const heroSub = document.getElementById('hero-sub');
 
-    const headlineLine = manifestoHeadline.querySelector('.line');
-
-    // Sound toggle: the video starts muted (browsers require it); a tap turns the sound on.
-    const heroSound = document.getElementById('hero-sound');
-    heroVideo.addEventListener('playing', () => { heroSound.hidden = false; });
-    heroSound.addEventListener('click', () => {
-      heroVideo.muted = !heroVideo.muted;
-      heroSound.textContent = heroVideo.muted ? 'Sound off' : 'Sound on';
-      heroSound.setAttribute('aria-pressed', String(!heroVideo.muted));
-      if (!heroVideo.muted) heroVideo.play().catch(() => {});
-    });
+    const headlineLine = heroHeadline.querySelector('.line');
 
     const headlines = [
       { text: 'FUTURE IS ON', sub: 'Dirt · Dream · Reach' },
@@ -1497,6 +1594,26 @@
 
     let headlineIndex = 0;
     let headlineInterval = null;
+
+    // Ascend: a white triangle blasts out of the button, then the film opens already lit (see ascend.html)
+    const ascendLink = document.querySelector('.hero-ascend');
+    ascendLink.addEventListener('click', (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+      e.preventDefault();
+      const go = () => { location.href = ascendLink.href; };
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return go();
+      try { sessionStorage.setItem('ascend-boom', '1'); } catch (err) {}
+      const r = ascendLink.getBoundingClientRect();
+      const boom = document.createElement('div');
+      boom.className = 'hero-boom';
+      boom.style.setProperty('--bx', (r.left + r.width / 2) + 'px');
+      boom.style.setProperty('--by', (r.top + r.height * 0.55) + 'px');
+      document.body.appendChild(boom);
+      void boom.offsetWidth;
+      boom.classList.add('go');
+      boom.addEventListener('animationend', go);
+      setTimeout(go, 900);
+    });
 
     // Subtle punch-in once the video is in place
     requestAnimationFrame(() => heroVideo.classList.add('active'));
@@ -1512,28 +1629,28 @@
       setTimeout(() => {
         headlineIndex = (headlineIndex + 1) % headlines.length;
         headlineLine.textContent = headlines[headlineIndex].text;
-        manifestoSub.textContent = headlines[headlineIndex].sub;
+        heroSub.textContent = headlines[headlineIndex].sub;
         headlineLine.classList.add('visible');
       }, 400);
     }
 
     // Reveal sequence when section enters viewport
-    const manifestoObserver = new IntersectionObserver((entries) => {
+    const heroObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          setTimeout(() => manifestoKicker.classList.add('visible'), 200);
+          setTimeout(() => heroKicker.classList.add('visible'), 200);
           setTimeout(() => headlineLine.classList.add('visible'), 400);
-          setTimeout(() => manifestoSub.classList.add('visible'), 700);
+          setTimeout(() => heroSub.classList.add('visible'), 700);
           startRotation();
-          manifestoObserver.unobserve(manifestoSection);
+          heroObserver.unobserve(heroSection);
         }
       });
     }, { threshold: 0.4 });
 
-    manifestoObserver.observe(manifestoSection);
+    heroObserver.observe(heroSection);
 
     // Pause/resume when off-screen to save resources
-    const manifestoVisibilityObserver = new IntersectionObserver((entries) => {
+    const heroVisibilityObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) {
           clearInterval(headlineInterval);
@@ -1546,7 +1663,7 @@
       });
     }, { threshold: 0.05 });
 
-    manifestoVisibilityObserver.observe(manifestoSection);
+    heroVisibilityObserver.observe(heroSection);
 
     // Glitch Text Trigger
     const glitchTexts = document.querySelectorAll('.glitch-text');

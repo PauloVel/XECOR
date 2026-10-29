@@ -399,3 +399,74 @@ you risk destroying what currently makes it interesting.
 The **mystery is part of the product**.
 
 EVRABO currently feels less like a website you *read* and more like a **place you discover**.
+
+---
+
+# 11. Where EVRABO is now (October 2026 update)
+
+The first ten sections describe the SS / 26 identity. The site has grown since, and what it communicates has grown with it. Same vocabulary (black, white, grain, huge condensed type, photography), but the message moved from **"we create things that don't need your permission"** to:
+
+> **"We climb first, and we build yours before you pay."**
+
+Two ideas now carry everything: **ASCENT** and **PROOF**.
+
+## Ascent: the new spine
+
+- **Hero:** a rotating headline (FUTURE IS ON / We are Champions / NO FEAR / GO GET IT) over the film, with a single `ASCEND ↑` button. The verb and the arrow say direction before any explanation.
+- **Ascend (own page):** the film plays from zero with its song and one short line at a time that chains into the next ("NO ONE / GAVE US / A SEAT. / SO WE / BUILT / THE TABLE…"). The words stop where the film's own words begin. It opens on a mountain. The page is the manifesto in motion: a feeling first, a promise second.
+- **In the oven:** two projects shown as work in progress, with a **thin white pillar filling from the bottom** and the stage written vertically beside it (BUILDING / DESIGNING). Progress is shown, not hidden. That is a confident, unusual thing for a studio to do.
+- **Mountain photography** (Protobike) and the climbing arrows are the visual shorthand.
+
+## Proof: the new business message
+
+- **Prototype ($0):** the DHMEX footage fills the section like a wallpaper, and the offer is written over it: *PROTOTYPE, $0, your first build, free, no contract.* Decorative product details (wordmark, nav lines, scrollbar, page marks) make it feel like a real product, not a pitch document. The idea: **"we show you the thing, then you decide."**
+- **Your space:** replaced the poster toy with a **prototype builder**: pick what (website, shop, tool, app), the feel (raw, clean, loud) and a name, watch a live mock take shape, then send it straight to the Free prototype form. It is play that also qualifies the lead.
+- **What we build / Online identity:** short, ruled lists and one big statement. Websites, shops, tools, apps, photography, video, content. No paragraphs.
+
+## The colour rule (changed, on purpose)
+
+Originally everything was black and white and **red was the only colour**. Now there is one more deliberate exception:
+
+- Photographs stay **gray and dark until you come close** (hover on desktop, on-screen on phones), then turn to their **real colour**. Protobike is a mountain, Kado is sand, the others are their own originals.
+- Meaning: *the work is quiet until you look at it.* It rewards attention, and it keeps the page monochrome at rest.
+- Red is now a signal, not a decoration. It lives in the "loud" builder look and in tiny accents. It no longer sits on the oven.
+
+## Two voices on purpose
+
+- **EVRABO:** Anton, huge, condensed, uppercase. Power and urgency.
+- **Kado:** a light Japanese gothic with katakana (カド) underneath, wide spacing, centred on sand. Quiet and precise.
+
+Two projects, two temperaments, one site. That contrast says the studio has **range**, not one trick.
+
+---
+
+# 12. Evaluation of the recent changes
+
+## What improved (and why it matters)
+
+| Change | Effect on what EVRABO communicates |
+|---|---|
+| New hero film, no filter, light vignette | Shows the real tone instead of a darkened stand-in. Heavy grade removed because the footage already carries it. |
+| Ascend button + page | Gives the film a stage of its own, with sound and a story. Turns a background loop into an experience. |
+| Headline rotation bug fixed | Four statements now actually play (two timers were skipping half of them). |
+| Oven section | Replaces explanation with evidence: photo, logo, progress. Compact enough to read at a glance. |
+| Prototype builder | Turns a toy into a lead tool. |
+| Prototype offer over video | Reads as a product, not a document. Price and promise first, almost no copy. |
+| Phone pass (identity, offer, hero) | Shorter, fewer words, bigger type, correct crops. |
+| Performance pass | Poster first, video after load, offer video only on screen, headline blur removed, below-fold sections skipped, three heavy images shrunk. |
+| Emoji-proof arrows and ©/®, root URL | Stops phones showing coloured emoji; `evrabo.com` is the home, not `/index.html`. |
+
+## What still needs work (honest list)
+
+- **The hero film is 49 MB.** It is the single biggest cost. A trimmed 1080p export (and ideally a vertical 1080×1920 cut for phones) would fix both weight and phone sharpness.
+- **The oven progress numbers are placeholders** (Protobike 68%, Kado 34%). Real numbers make the pillars honest.
+- **Ascend copy and timing are first drafts.** The lines were written without hearing the song, so beats may not land on the music yet. The start of the film's own words (assumed around 52 s) should be confirmed.
+- **Sound needs a tap on some browsers.** Safari blocks sound autoplay, so the page falls back to a one-tap ASCEND gate. That is a browser rule.
+- **Image quality:** the Kado sand photo was small and is soft at full width; the Protobike mountain photo is a mood image, not a photo of the product.
+- **Rules drifted:** the DHMEX video is full colour and the builder has a red "loud" mode. Both are deliberate, but they stretch the original "black, white, red only" rule. Decide whether they stay as exceptions or become the rule.
+- **Not measured on real devices.** Performance and phone layout were checked in a headless browser and screenshots, not on a phone or with a profiler. Test on the phone that was laggy.
+- **Lambo page and Ascend are not linked widely.** Ascend is reachable from the hero only; Lambo has no link at all.
+
+## The one thing to protect
+
+The mystery rule still holds, and the recent work mostly respected it: **less text, bigger type, proof instead of explanation.** The best additions (the oven pillars, the offer over the video, Ascend) all say more by showing. The risk is the opposite one: every new section tempting an explanation. When in doubt, cut the sentence and keep the picture.
