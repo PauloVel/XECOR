@@ -353,6 +353,21 @@
       transform: translateY(0);
     }
 
+    /* Partner credit: direct, small, bottom-left. Says who made the film, not whose site this is. */
+    .hero-credit {
+      position: absolute;
+      left: 4vw;
+      bottom: 2.2rem;
+      z-index: 5;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(0.65rem, 0.9vw, 0.8rem);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(240, 240, 240, 0.7);
+    }
+    .hero-credit b { color: var(--white); font-weight: 600; }
+    .hero-credit i { font-style: normal; margin: 0 0.5em; color: var(--red); }
+
     .hero-red-line {
       position: absolute;
       bottom: 0;
@@ -1110,9 +1125,9 @@
     .identity {
       position: relative;
       width: 100%;
-      height: 100vh;
-      height: 100svh;
-      min-height: 480px;
+      height: 75vh;
+      height: 75svh;
+      min-height: 420px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -1143,6 +1158,10 @@
     @keyframes mark-spin {
       from { transform: translateY(-50%) rotate(0deg); }
       to { transform: translateY(-50%) rotate(360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .identity-mark.in { animation: none; transform: translateY(-50%); }
     }
 
     /* Type block, flush left, vertically centered. */
@@ -1388,6 +1407,8 @@
       <p class="hero-sub" id="hero-sub">Dirt · Dream · Reach</p>
     </div>
 
+    <div class="hero-credit"><span>Motion</span> by <b>AID</b> <i>/</i> design partner</div>
+
   </section>
 
   <section class="identity" id="identity" aria-label="Online identity">
@@ -1396,7 +1417,7 @@
       <span class="glitch-text identity-online" data-text="ONLINE">ONLINE</span>
       <span class="glitch-text identity-hl" data-text="IDENTITY">IDENTITY</span>
     </h2>
-    <p class="identity-sub"><b>Photography</b><i>/</i><b>Video</b><i>/</i><b>Content</b><br>The views that make your brand look like itself.</p>
+    <p class="identity-sub"><b>Build</b><i>/</i><b>Launch</b><i>/</i><b>Own</b><br>We engineer the place your brand lives online.</p>
   </section>
 
   <section class="build" aria-label="What we build">
