@@ -641,12 +641,16 @@ function buildSound() {
 function setSound(on) {
   soundOn = on; soundAsked = true; $('sound').textContent = on ? 'SOUND ON' : 'SOUND OFF';
   if (on && !snd) { try { snd = buildSound(); } catch (e) { console.warn('audio unavailable', e); soundOn = false; return; } }
-  snd?.ctx.resume();
+  if (snd) { snd.ctx.resume(); if (on) snd.master.gain.setValueAtTime(0.55, snd.ctx.currentTime); }
 }
-$('sound').addEventListener('click', () => setSound(!soundOn));
+// Sound is ON by default. Browsers keep audio locked until a gesture, so the engine is synthesised up front (suspended) while the model loads;
+// the first touch / click / key then only has to resume it — no heavy work at that moment, so the start is not lost.
+soundOn = true; soundAsked = true;
+setTimeout(() => { try { snd = buildSound(); } catch (e) { console.warn('audio unavailable', e); snd = null; soundOn = false; $('sound').textContent = 'SOUND OFF'; } }, 60);
+$('sound').addEventListener('click', () => { if (snd && soundOn && snd.ctx.state !== 'running') { snd.ctx.resume(); return; } setSound(!soundOn); });
 // first time the visitor presses accelerate (a user gesture) the engine comes on; the SOUND button mutes it
-const firstGo = () => { if (!soundAsked) setSound(true); else if (snd && soundOn && snd.ctx.state !== 'running') snd.ctx.resume(); };
-for (const ev of ['pointerdown', 'keydown', 'touchstart']) addEventListener(ev, (e) => { if (e.target && e.target.id === 'sound') return; firstGo(); }, { passive: true });   // any first interaction wakes the engine (browsers need a gesture)
+const firstGo = () => { if (snd && soundOn && snd.ctx.state !== 'running') snd.ctx.resume(); };
+for (const ev of ['pointerdown', 'pointerup', 'keydown', 'touchstart', 'touchend', 'click']) addEventListener(ev, (e) => { if (e.target && e.target.id === 'sound') return; firstGo(); }, { passive: true });   // any first interaction wakes the engine (browsers need a gesture)
 function updateSound(dt, t) {
   if (!snd) return; const c = snd.ctx, T = c.currentTime, tc = 0.04;
   snd.master.gain.setTargetAtTime(soundOn ? 0.55 : 0, T, 0.08);

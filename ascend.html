@@ -60,21 +60,26 @@
       text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6);
     }
 
+    /* Text-only controls, Anton like the rest of EVRABO: red underline on hover */
     .btn {
-      padding: 9px 16px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
+      position: relative;
+      padding: .5rem 0;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(.9rem, 1.3vw, 1.15rem);
+      letter-spacing: 0.3em;
       text-transform: uppercase;
       color: var(--white);
-      background: rgba(5, 5, 5, 0.35);
-      border: 1px solid rgba(240, 240, 240, 0.45);
+      background: none;
+      border: 0;
+      opacity: .75;
       cursor: pointer;
       text-decoration: none;
-      clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6);
+      transition: opacity .25s, color .25s;
     }
-
-    .btn:hover { background: var(--white); color: var(--black); }
+    .btn::after { content: ''; position: absolute; left: 0; right: .3em; bottom: 0; height: 2px; background: #e0271a; transform: scaleX(0); transform-origin: left; transition: transform .35s cubic-bezier(.16, 1, .3, 1); }
+    .btn:hover { opacity: 1; }
+    .btn:hover::after { transform: scaleX(1); }
     .btn:focus-visible, .home:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
 
     /* The words: one beat at a time, hard cut, with a punch on every entry */
@@ -148,7 +153,7 @@
       text-transform: uppercase;
     }
 
-    .gate small { font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.6; }
+    .gate small { font-family: 'Anton', sans-serif; font-size: 0.9rem; letter-spacing: 0.4em; text-transform: uppercase; opacity: 0.6; }
 
     /* After the film */
     .after {
@@ -158,7 +163,7 @@
       bottom: max(5vh, env(safe-area-inset-bottom));
       display: none;
       justify-content: center;
-      gap: 1rem;
+      gap: 3rem;
     }
 
     .after.show { display: flex; }
@@ -169,7 +174,7 @@
 </head>
 <body>
   <div class="flash" id="flash"></div>
-  <video class="film" id="film" src="assets/videos/EVRABO_hero.mp4" poster="assets/images/ascend-poster.jpg" playsinline preload="auto"></video>
+  <video class="film" id="film" src="assets/videos/EVRABO_film_web.mp4" poster="assets/images/ascend-poster.jpg" playsinline preload="auto"></video>
 
   <div class="words" aria-live="off"><div class="word" id="word"></div></div>
 

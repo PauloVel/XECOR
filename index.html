@@ -1392,7 +1392,7 @@
       To swap: edit your montage into one .mp4 and replace the src below.
     -->
     <div class="hero-video-stack">
-      <video class="hero-video-bg" muted loop playsinline preload="none" poster="assets/images/hero-poster.jpg" data-src="assets/videos/EVRABO_hero.mp4"></video>
+      <video class="hero-video-bg" muted loop playsinline preload="none" poster="assets/images/hero-poster.jpg" data-src="assets/videos/EVRABO_hero_web.mp4"></video>
     </div>
 
     <div class="hero-vignette"></div>
@@ -1596,9 +1596,10 @@
       const lite = conn.saveData || /(^|-)2g$/.test(conn.effectiveType || '') ||
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!src || lite) return;
-      const start = () => { heroVideo.src = src; heroVideo.play().catch(() => {}); };
-      if (document.readyState === 'complete') start();
-      else window.addEventListener('load', () => setTimeout(start, 300));
+      // faststart 15 MB encode: begin right away (during the EVRABO loader) so it never sits frozen on the poster
+      heroVideo.preload = 'auto';
+      heroVideo.src = src;
+      heroVideo.play().catch(() => {});
     })();
     const heroKicker = document.getElementById('hero-kicker');
     const heroHeadline = document.getElementById('hero-headline');
