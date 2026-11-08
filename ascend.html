@@ -174,7 +174,7 @@
 </head>
 <body>
   <div class="flash" id="flash"></div>
-  <video class="film" id="film" src="assets/videos/EVRABO_film_web.mp4" poster="assets/images/ascend-poster.jpg" playsinline preload="auto"></video>
+  <video class="film" id="film" src="assets/videos/EVRABO_film_web.mp4?v=2" poster="assets/images/ascend-poster.jpg" playsinline preload="auto"></video>
 
   <div class="words" aria-live="off"><div class="word" id="word"></div></div>
 
@@ -195,8 +195,8 @@
 
   <script>
     // Beats: each line chains into the next, so the film reads as one sentence.
-    // The words stop at STOP, because the film carries its own words from there.
-    var STOP = 52;
+    // The words stop at STOP, because the film cuts to its own EVRABO logo from there.
+    var STOP = 40.8;
     var CUES = [
       [2.0, 'No one'], [3.2, 'Gave us'], [4.4, 'A seat.'],
       [6.0, 'So we'], [7.2, 'Built'], [8.4, 'The table.'],
@@ -205,10 +205,7 @@
       [21.2, 'They said'], [22.6, 'Wait.'], [24.0, 'We said'], [25.4, 'No.'],
       [27.0, 'No fear.'], [28.6, 'No brakes.'], [30.2, 'No permission.'],
       [32.2, 'Faster'], [33.4, 'Than doubt.'], [35.2, 'Louder'], [36.4, 'Than noise.'],
-      [38.2, 'Every move'], [39.8, 'Is a signal.'],
-      [41.8, 'Watch'], [43.0, 'Closer.'],
-      [44.8, "This isn't"], [46.0, 'A brand.'], [47.4, "It's a climb."],
-      [49.4, 'Go'], [50.4, 'Get it.']
+      [38.2, 'Every move'], [39.8, 'Is a signal.']
     ];
 
     var film = document.getElementById('film');

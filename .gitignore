@@ -8,3 +8,6 @@ assets/Video_EntradaCelular.mp4
 # local-only large originals (the site uses the web versions)
 assets/videos/EVRABO_hero.mov
 assets/videos/DHMEX.mp4
+
+# obsolete / unreferenced files, kept locally only (not deployed)
+_obsolete/
