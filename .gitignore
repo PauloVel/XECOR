@@ -11,3 +11,7 @@ assets/videos/DHMEX.mp4
 
 # obsolete / unreferenced files, kept locally only (not deployed)
 _obsolete/
+
+# raw HEVC originals of the story clips (the site uses the -web.mp4 encodes)
+assets/videos/Aedwards.mp4
+assets/videos/Racing.mp4

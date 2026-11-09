@@ -301,6 +301,10 @@
       transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
+    /* AID: the A mark sits whole in the card instead of being cropped to fill it */
+    .project-visual img.aid-mark { object-fit: contain; padding: 12vh 6vw; filter: none; opacity: 0.9; }
+    .project-card:hover .project-visual img.aid-mark { filter: none; opacity: 1; transform: scale(1.04); }
+
     .project-card:hover .project-visual img {
       filter: grayscale(0%) contrast(1.15) brightness(0.55);
       transform: scale(1.06);
@@ -1171,7 +1175,7 @@
       <div class="project-card" id="aid-card">
         <div class="project-visual">
           <span class="project-year">2025</span>
-          <img src="assets\Originals\AID_LOGO.png" alt="AID Abrasive Shorts">
+          <img class="aid-mark" src="assets/Originals/aid-mark.png" alt="AID">
         </div>
         <div class="project-info">
           <div class="project-category">Online Store</div>
