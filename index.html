@@ -705,28 +705,6 @@
     html.story .stage { height: var(--h, 400vh); }
     html.story .pin { position: sticky; top: 0; height: 100vh; height: 100svh; min-height: 0; }
 
-    /* 1. Opener: the night road plays INSIDE the letters of BUILD, the letters flip upright, then we fall into the I.
-          The white sheet with letter-shaped holes is drawn on one canvas (vector, always sharp), laid over the video
-          with plain alpha: no blend modes, no giant scaled DOM text. */
-    .s-open { --h: 520vh; background: #fff; color: #000; }
-    .open-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
-    .open-cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; will-change: opacity; }
-    .open-fb { display: none; }
-    .open-words { position: absolute; inset: 0; pointer-events: none; }
-    .ow {
-      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center;
-      font-family: 'Anton', sans-serif; text-transform: uppercase; color: #fff; line-height: 0.88;
-      font-size: clamp(3.6rem, 13.5vw, 14rem); padding: 0 4vw; opacity: 0; will-change: transform, opacity;
-      text-shadow: 0 6px 50px rgba(0, 0, 0, 0.55);
-    }
-    html:not(.story) .s-open { background: #000; color: #fff; }
-    html:not(.story) .open-cv, html:not(.story) .open-words { display: none; }
-    html:not(.story) .open-video { opacity: 0.6; }
-    html:not(.story) .open-fb {
-      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-      font-family: 'Anton', sans-serif; font-size: min(34vw, 66vh); text-transform: uppercase; color: #fff;
-    }
-
     /* 2. The build: a site goes from sketch to live while you scroll */
     .s-build { --h: 760vh; background: var(--black); --bp: 1; }
     .build-pin {
@@ -837,7 +815,30 @@
     html:not(.story) .cv { position: relative; width: auto; height: auto; padding: 14vh 4vw; display: grid; gap: 8vh; }
     html:not(.story) .abw { position: relative; left: auto; top: auto; width: 100%; max-width: 900px; margin: 0 auto; }
     html:not(.story) .cv-words, html:not(.story) .cv-grid { display: none; }
-    @media (max-width: 700px) { .s-all { --u: 1.4vw; } }
+    .ab-line { display: none; }
+    /* Phones: no camera. Each artboard is a plain block in a vertical list, full width, with its own line under it. */
+    @media (max-width: 700px) {
+      html.story .stage.s-all { height: auto; }
+      html.story .s-all .pin { position: relative; height: auto; min-height: 0; overflow: visible; }
+      html.story .s-all .cv { position: relative; width: auto; height: auto; padding: 14vh 5vw 10vh; display: grid; gap: 11vh; transform: none !important; }
+      html.story .s-all .cv > .abw { position: relative; left: auto !important; top: auto !important; width: 100%; }
+      .cv-grid, .cv-words { display: none; }
+      .ab-tag { font-size: 0.72rem; letter-spacing: 0.2em; gap: 0.7em; margin-bottom: 0.9rem; white-space: nowrap; }
+      .ab-tag a { letter-spacing: 0.1em; }
+      .ab { aspect-ratio: 4 / 5; box-shadow: none; }
+      .ab-bar { font-size: 0.6rem; }
+      .ab-line { display: block; margin: 1.1rem 0 0; font-family: 'Anton', sans-serif; font-size: clamp(1.6rem, 8vw, 2.4rem); letter-spacing: 0.05em; text-transform: uppercase; line-height: 1; }
+      .ab-in.mock { --q: 2cqw; }
+      .sh-grid { padding: 4cqw 8cqw; gap: 4cqw; }
+      .sh-nav span { display: none; }
+      .tl { grid-template-columns: 1fr; }
+      .tl-side { display: none; }
+      /* these must out-rank the base .id-grid / .id-p rules, which are declared further down the file */
+      .s-all .id-grid { grid-template-columns: 1fr; grid-template-rows: repeat(3, 1fr); }
+      .s-all .id-p:nth-child(1) img { width: auto; height: 62%; max-height: none; max-width: 70%; }
+      .s-all .id-p:nth-child(2) img { width: 96%; height: auto; max-height: none; }
+      .s-all .id-p .kado span { font-size: clamp(2.6rem, 13vw, 4.5rem); }
+    }
 
     /* 3b. AID (design partner): full-screen chapters that stack as you scroll.
        One image or film per chapter, one word. Only transform and opacity change. */
@@ -860,6 +861,36 @@
     .all-link:hover { border-color: var(--red); color: var(--red); }
     .all-link svg { width: 1em; height: 1em; }
     /* identity: three real brands, three panels */
+    /* Mini product mocks inside the "What we build" frames; sizes follow the frame width (cqw). */
+    .ab-in.mock { --q: 1cqw; container-type: size; background: #0b0b0b; }
+    .sh { position: absolute; inset: 0; display: flex; flex-direction: column; font-size: calc(2.2 * var(--q)); color: #f0f0f0; font-family: 'Space Grotesk', sans-serif; }
+    .sh-nav { display: flex; align-items: center; gap: calc(3 * var(--q)); padding: calc(2 * var(--q)) calc(4 * var(--q)); border-bottom: 1px solid rgba(240, 240, 240, 0.15); letter-spacing: 0.15em; text-transform: uppercase; font-size: calc(1.8 * var(--q)); }
+    .sh-nav b { font-family: 'Anton', sans-serif; font-size: calc(3.2 * var(--q)); letter-spacing: 0.1em; margin-right: auto; font-weight: 400; }
+    .sh-nav em { font-style: normal; border: 1px solid rgba(240, 240, 240, 0.5); padding: calc(0.5 * var(--q)) calc(1.6 * var(--q)); }
+    .sh-grid { flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: calc(3 * var(--q)); padding: calc(3 * var(--q)) calc(12 * var(--q)); min-height: 0; }
+    .sh-p { display: flex; flex-direction: column; gap: calc(1.2 * var(--q)); min-height: 0; }
+    .sh-p img { flex: 1; min-height: 0; width: 100%; object-fit: cover; }
+    .sh-p > div { display: flex; justify-content: space-between; font-size: calc(1.9 * var(--q)); letter-spacing: 0.08em; text-transform: uppercase; }
+    .sh-p > div span { opacity: 0.65; }
+    .sh-p u { text-decoration: none; text-align: center; background: #f0f0f0; color: #000; padding: calc(1 * var(--q)) 0; font-size: calc(1.7 * var(--q)); letter-spacing: 0.2em; text-transform: uppercase; }
+    .tl { position: absolute; inset: 0; display: grid; grid-template-columns: 22% 1fr; font-size: calc(2 * var(--q)); color: #f0f0f0; font-family: 'Space Grotesk', sans-serif; }
+    .tl-side { display: flex; flex-direction: column; gap: calc(1.4 * var(--q)); padding: calc(3 * var(--q)) calc(2.4 * var(--q)); border-right: 1px solid rgba(240, 240, 240, 0.15); background: #101010; text-transform: uppercase; letter-spacing: 0.15em; font-size: calc(1.7 * var(--q)); }
+    .tl-side b { font-family: 'Anton', sans-serif; font-size: calc(3 * var(--q)); font-weight: 400; letter-spacing: 0.08em; margin-bottom: calc(2 * var(--q)); }
+    .tl-side span { opacity: 0.5; padding: calc(1 * var(--q)) calc(1.2 * var(--q)); }
+    .tl-side span.on { opacity: 1; background: #f0f0f0; color: #000; }
+    .tl-main { display: flex; flex-direction: column; gap: calc(2.4 * var(--q)); padding: calc(3 * var(--q)); min-width: 0; }
+    .tl-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(2 * var(--q)); }
+    .tl-stats div { border: 1px solid rgba(240, 240, 240, 0.2); padding: calc(1.6 * var(--q)) calc(2 * var(--q)); display: flex; flex-direction: column; gap: calc(0.6 * var(--q)); }
+    .tl-stats em { font-style: normal; font-family: 'Anton', sans-serif; font-size: calc(4.6 * var(--q)); line-height: 1; }
+    .tl-stats small { font-size: calc(1.5 * var(--q)); letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.55; }
+    .tl-chart { flex: 1; min-height: 0; display: flex; align-items: flex-end; gap: calc(1.6 * var(--q)); border-bottom: 1px solid rgba(240, 240, 240, 0.25); }
+    .tl-chart i { flex: 1; height: var(--h); background: rgba(240, 240, 240, 0.28); }
+    .tl-chart i.hot { background: var(--red); }
+    .tl-rows { display: grid; gap: calc(1 * var(--q)); }
+    .tl-rows div { display: flex; align-items: center; gap: calc(2 * var(--q)); border: 1px solid rgba(240, 240, 240, 0.15); padding: calc(0.9 * var(--q)) calc(1.6 * var(--q)); }
+    .tl-rows span { flex: 1; height: calc(0.9 * var(--q)); background: rgba(240, 240, 240, 0.25); }
+    .tl-rows b { font-weight: 400; font-size: calc(1.5 * var(--q)); letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; }
+
     .id-grid { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: #000; }
     .id-p { position: relative; overflow: hidden; background: #0b0b0b; will-change: transform; }
     .id-p .bg { position: absolute; left: 0; right: 0; top: -6%; bottom: -6%; background: var(--bg) var(--pos, center) / cover no-repeat; filter: brightness(0.7) saturate(1.05); }
@@ -950,21 +981,7 @@
   </section>
 
   <!-- 1. OPENER -->
-  <section class="stage s-open" id="open" aria-label="Build">
-    <h2 class="sr-only">We build</h2>
-    <div class="pin">
-      <video class="open-video" muted loop playsinline preload="none" poster="assets/images/racing-poster.jpg" aria-hidden="true" data-src="assets/videos/Racing-web.mp4"></video>
-      <canvas class="open-cv" aria-hidden="true"></canvas>
-      <div class="open-fb" aria-hidden="true">Build</div>
-      <div class="open-words" aria-hidden="true">
-        <div class="ow">Every brand<br>starts in the dark</div>
-        <div class="ow">No site. No shop.<br>No proof.</div>
-        <div class="ow">We build<br>the first light</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 2. THE BUILD -->
+<!-- 2. THE BUILD -->
   <section class="stage s-build" id="build" aria-label="How a site gets built">
     <h2 class="sr-only">Sketch, design, code, launch</h2>
     <div class="pin build-pin">
@@ -1008,7 +1025,7 @@ $ npm run build
 $ deploy --prod
   <u>live</u></pre><span class="cb-bar"><i></i></span></div>
           </div>
-          <div class="lay lay-live"><video muted loop playsinline preload="none" poster="assets/images/dhmex-poster.jpg" data-src="assets/videos/DHMEX-web.mp4"></video></div>
+          <div class="lay lay-live"><video muted loop playsinline preload="none" poster="assets/images/build-live-poster.jpg" data-src="assets/videos/Build-live-film.mp4"></video></div>
         </div>
       </div>
       <div class="bs-tag" aria-hidden="true">Live</div>
@@ -1028,18 +1045,35 @@ $ deploy --prod
             <div class="id-p"><div class="bg" style="--bg: url('assets/Originals/ProtoBike_mtb.jpg'); --pos: 72% center;"></div><img src="assets/Originals/ProtoBike_white.png" alt="Protobike" loading="lazy" decoding="async" style="mix-blend-mode:screen"></div>
             <div class="id-p"><div class="bg" style="--bg: url('assets/Originals/Kado_sand.jpg');"></div><div class="kado"><span>Kado</span><small>カド</small></div></div>
           </div></div>
+          <p class="ab-line">A name. A mark. A voice.</p>
         </div>
         <div class="abw" style="--x:82;--y:10">
-          <div class="ab-tag"><b>02</b><span>Websites</span><a href="https://leonardou-lab.github.io/WEB-DOWNHILL_03/index.html" target="_blank" rel="noopener noreferrer">Downhill Mexico<svg viewBox="0 0 24 24" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.1em;margin-left:0.4em"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg></a></div>
-          <div class="ab"><div class="ab-bar"><i></i><i></i><i></i><span>downhillmexico</span></div><div class="ab-in"><video muted loop playsinline preload="none" poster="assets/images/dhmex-poster.jpg" data-src="assets/videos/DHMEX-web.mp4"></video></div></div>
+          <div class="ab-tag"><b>02</b><span>Websites</span><a href="lambo/index.html">Open the 3D showroom<svg viewBox="0 0 24 24" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.1em;margin-left:0.4em"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg></a></div>
+          <div class="ab"><div class="ab-bar"><i></i><i></i><i></i><span>3d showroom</span></div><div class="ab-in"><img src="assets/images/lambo-app.jpg" alt="" loading="lazy" decoding="async" style="object-position:30% center"></div></div>
+          <p class="ab-line">Built to be remembered</p>
         </div>
         <div class="abw" style="--x:10;--y:59.5">
           <div class="ab-tag"><b>03</b><span>Shops</span><a href="https://aid-branding.myshopify.com/" target="_blank" rel="noopener noreferrer">AID Store<svg viewBox="0 0 24 24" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.1em;margin-left:0.4em"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg></a></div>
-          <div class="ab"><div class="ab-bar"><i></i><i></i><i></i><span>aid-branding.myshopify.com</span></div><div class="ab-in"><img src="assets/images/shop-store.jpg" alt="" loading="lazy" decoding="async"></div></div>
+          <div class="ab"><div class="ab-bar"><i></i><i></i><i></i><span>aid-branding.myshopify.com</span></div><div class="ab-in mock"><div class="sh">
+            <div class="sh-nav"><b>AID</b><span>Shop</span><span>Posters</span><span>Apparel</span><em>Cart (1)</em></div>
+            <div class="sh-grid">
+              <div class="sh-p"><img src="assets/images/shop/VolcanYEmpapelado.jpg" alt="" loading="lazy" decoding="async"><div><b>Volcano Poster</b><span>$45</span></div><u>Add to cart</u></div>
+              <div class="sh-p"><img src="assets/Originals/Montain.jpg" alt="" loading="lazy" decoding="async"><div><b>Few of Us</b><span>$38</span></div><u>Add to cart</u></div>
+            </div>
+          </div></div></div>
+          <p class="ab-line">Built to sell</p>
         </div>
         <div class="abw" style="--x:82;--y:59.5">
-          <div class="ab-tag"><b>04</b><span>Apps &amp; Tools</span><a href="lambo/index.html">Open the 3D showroom<svg viewBox="0 0 24 24" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.1em;margin-left:0.4em"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg></a></div>
-          <div class="ab"><div class="ab-bar"><i></i><i></i><i></i><span>3d showroom</span></div><div class="ab-in"><img src="assets/images/lambo-app.jpg" alt="" loading="lazy" decoding="async" style="object-position:30% center"></div></div>
+          <div class="ab-tag"><b>04</b><span>Apps &amp; Tools</span></div>
+          <div class="ab"><div class="ab-bar"><i></i><i></i><i></i><span>yourbrand.app/dashboard</span></div><div class="ab-in mock"><div class="tl">
+            <div class="tl-side"><b>Yourbrand</b><span class="on">Orders</span><span>Stock</span><span>Clients</span><span>Reports</span></div>
+            <div class="tl-main">
+              <div class="tl-stats"><div><em>128</em><small>Orders today</small></div><div><em>$9.4k</em><small>Revenue</small></div><div><em>12</em><small>Low stock</small></div></div>
+              <div class="tl-chart"><i style="--h:35%"></i><i style="--h:52%"></i><i style="--h:44%"></i><i style="--h:70%"></i><i style="--h:58%"></i><i style="--h:84%"></i><i class="hot" style="--h:96%"></i></div>
+              <div class="tl-rows"><div><span></span><b>Paid</b></div><div><span></span><b>Packed</b></div><div><span></span><b>Shipped</b></div></div>
+            </div>
+          </div></div></div>
+          <p class="ab-line">Built to be used daily</p>
         </div>
       </div>
       <div class="bs-words cv-words" aria-hidden="true">
@@ -1334,66 +1368,10 @@ $ deploy --prod
         if (en.isIntersecting && v.dataset.src && !v.getAttribute('src')) { v.preload = 'auto'; v.src = v.dataset.src; }
         if (en.isIntersecting && !v.closest('.s-build')) v.play().catch(() => {}); else if (!en.isIntersecting) v.pause();
       }), { rootMargin: '60% 0px' });
-      document.querySelectorAll('.s-open video, .s-build video, .s-offer video').forEach((v) => vio.observe(v));
+      document.querySelectorAll('.s-build video, .s-offer video').forEach((v) => vio.observe(v));
 
-      addEventListener('load', () => setTimeout(() => { const v = document.querySelector('.open-video'); if (v && !v.getAttribute('src')) { v.preload = 'auto'; v.src = v.dataset.src; } }, 1200));
       const stages = [];
       const add = (el, update, resize) => stages.push({ el, update, resize, p: -1 });
-
-      // ---- 1. Opener
-      (function () {
-        const el = document.getElementById('open'); if (!el) return;
-        const cv = el.querySelector('.open-cv'), ctx = cv.getContext('2d'), ows = [...el.querySelectorAll('.ow')];
-        const root = document.documentElement, WORD = 'BUILD', ZI = 2;
-        const op = (n, v) => { v = +v.toFixed(3); if (n._o !== v) { n._o = v; n.style.opacity = v; } };
-        const tf = (n, v) => { if (n._t !== v) { n._t = v; n.style.transform = v; } };
-        let vw = 0, vh = 0, dpr = 1, fs = 0, capH = 0, widths = [], xs = [], S = 20, lastP = 0;
-        const measure = () => {
-          dpr = Math.min(window.devicePixelRatio || 1, 1.5); vw = innerWidth; vh = innerHeight;
-          cv.width = Math.round(vw * dpr); cv.height = Math.round(vh * dpr);
-          fs = Math.min(vw * 0.34, vh * 0.66);
-          ctx.font = fs + 'px Anton, sans-serif';
-          capH = ctx.measureText('B').actualBoundingBoxAscent || fs * 0.73;
-          widths = [...WORD].map((c) => ctx.measureText(c).width);
-          const total = widths.reduce((a, b) => a + b, 0); let x = (vw - total) / 2;
-          xs = widths.map((w) => { const c = x + w / 2; x += w; return c; });
-          S = Math.max(vw / (widths[ZI] * 0.6), vh / capH) * 1.3;
-          draw(lastP);
-        };
-        const draw = (p) => {
-          lastP = p;
-          const fade = 1 - seg(p, 0.58, 0.67);
-          op(cv, fade);
-          if (fade <= 0) return;
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          ctx.globalCompositeOperation = 'source-over';
-          ctx.clearRect(0, 0, vw, vh);
-          ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, vw, vh);
-          ctx.globalCompositeOperation = 'destination-out';
-          ctx.fillStyle = '#000'; ctx.font = fs + 'px Anton, sans-serif'; ctx.textBaseline = 'alphabetic';
-          const z = seg(p, 0.40, 0.66), sc = Math.exp(Math.log(S) * easeIn(z)), cy = vh / 2;
-          ctx.save();
-          ctx.translate(xs[ZI], cy); ctx.scale(sc, sc); ctx.translate(-xs[ZI], -cy);
-          [...WORD].forEach((ch, i) => {
-            const a = 0.02 + i * 0.045, t = easeOut(seg(p, a, a + 0.17)), sy = Math.cos(Math.PI * (1 - t));
-            if (Math.abs(sy) < 0.015) return;
-            ctx.save(); ctx.translate(xs[i], cy); ctx.scale(1, sy);
-            ctx.fillText(ch, -widths[i] / 2, capH / 2); ctx.restore();
-          });
-          ctx.restore();
-        };
-        const W = [[0.67, 0.78], [0.78, 0.89], [0.89, 1.02]];
-        add(el, (p) => {
-          draw(p);
-          ows.forEach((w, i) => {
-            const a = W[i][0], b = W[i][1], last = i === ows.length - 1;
-            const tin = easeOut(seg(p, a, a + 0.04)), tout = last ? 0 : seg(p, b - 0.03, b);
-            op(w, p < a ? 0 : tin * (1 - tout));
-            tf(w, 'perspective(1100px) rotateX(' + ((1 - tin) * -95 + tout * 95).toFixed(1) + 'deg)');
-          });
-        }, measure);
-        measure();
-      })();
 
       // ---- 2. The build (layers crossfade; only opacity/transform change per frame)
       (function () {
@@ -1475,18 +1453,21 @@ $ deploy --prod
       (function () {
         const el = document.getElementById('all'); if (!el) return;
         const cv = el.querySelector('.cv'), words = [...el.querySelectorAll('.bs-word')], vid = el.querySelector('.cv video');
-        let u = 0, vx = 0, vy = 0, sO = 0.6, C = {}, step = -1, vidOn = null;
+        let u = 0, vx = 0, vy = 0, sO = 0.6, C = {}, step = -1, vidOn = null, mob = false;
         const tf = (n, v) => { if (n._t !== v) { n._t = v; n.style.transform = v; } };
         const io = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
         const measure = () => {
-          u = innerWidth * (innerWidth <= 700 ? 0.014 : 0.01); vx = innerWidth / 2; vy = innerHeight * 0.43;
+          u = innerWidth * (innerWidth <= 700 ? 0.014 : 0.01); vx = innerWidth / 2; vy = innerHeight * (innerWidth <= 700 ? 0.4 : 0.43);
           const cx = 40, cy = 28.75; // artboard centres in canvas units: A, B, C, D, overview
-          C = { A: [40, 28.75], B: [112, 28.75], C: [40, 78.25], D: [112, 78.25], O: [76, 53.5] };
-          sO = Math.min(innerWidth * 0.92 / (132 * u), innerHeight * 0.8 / (88 * u));
+          mob = innerWidth <= 700;
+          C = mob ? { A: [40, 47.3], B: [40, 137.3], C: [40, 227.3], D: [40, 317.3], O: [40, 317.3] }
+                  : { A: [40, 28.75], B: [112, 28.75], C: [40, 78.25], D: [112, 78.25], O: [76, 53.5] };
+          sO = mob ? 1 : Math.min(innerWidth * 0.92 / (132 * u), innerHeight * 0.8 / (88 * u));
         };
         // keyframes: where the camera rests (p), which artboard (or overview), and whether the move between dips (zooms out mid-way)
         const K = [[0, 'A'], [0.14, 'A'], [0.30, 'B'], [0.42, 'B'], [0.58, 'C'], [0.70, 'C'], [0.84, 'D'], [0.90, 'D'], [1, 'O']];
         add(el, (p) => {
+          if (innerWidth <= 700) { tf(cv, 'none'); return; }
           let i = 0; while (i < K.length - 2 && p > K[i + 1][0]) i++;
           const a = K[i], b = K[i + 1], t = io(seg(p, a[0], b[0]));
           const sa = a[1] === 'O' ? sO : 1, sb = b[1] === 'O' ? sO : 1;
@@ -1496,8 +1477,8 @@ $ deploy --prod
           tf(cv, 'translate3d(' + (vx - x * u * s).toFixed(1) + 'px,' + (vy - y * u * s).toFixed(1) + 'px,0) scale(' + s.toFixed(4) + ')');
           const w = p < 0.22 ? 0 : p < 0.5 ? 1 : p < 0.77 ? 2 : p < 0.945 ? 3 : 4;
           if (w !== step) { step = w; words.forEach((n, k) => { n.classList.toggle('on', k === w); n.classList.toggle('past', k < w); }); }
-          const on = p > 0.1 && p < 0.58;
-          if (on !== vidOn) { vidOn = on; if (on) { if (!vid.getAttribute('src')) { vid.preload = 'auto'; vid.src = vid.dataset.src; } vid.play().catch(() => {}); } else vid.pause(); }
+          const on = !!vid && p > 0.1 && p < 0.58;
+          if (vid && on !== vidOn) { vidOn = on; if (on) { if (!vid.getAttribute('src')) { vid.preload = 'auto'; vid.src = vid.dataset.src; } vid.play().catch(() => {}); } else vid.pause(); }
         }, measure);
         measure();
       })();

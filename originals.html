@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="assets/fonts/anton.css">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
   <style>
     html { font-variant-emoji: text; }
     *, *::before, *::after {
@@ -1115,6 +1116,108 @@
         font-size: 0.65rem;
       }
     }
+
+
+    /* ===== Originals scrollytelling (html.story: JS on, motion not reduced) =====
+       0. Title: the ORIGINALS letters play the Downhill Mexico film, flip upright, then we zoom through the I into project 01.
+       1. Each project is a pinned scene built from its own media:
+          film (Downhill Mexico): full-bleed footage shrinks into the website window;
+          reel (AID Store): products travel sideways in 3D;
+          bottles (Profondo): the room takes each bottle's colour.
+       2. In the oven: panels light up as they reach the middle of the screen. */
+    html.story, html.story body { overflow-x: clip; }
+    html.story .projects { padding: 10vh 0 0; }
+    html.story .projects-header { padding: 0 4vw; }
+    html.story .projects-grid { gap: 0; }
+    html.story .project-card { height: 320vh; overflow: visible; cursor: default; }
+    html.story .pc-pin { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: var(--black); }
+    html.story .project-visual { display: none; }
+    html.story .project-card .project-info { position: absolute; z-index: 6; top: 50%; bottom: auto; translate: 0 -50%; text-align: left; align-items: flex-start; }
+    html.story .project-card .project-btn-group { justify-content: flex-start; align-self: flex-start; }
+    html.story .project-card .project-name::after { margin-left: 0; }
+    html.story .project-card .project-info > * { will-change: transform, opacity; }
+    html.story .project-card.is-bottles { height: 200vh; }
+    html.story .project-card.is-film .project-info { left: auto; right: 5vw; width: 40vw; max-width: none; }
+    html.story .project-card.is-reel .project-info,
+    html.story .project-card.is-bottles .project-info { left: 5vw; right: auto; max-width: 30vw; }
+    html.story .project-card.is-reel .project-info::before {
+      content: ''; position: absolute; z-index: -1; left: -5vw; top: -30vh; bottom: -30vh; width: 44vw;
+      background: linear-gradient(90deg, rgba(5, 5, 5, 0.94) 0%, rgba(5, 5, 5, 0.75) 60%, transparent 100%);
+    }
+    .pc-year { position: absolute; z-index: 6; top: 3.2rem; right: 2rem; font-size: 0.8rem; letter-spacing: 0.2em; opacity: 0.5; }
+    .pc-count { position: absolute; z-index: 6; left: 5vw; top: 3.2rem; display: flex; align-items: center; gap: 1rem; font-size: 0.7rem; letter-spacing: 0.3em; pointer-events: none; }
+    .pc-count i { display: block; width: 10vw; height: 2px; background: rgba(240, 240, 240, 0.25); overflow: hidden; }
+    .pc-count b { display: block; height: 100%; background: var(--red); transform-origin: 0 50%; transform: scaleX(0); }
+    .sc { position: absolute; inset: 0; cursor: pointer; }
+
+    /* film */
+    .sc-grid { position: absolute; inset: 0; opacity: 0.5; background-image: linear-gradient(rgba(240,240,240,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(240,240,240,0.06) 1px, transparent 1px); background-size: 6vw 6vw; }
+    .sc-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; will-change: clip-path; }
+    .sc-frame { position: absolute; border: 1px solid rgba(240, 240, 240, 0.5); pointer-events: none; opacity: 0; box-shadow: 0 2vw 8vw rgba(0, 0, 0, 0.6); }
+    .sc-bar { position: absolute; left: 0; right: 0; top: 0; height: 2.4rem; display: flex; align-items: center; gap: 0.45rem; padding: 0 1rem; background: rgba(16, 16, 16, 0.92); border-bottom: 1px solid rgba(240, 240, 240, 0.2); font-size: 0.65rem; letter-spacing: 0.1em; color: rgba(240, 240, 240, 0.7); }
+    .sc-bar i { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: rgba(240, 240, 240, 0.3); }
+    .sc-bar span { margin-left: 0.8rem; }
+    .sc-big { position: absolute; left: 5vw; bottom: 9vh; font-family: 'Anton', sans-serif; text-transform: uppercase; line-height: 0.88; font-size: clamp(3.6rem, 12vw, 13rem); text-shadow: 0 0.4vw 4vw rgba(0, 0, 0, 0.6); will-change: transform, opacity; pointer-events: none; }
+
+    /* Scene 01 goes stark: the screen flips to white, the film sits in a hard black frame. */
+    .sc-paper { position: absolute; inset: 0; background: #fff; opacity: 0; will-change: opacity; }
+    .sc-film .sc-vid { filter: contrast(1.18) saturate(1.1); }
+    .sc-film .sc-frame { border: 4px solid #000; box-shadow: 1.2vw 1.2vw 0 #000; }
+    .sc-film .sc-bar { background: #000; color: #fff; height: 2.6rem; }
+    .sc-film .sc-bar i { background: rgba(255, 255, 255, 0.5); }
+    .pc-pin.paper .project-name, .pc-pin.paper .project-desc, .pc-pin.paper .pc-count, .pc-pin.paper .pc-year { color: #000; }
+    .pc-pin.paper .project-desc { opacity: 0.8; }
+    .pc-pin.paper .pc-year { opacity: 1; }
+    .pc-pin.paper .pc-count i { background: rgba(0, 0, 0, 0.2); }
+    .pc-pin.paper .project-btn { border-color: #000; color: #000; }
+    .pc-pin.paper .project-btn::before { background: #000; }
+    .pc-pin.paper .project-btn:hover { color: #fff; }
+
+    /* reel */
+    .sc-persp { position: absolute; inset: 0; display: flex; align-items: center; perspective: 1500px; overflow: hidden; }
+    .sc-track { display: flex; gap: 3vw; flex: none; transform-style: preserve-3d; will-change: transform; }
+    .rc { position: relative; flex: none; width: 34vw; height: 58vh; overflow: hidden; background: #0b0b0b; border: 1px solid rgba(240, 240, 240, 0.25); will-change: transform, opacity; }
+    .rc img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .rc-mark img { object-fit: contain; padding: 14%; }
+    .rc span { position: absolute; left: 1.2rem; bottom: 1rem; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; text-shadow: 0 0 1rem rgba(0, 0, 0, 0.8); }
+    .rc-end { display: flex; align-items: center; justify-content: center; background: transparent; border-color: var(--red); }
+    .rc-end span { position: static; font-family: 'Anton', sans-serif; font-size: clamp(1.6rem, 3.4vw, 3.4rem); letter-spacing: 0.08em; text-align: center; line-height: 1; }
+
+    /* bottles */
+    .sc-room { position: absolute; inset: 0; will-change: background; }
+    .sc-bt { position: absolute; left: 68vw; top: 50%; height: 72vh; width: auto; max-width: 50vw; object-fit: contain; will-change: transform, opacity; filter: drop-shadow(0 3vh 6vh rgba(0, 0, 0, 0.5)); }
+    .sc-bcap { position: absolute; left: 68vw; bottom: 7vh; transform: translateX(-50%); text-align: center; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; white-space: nowrap; }
+    .sc-bcap::before { content: ''; display: block; width: 3rem; height: 1px; background: #c9a35c; margin: 0 auto 1.1rem; }
+    .sc-bcap b { color: #f3ead8; display: block; font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 500; text-transform: none; font-size: clamp(2rem, 3.4vw, 3.2rem); letter-spacing: 0.01em; line-height: 1; margin-bottom: 0.8rem; }
+    .sc-bcap em { font-style: normal; letter-spacing: 0.4em; color: #c9a35c; text-transform: uppercase; font-size: 0.68rem; }
+    .sc-floor { position: absolute; left: 68vw; top: 86%; width: 52vw; height: 1px; transform: translateX(-50%); background: linear-gradient(90deg, transparent, rgba(201, 163, 92, 0.75), transparent); box-shadow: 0 0 5vh rgba(201, 163, 92, 0.35); will-change: opacity; }
+    .sc-bcap { display: none; }
+    html.story .project-card.is-bottles .project-desc { display: none; }
+    .sc-rf { position: absolute; left: 68vw; top: 50%; height: 72vh; width: auto; max-width: 50vw; object-fit: contain; pointer-events: none; will-change: transform, opacity;
+      -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 55%); mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 55%); }
+    .sc-water { position: absolute; left: 0; right: 0; top: 86%; bottom: 0; background: linear-gradient(180deg, rgba(201, 163, 92, 0.07) 0%, rgba(0, 0, 0, 0.55) 40%, #000 100%); pointer-events: none; }
+    html.story .project-card.is-bottles .project-category { color: #c9a35c; }
+    html.story .project-card.is-bottles .project-name { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 500; text-transform: none; letter-spacing: 0; font-size: clamp(3rem, 6.4vw, 6rem); color: #f3ead8; }
+    html.story .project-card.is-bottles .project-name::after { background: #c9a35c; }
+    html.story .project-card.is-bottles .project-desc { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 1.15rem; line-height: 1.5; opacity: 0.75; color: #f3ead8; }
+    html.story .project-card.is-bottles .project-btn { border-color: #c9a35c; color: #e8c96a; }
+    html.story .project-card.is-bottles .project-btn::before { background: #c9a35c; }
+    html.story .project-card.is-bottles .project-btn:hover { color: #000; }
+
+    @media (max-width: 768px) {
+      html.story .project-card { height: 280vh; }
+      html.story .project-card.is-bottles { height: 190vh; }
+      html.story .project-card .project-info { translate: none; width: auto !important; }
+      html.story .project-card.is-reel .project-info::before { top: -20vh; bottom: -2rem; left: -2rem; right: -2rem; width: auto; background: linear-gradient(0deg, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.7) 70%, transparent 100%); }
+      .sc-persp { padding-bottom: 38vh; }
+      .rc { width: 62vw; height: 38vh; }
+      .sc-bt { left: 50vw; top: 33%; height: 44vh; max-width: 80vw; }
+      .sc-bcap { left: 50vw; bottom: auto; top: 58vh; }
+      .sc-floor { left: 50vw; top: 55%; width: 90vw; }
+      .sc-water { top: 55%; }
+      .sc-rf { left: 50vw; top: 33%; height: 44vh; max-width: 80vw; }
+      .sc-big { bottom: auto; top: 14vh; }
+    }
   </style>
 </head>
 <body>
@@ -1158,7 +1261,7 @@
       </p>
     </div>
     <div class="projects-grid">
-      <div class="project-card" id="downhill-card">
+      <div class="project-card" id="downhill-card" data-scene="film" data-url="https://leonardou-lab.github.io/WEB-DOWNHILL_03/index.html">
         <div class="project-visual">
           <span class="project-year">2025</span>
           <img src="assets\images\pICdH.jpg" alt="Downhill Mexico">
@@ -1172,7 +1275,7 @@
           </div>
         </div>
       </div>
-      <div class="project-card" id="aid-card">
+      <div class="project-card" id="aid-card" data-scene="reel" data-url="https://aid-branding.myshopify.com/">
         <div class="project-visual">
           <span class="project-year">2025</span>
           <img class="aid-mark" src="assets/Originals/aid-mark.png" alt="AID">
@@ -1183,6 +1286,20 @@
           <div class="project-desc">The store we built. Brand and content by our design partner, AID.</div>
           <div class="project-btn-group">
             <a href="https://aid-branding.myshopify.com/" target="_blank" rel="noopener noreferrer" class="project-btn">View Shop</a>
+          </div>
+        </div>
+      </div>
+      <div class="project-card" id="profondo-card" data-scene="bottles" data-url="https://velezp1.github.io/profondo/">
+        <div class="project-visual">
+          <span class="project-year">2026</span>
+          <img src="assets/images/profondo.jpg" alt="Profondo Casa de Perfumes" loading="lazy">
+        </div>
+        <div class="project-info">
+          <div class="project-category">Online Catalog</div>
+          <div class="project-name">Profondo</div>
+          <div class="project-desc">A cinematic scroll storefront for a perfume house in Puebla. Full catalog, decants from 5 ml, every order straight to WhatsApp.</div>
+          <div class="project-btn-group">
+            <a href="https://velezp1.github.io/profondo/" target="_blank" rel="noopener noreferrer" class="project-btn">View Webpage</a>
           </div>
         </div>
       </div>
@@ -1316,7 +1433,8 @@
     // Project images go straight to the project's webpage
     const projectPages = [
       ['downhill-card', 'https://leonardou-lab.github.io/WEB-DOWNHILL_03/index.html'],
-      ['aid-card', 'https://aid-branding.myshopify.com/']
+      ['aid-card', 'https://aid-branding.myshopify.com/'],
+      ['profondo-card', 'https://velezp1.github.io/profondo/']
     ];
     projectPages.forEach(([id, url]) => {
       const card = document.getElementById(id);
@@ -1413,6 +1531,183 @@
       }, { threshold: 0.6 });
       document.querySelectorAll('.oven-panel').forEach(function (p) { io.observe(p); });
     }
+  </script>
+  <script>
+    // Originals scrollytelling. One progress value per stage; everything on a stage is a function of it.
+    (function () {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var root = document.documentElement; root.classList.add('story');
+      var clamp = function (x, a, b) { a = a === undefined ? 0 : a; b = b === undefined ? 1 : b; return Math.min(b, Math.max(a, x)); };
+      var seg = function (p, a, b) { return clamp((p - a) / (b - a)); };
+      var ease = function (t) { return 1 - Math.pow(1 - t, 3); };
+      var easeIn = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+      var lerp = function (a, b, t) { return a + (b - a) * t; };
+      var pad = function (n) { return ('0' + n).slice(-2); };
+      var stages = [];
+      var add = function (el, update, resize) { stages.push({ el: el, update: update, resize: resize, p: -1 }); };
+      var vio = new IntersectionObserver(function (es) {
+        es.forEach(function (en) {
+          var v = en.target;
+          if (en.isIntersecting) {
+            if (v.dataset.src && !v.getAttribute('src')) { v.preload = 'auto'; v.src = v.dataset.src; }
+            var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
+          } else v.pause();
+        });
+      }, { rootMargin: '60% 0px' });
+      var watch = function (v) { if (v) vio.observe(v); };
+      var op = function (n, v) { v = +v.toFixed(3); if (n._o !== v) { n._o = v; n.style.opacity = v; } };
+
+      var titleVid = null;
+
+      // ---- 1. Project scenes
+      var cards = [].slice.call(document.querySelectorAll('.project-card'));
+      var SCENES = {
+        film: function (pin, info) {
+          var sc = document.createElement('div'); sc.className = 'sc sc-film';
+          sc.innerHTML = '<div class="sc-paper"></div><video class="sc-vid" muted loop playsinline preload="none" poster="assets/images/dhmex-poster.jpg" data-src="assets/videos/DHMEX-web.mp4"></video>' +
+            '<div class="sc-frame"><div class="sc-bar"><i></i><i></i><i></i><span>leonardou-lab.github.io/WEB-DOWNHILL_03</span></div></div>' +
+            '<div class="sc-big">Downhill<br>Mexico</div>';
+          pin.insertBefore(sc, info);
+          var paper = sc.querySelector('.sc-paper'), vid = sc.querySelector('.sc-vid'), frame = sc.querySelector('.sc-frame'), big = sc.querySelector('.sc-big'), synced = false;
+          watch(vid);
+          return {
+            el: sc,
+            update: function (p) {
+              if (!synced && titleVid && titleVid.readyState > 1 && vid.readyState > 1) { try { vid.currentTime = titleVid.currentTime; synced = true; } catch (e) {} }
+              var e = ease(seg(p, 0.2, 0.52)), m = innerWidth < 768;
+              var t = (m ? 9 : 14) * e, b = (m ? 47 : 14) * e, l = 5 * e, r = (m ? 5 : 47) * e;
+              vid.style.clipPath = 'inset(' + t.toFixed(2) + '% ' + r.toFixed(2) + '% ' + b.toFixed(2) + '% ' + l.toFixed(2) + '%)';
+              frame.style.top = t + '%'; frame.style.bottom = b + '%'; frame.style.left = l + '%'; frame.style.right = r + '%';
+              op(frame, e); op(paper, e); pin.classList.toggle('paper', e > 0.55);
+              op(big, 1 - seg(p, 0.14, 0.36));
+              big.style.transform = 'translate3d(0,' + (-8 * seg(p, 0.14, 0.36)).toFixed(2) + 'vh,0)';
+              return seg(p, 0.46, 0.7);
+            }
+          };
+        },
+        reel: function (pin, info) {
+          var sc = document.createElement('div'); sc.className = 'sc sc-reel';
+          sc.innerHTML = '<div class="sc-persp"><div class="sc-track">' +
+            '<div class="rc rc-mark"><img src="assets/Originals/aid-mark.png" alt="" loading="lazy"><span>AID</span></div>' +
+            '<div class="rc"><img src="assets/images/shop/VolcanYEmpapelado.jpg" alt="" loading="lazy"><span>Poster</span></div>' +
+            '<div class="rc"><img src="assets/Originals/Montain.jpg" alt="" loading="lazy" style="object-position:50% 35%"><span>Mountain</span></div>' +
+            '<div class="rc rc-end"><span>Visit<br>the store</span></div></div></div>';
+          pin.insertBefore(sc, info);
+          var track = sc.querySelector('.sc-track'), rcs = [].slice.call(sc.querySelectorAll('.rc')), offs = [], ws = [];
+          var measure = function () { offs = rcs.map(function (c) { return c.offsetLeft; }); ws = rcs.map(function (c) { return c.offsetWidth; }); };
+          measure();
+          return {
+            el: sc, resize: measure,
+            update: function (p) {
+              if (!ws[0]) measure();
+              var W = innerWidth, n = rcs.length - 1;
+              var x0 = W * 0.62, x1 = W * 0.5 - (offs[n] + ws[n] / 2), x = lerp(x0, x1, seg(p, 0.04, 0.94));
+              track.style.transform = 'translate3d(' + x.toFixed(1) + 'px,0,0)';
+              rcs.forEach(function (c, i) {
+                var cx = x + offs[i] + ws[i] / 2, d = (cx - W / 2) / W, ad = Math.abs(d);
+                c.style.transform = 'rotateY(' + (-d * 38).toFixed(2) + 'deg) translateZ(' + (-ad * 260).toFixed(1) + 'px) scale(' + (1 - ad * 0.12).toFixed(3) + ')';
+                op(c, clamp((cx - W * 0.05) / (W * 0.3)));
+              });
+              return seg(p, 0, 0.14);
+            }
+          };
+        },
+        bottles: function (pin, info) {
+          var B = [
+            { src: 'layton', name: 'Layton', notes: 'Lavanda · Violeta · Vainilla', c: [12, 20, 46] },
+            { src: 'br540', name: 'Baccarat Rouge 540', notes: 'Azafrán · Jazmín · Cedro', c: [66, 8, 14] },
+            { src: 'eros', name: 'Eros', notes: 'Menta · Haba tonka · Vainilla', c: [6, 30, 78] },
+            { src: 'khamrah', name: 'Khamrah Qahwa', notes: 'Canela · Café · Haba tonka', c: [70, 34, 10] },
+            { src: 'oudglory', name: 'Oud for Glory', notes: 'Azafrán · Oud · Ámbar', c: [46, 32, 8] }
+          ];
+          var sc = document.createElement('div'); sc.className = 'sc sc-bottles';
+          sc.innerHTML = '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="og-ripple" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.05" numOctaves="2" seed="4" result="n"><animate attributeName="baseFrequency" dur="18s" values="0.004 0.05;0.006 0.075;0.004 0.05" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G"/></filter></svg>' +
+            '<div class="sc-room"></div><div class="sc-water"></div><div class="sc-floor"></div>' +
+            B.map(function (b) { return '<img class="sc-rf" src="assets/images/profondo/' + b.src + '.webp" alt="" loading="lazy">'; }).join('') +
+            B.map(function (b) { return '<img class="sc-bt" src="assets/images/profondo/' + b.src + '.webp" alt="" loading="lazy">'; }).join('') +
+            '<div class="sc-bcap"><b></b><em></em></div>';
+          pin.insertBefore(sc, info);
+          var room = sc.querySelector('.sc-room'), imgs = [].slice.call(sc.querySelectorAll('.sc-bt')), rfs = [].slice.call(sc.querySelectorAll('.sc-rf')), floor = sc.querySelector('.sc-floor'), cap = sc.querySelector('.sc-bcap'), nm = cap.querySelector('b'), nt = cap.querySelector('em'), cur = -1, col = '';
+          var N = B.length;
+          return {
+            el: sc,
+            update: function (p) {
+              var intro = ease(seg(p, 0, 0.12));
+              var raw = seg(p, 0.08, 0.94) * (N - 1), base = Math.min(N - 2, Math.floor(raw)), t = clamp((raw - base - 0.25) / 0.5), pos = base + t * t * (3 - 2 * t);
+              var i0 = Math.min(N - 2, Math.floor(pos)), f = pos - i0;
+              var c = [0, 1, 2].map(function (k) { return Math.round(lerp(B[i0].c[k], B[i0 + 1].c[k], f) * intro); });
+              var gx = innerWidth < 768 ? 50 : 68;
+              var g = 'radial-gradient(ellipse 26% 42% at ' + gx + '% 50%, rgba(201,163,92,' + (0.2 * intro).toFixed(3) + ') 0%, transparent 100%), radial-gradient(ellipse 60% 75% at ' + (innerWidth < 768 ? 50 : 68) + '% 46%, rgb(' + c.join(',') + ') 0%, rgb(' + c.map(function (v) { return Math.round(v * 0.3); }).join(',') + ') 60%, #000 100%)';
+              if (g !== col) { col = g; room.style.background = g; }
+              var m = innerWidth < 768;
+              imgs.forEach(function (im, i) {
+                var d = pos - i, ad = Math.abs(d), o = Math.max(0, 1 - ad * 1.15) * intro;
+                im.style.transform = 'translate(-50%,-50%) translateX(' + (-d * (m ? 70 : 45)).toFixed(2) + 'vw) rotate(' + (-d * 14).toFixed(2) + 'deg) scale(' + (1 - ad * 0.25).toFixed(3) + ')';
+                op(im, o); im.style.visibility = o === 0 ? 'hidden' : 'visible';
+                var br = (0.08 + 0.92 * clamp(1 - ad * 1.8)).toFixed(2);
+                if (im._b !== br) { im._b = br; im.style.filter = 'brightness(' + br + ') drop-shadow(0 3vh 6vh rgba(0, 0, 0, 0.6))'; rfs[i].style.filter = 'url(#og-ripple) blur(1.2px) brightness(' + br + ')'; }
+                var rf = rfs[i];
+                rf.style.transform = 'translate(-50%,-50%) translateX(' + (-d * (m ? 70 : 45)).toFixed(2) + 'vw) translateY(' + (m ? 44 : 72) + (m ? 'vh' : 'vh') + ') scaleY(-1) rotate(' + (-d * 14).toFixed(2) + 'deg) scale(' + (1 - ad * 0.25).toFixed(3) + ')';
+                op(rf, o * 0.55); rf.style.visibility = o === 0 ? 'hidden' : 'visible';
+              });
+              var k = Math.round(pos);
+              if (k !== cur) { cur = k; nm.textContent = B[k].name; nt.textContent = B[k].notes; }
+              op(cap, intro); op(floor, intro);
+              return seg(p, 0.02, 0.16);
+            }
+          };
+        }
+      };
+      cards.forEach(function (card, i) {
+        var kind = card.dataset.scene; if (!SCENES[kind]) return;
+        card.classList.add('is-' + kind);
+        var pin = document.createElement('div'); pin.className = 'pc-pin';
+        while (card.firstChild) pin.appendChild(card.firstChild);
+        card.appendChild(pin);
+        var info = pin.querySelector('.project-info'), yr = pin.querySelector('.project-year');
+        var count = document.createElement('div'); count.className = 'pc-count'; count.setAttribute('aria-hidden', 'true');
+        count.innerHTML = '<span>' + pad(i + 1) + ' / ' + pad(cards.length) + '</span><i><b></b></i>';
+        pin.appendChild(count);
+        if (yr) { var y = document.createElement('div'); y.className = 'pc-year'; y.textContent = yr.textContent; pin.appendChild(y); }
+        var scene = SCENES[kind](pin, info), parts = [].slice.call(info.children), bar = count.querySelector('b');
+        scene.el.addEventListener('click', function () { if (card.dataset.url) window.open(card.dataset.url, '_blank', 'noopener,noreferrer'); });
+        add(card, function (p) {
+          var r = scene.update(p);
+          parts.forEach(function (el, j) {
+            var t = ease(clamp((r - j * 0.12) / 0.6));
+            op(el, t); var ty = ((1 - t) * 40).toFixed(1); if (el._y !== ty) { el._y = ty; el.style.transform = 'translate3d(0,' + ty + 'px,0)'; }
+          });
+          bar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+        }, scene.resize);
+      });
+
+      // ---- 2. Oven: panels light up as they reach the middle of the screen
+      var panels = [].slice.call(document.querySelectorAll('.oven-panel'));
+      var dirty = false, ticking = false;
+      var frame = function () {
+        ticking = false;
+        var vh = innerHeight;
+        for (var k = 0; k < stages.length; k++) {
+          var s = stages[k], r = s.el.getBoundingClientRect();
+          if (r.bottom < -vh * 0.25 || r.top > vh * 1.25) continue;
+          var p = clamp(-r.top / Math.max(1, s.el.offsetHeight - vh));
+          if (!dirty && Math.abs(p - s.p) < 1e-4) continue;
+          s.p = p; s.update(p);
+        }
+        dirty = false;
+        panels.forEach(function (pn) {
+          var r = pn.getBoundingClientRect(), mid = (r.top + r.bottom) / 2;
+          pn.classList.toggle('is-lit', mid > vh * 0.15 && mid < vh * 0.7);
+        });
+      };
+      var req = function () { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
+      var remeasure = function () { stages.forEach(function (s) { s.resize && s.resize(); }); dirty = true; req(); };
+      addEventListener('scroll', req, { passive: true });
+      addEventListener('resize', remeasure);
+      addEventListener('load', remeasure);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
+      dirty = true; req();
+    })();
   </script>
 </body>
 </html>

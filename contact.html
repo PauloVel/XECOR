@@ -454,6 +454,36 @@
     .form-status a { color: var(--white); }
 
     /* Footer */
+    /* 1. Opener: the night road plays INSIDE the letters of BUILD, the letters flip upright, then we fall into the I.
+          The white sheet with letter-shaped holes is drawn on one canvas (vector, always sharp), laid over the video
+          with plain alpha: no blend modes, no giant scaled DOM text. */
+    .s-open { --h: 520vh; background: #fff; color: #000; }
+    .open-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
+    .open-cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; will-change: opacity; }
+    .open-fb { display: none; }
+    .open-words { position: absolute; inset: 0; pointer-events: none; }
+    .ow {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center;
+      font-family: 'Anton', sans-serif; text-transform: uppercase; color: #fff; line-height: 0.88;
+      font-size: clamp(3.6rem, 13.5vw, 14rem); padding: 0 4vw; opacity: 0; will-change: transform, opacity;
+      text-shadow: 0 6px 50px rgba(0, 0, 0, 0.55);
+    }
+    html:not(.story) .s-open { background: #000; color: #fff; }
+    html:not(.story) .open-cv, html:not(.story) .open-words { display: none; }
+    html:not(.story) .open-video { opacity: 0.6; }
+    html:not(.story) .open-fb {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-family: 'Anton', sans-serif; font-size: min(34vw, 66vh); text-transform: uppercase; color: #fff;
+    }
+
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    /* clip (not hidden) so html/body do not become scroll containers, which breaks position: sticky */
+    html.story, html.story body { overflow-x: clip; }
+    .stage { position: relative; z-index: 1; }
+    .pin { position: relative; min-height: 100vh; min-height: 100svh; overflow: hidden; }
+    html.story .stage { height: var(--h, 400vh); }
+    html.story .pin { position: sticky; top: 0; height: 100vh; height: 100svh; min-height: 0; }
+
     footer {
       padding: 4rem 4vw;
       border-top: 1px solid var(--gray);
@@ -727,6 +757,20 @@
     </section>
   </main>
 
+  <section class="stage s-open" id="open" aria-label="Build">
+    <h2 class="sr-only">We build</h2>
+    <div class="pin">
+      <video class="open-video" muted loop playsinline preload="none" poster="assets/images/racing-poster.jpg" aria-hidden="true" data-src="assets/videos/Racing-web.mp4"></video>
+      <canvas class="open-cv" aria-hidden="true"></canvas>
+      <div class="open-fb" aria-hidden="true">Build</div>
+      <div class="open-words" aria-hidden="true">
+        <div class="ow">Every brand<br>starts in the dark</div>
+        <div class="ow">No site. No shop.<br>No proof.</div>
+        <div class="ow">We build<br>the first light</div>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <div class="footer-logo">EVRABO</div>
     <ul class="footer-links">
@@ -863,6 +907,99 @@
       });
     }
 
+  </script>
+  <script>
+    // Build opener (moved here from the home page): scroll-driven, plays only while on screen
+    (function () {
+      try { if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('story'); } catch (e) {}
+      const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+      const seg = (p, a, b) => clamp((p - a) / (b - a));
+      const easeIn = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+      const vio = new IntersectionObserver((entries) => entries.forEach((en) => {
+        const v = en.target;
+        if (en.isIntersecting && v.dataset.src && !v.getAttribute('src')) { v.preload = 'auto'; v.src = v.dataset.src; }
+        if (en.isIntersecting) v.play().catch(() => {}); else v.pause();
+      }), { rootMargin: '60% 0px' });
+      document.querySelectorAll('.s-open video').forEach((v) => vio.observe(v));
+      const stages = [];
+      const add = (el, update, resize) => stages.push({ el, update, resize, p: -1 });
+
+      // ---- 1. Opener
+      (function () {
+        const el = document.getElementById('open'); if (!el) return;
+        const cv = el.querySelector('.open-cv'), ctx = cv.getContext('2d'), ows = [...el.querySelectorAll('.ow')];
+        const root = document.documentElement, WORD = 'BUILD', ZI = 2;
+        const op = (n, v) => { v = +v.toFixed(3); if (n._o !== v) { n._o = v; n.style.opacity = v; } };
+        const tf = (n, v) => { if (n._t !== v) { n._t = v; n.style.transform = v; } };
+        let vw = 0, vh = 0, dpr = 1, fs = 0, capH = 0, widths = [], xs = [], S = 20, lastP = 0;
+        const measure = () => {
+          dpr = Math.min(window.devicePixelRatio || 1, 1.5); vw = innerWidth; vh = innerHeight;
+          cv.width = Math.round(vw * dpr); cv.height = Math.round(vh * dpr);
+          fs = Math.min(vw * 0.34, vh * 0.66);
+          ctx.font = fs + 'px Anton, sans-serif';
+          capH = ctx.measureText('B').actualBoundingBoxAscent || fs * 0.73;
+          widths = [...WORD].map((c) => ctx.measureText(c).width);
+          const total = widths.reduce((a, b) => a + b, 0); let x = (vw - total) / 2;
+          xs = widths.map((w) => { const c = x + w / 2; x += w; return c; });
+          S = Math.max(vw / (widths[ZI] * 0.6), vh / capH) * 1.3;
+          draw(lastP);
+        };
+        const draw = (p) => {
+          lastP = p;
+          const fade = 1 - seg(p, 0.58, 0.67);
+          op(cv, fade);
+          if (fade <= 0) return;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          ctx.globalCompositeOperation = 'source-over';
+          ctx.clearRect(0, 0, vw, vh);
+          ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, vw, vh);
+          ctx.globalCompositeOperation = 'destination-out';
+          ctx.fillStyle = '#000'; ctx.font = fs + 'px Anton, sans-serif'; ctx.textBaseline = 'alphabetic';
+          const z = seg(p, 0.40, 0.66), sc = Math.exp(Math.log(S) * easeIn(z)), cy = vh / 2;
+          ctx.save();
+          ctx.translate(xs[ZI], cy); ctx.scale(sc, sc); ctx.translate(-xs[ZI], -cy);
+          [...WORD].forEach((ch, i) => {
+            const a = 0.02 + i * 0.045, t = easeOut(seg(p, a, a + 0.17)), sy = Math.cos(Math.PI * (1 - t));
+            if (Math.abs(sy) < 0.015) return;
+            ctx.save(); ctx.translate(xs[i], cy); ctx.scale(1, sy);
+            ctx.fillText(ch, -widths[i] / 2, capH / 2); ctx.restore();
+          });
+          ctx.restore();
+        };
+        const W = [[0.67, 0.78], [0.78, 0.89], [0.89, 1.02]];
+        add(el, (p) => {
+          draw(p);
+          ows.forEach((w, i) => {
+            const a = W[i][0], b = W[i][1], last = i === ows.length - 1;
+            const tin = easeOut(seg(p, a, a + 0.04)), tout = last ? 0 : seg(p, b - 0.03, b);
+            op(w, p < a ? 0 : tin * (1 - tout));
+            tf(w, 'perspective(1100px) rotateX(' + ((1 - tin) * -95 + tout * 95).toFixed(1) + 'deg)');
+          });
+        }, measure);
+        measure();
+      })();
+
+      let dirty = false, ticking = false;
+      const frame = () => {
+        ticking = false;
+        for (const s of stages) {
+          const r = s.el.getBoundingClientRect();
+          if (r.bottom < -innerHeight * 0.25 || r.top > innerHeight * 1.25) continue;
+          const p = clamp(-r.top / Math.max(1, s.el.offsetHeight - innerHeight));
+          if (!dirty && Math.abs(p - s.p) < 1e-4) continue;
+          s.p = p; s.update(p);
+        }
+        dirty = false;
+      };
+      const req = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
+      const remeasure = () => { stages.forEach((s) => s.resize && s.resize()); dirty = true; req(); };
+      addEventListener('scroll', req, { passive: true });
+      addEventListener('resize', remeasure);
+      addEventListener('load', remeasure);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
+      dirty = true; req();
+    })();
   </script>
 </body>
 </html>
