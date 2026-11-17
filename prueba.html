@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EVRABO — prueba</title>
+  <meta name="description" content="You bring the name. We build everything it needs to live online. First prototype free.">
+  <meta name="theme-color" content="#050505">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="assets/fonts/Anton-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/images/hero-poster.jpg" as="image">
+  <link rel="stylesheet" href="assets/fonts/anton.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== Tokens (WEBSITE_BLUEPRINT.md, section 13) ===== */
+    :root {
+      --black: #050505; --white: #f0f0f0; --red: #ff1a1a; --gray: #1a1a1a;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --side: 4vw;
+      --label: 0.75rem;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { overflow-x: clip; scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: 'Space Grotesk', sans-serif; overflow-x: clip; }
+    a { color: inherit; }
+    .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    :focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+    /* One label style, one link-out style, used everywhere */
+    .label { font-size: var(--label); letter-spacing: 0.4em; text-transform: uppercase; }
+    .go { position: relative; display: inline-flex; align-items: center; gap: 0.7em; padding: 0.4rem 0; text-decoration: none; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; }
+    .go::after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 2px; background: currentColor; transform: scaleX(0.35); transform-origin: left; transition: transform 0.5s var(--ease); }
+    .go svg { width: 1em; height: 1em; transform: translateX(-0.4em); opacity: 0; transition: transform 0.4s var(--ease), opacity 0.3s ease; }
+    .go:hover::after, .go:focus-visible::after { transform: scaleX(1); }
+    .go:hover svg, .go:focus-visible svg { transform: none; opacity: 1; }
+
+    /* ===== Nav ===== */
+    nav { position: fixed; top: 0; left: 0; width: 100%; padding: 2rem var(--side); display: flex; justify-content: space-between; align-items: center; z-index: 100; mix-blend-mode: difference; color: #fff; }
+    .nav-logo { font-family: 'Anton', sans-serif; font-size: 1.8rem; letter-spacing: 0.15em; text-decoration: none; }
+    .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+    .nav-links a { text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    /* ===== 0. Hero: the film shows only through the letters ===== */
+    .hero { position: relative; height: 100vh; height: 100svh; overflow: hidden; background: var(--black); }
+    .hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .hero-mask { position: absolute; inset: 0; z-index: 2; background: #fff; mix-blend-mode: screen; display: flex; flex-direction: column; justify-content: center; padding: 0 var(--side); pointer-events: none; }
+    .hero-mask b { display: block; font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(5rem, 23vw, 26rem); line-height: 0.82; text-transform: uppercase; color: #000; letter-spacing: 0.01em; }
+    .hero-foot { position: absolute; z-index: 3; left: var(--side); bottom: 5vh; mix-blend-mode: difference; color: #fff; pointer-events: none; }
+    .hero-ascend { position: absolute; z-index: 6; right: max(18px, var(--side)); bottom: max(22px, 5vh); width: clamp(6.5rem, 10vw, 9rem); aspect-ratio: 1.12; display: block; color: #fff; mix-blend-mode: difference; text-decoration: none; }
+    .hero-ascend svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .hero-ascend polygon { fill: transparent; stroke: currentColor; stroke-width: 2.5; vector-effect: non-scaling-stroke; transition: fill 0.25s ease; }
+    .hero-ascend span { position: absolute; left: 0; right: 0; bottom: 14%; text-align: center; font-family: 'Anton', sans-serif; font-size: clamp(0.9rem, 1.3vw, 1.15rem); letter-spacing: 0.14em; text-indent: 0.14em; text-transform: uppercase; transition: color 0.25s ease; }
+    .hero-ascend:hover polygon { fill: #fff; }
+    .hero-ascend:hover span { color: #000; }
+
+    /* ===== Question cards: the client's question small, the answer giant ===== */
+    .q { position: relative; min-height: 100vh; min-height: 100svh; padding: 16vh var(--side) 10vh; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 4vw; align-items: center; overflow: hidden; }
+    .q.dark { background: var(--black); color: var(--white); }
+    .q.light { background: var(--white); color: var(--black); }
+    .q-ask, .q-n { position: absolute; top: 13vh; font-size: 0.8rem; text-transform: uppercase; }
+    .q-ask { left: var(--side); letter-spacing: 0.4em; opacity: 0.7; }
+    .q-n { right: var(--side); letter-spacing: 0.3em; opacity: 0.5; }
+    .q-ans { font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(5rem, 19vw, 21rem); line-height: 0.84; text-transform: uppercase; letter-spacing: 0.01em; opacity: 0; }
+    .q.in .q-ans { opacity: 1; animation: punch 0.28s var(--ease) both; }
+    .q-line { margin-top: 2.2rem; font-size: clamp(0.8rem, 1.2vw, 1.05rem); letter-spacing: 0.3em; text-transform: uppercase; opacity: 0; }
+    .q.in .q-line { opacity: 0.85; transition: opacity 0.6s ease 0.3s; }
+    .q-by { margin-top: 1.4rem; opacity: 0; }
+    .q.in .q-by { opacity: 0.7; transition: opacity 0.6s ease 0.5s; }
+    .q-by b { font-weight: 700; }
+    .q .go { margin-top: 1.8rem; opacity: 0; }
+    .q.in .go { opacity: 1; transition: opacity 0.6s ease 0.6s; }
+    @keyframes punch { 0% { opacity: 0; transform: translateY(0.12em) skewX(-8deg) scale(1.08); filter: blur(10px); } 100% { opacity: 1; transform: none; filter: none; } }
+
+    .q-vis { position: relative; align-self: stretch; min-height: 50vh; overflow: hidden; opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease 0.2s, transform 1s var(--ease) 0.2s; }
+    .q.in .q-vis { opacity: 1; transform: none; }
+    .q-vis img, .q-vis video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .q-vis.mark { display: flex; align-items: center; justify-content: center; background: var(--black); }
+    .q-vis.mark img { position: static; width: 56%; height: auto; max-height: 56%; object-fit: contain; }
+    .q-vis.frame::after { content: ''; position: absolute; inset: 1.4rem; border: 2px solid #fff; pointer-events: none; }
+    .q-tiles { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 2px; background: var(--black); }
+    .q-tiles > div { position: relative; overflow: hidden; background: #111; }
+    .q-tiles .t { display: flex; align-items: center; justify-content: center; text-align: center; color: #fff; font-family: 'Anton', sans-serif; font-size: clamp(1.4rem, 3vw, 3rem); letter-spacing: 0.08em; text-transform: uppercase; }
+    .q-tiles span { position: absolute; z-index: 2; left: 0.9rem; bottom: 0.8rem; color: #fff; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; text-shadow: 0 0 1rem rgba(0,0,0,0.8); }
+
+    /* ===== Proof scene (pinned only when JS adds .pin-on) ===== */
+    .proof { background: var(--black); }
+    .proof-pin { position: relative; height: 100vh; height: 100svh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .proof.pin-on { height: 420vh; }
+    .proof.pin-on .proof-pin { position: sticky; top: 0; }
+    .proof-k { position: absolute; z-index: 3; top: 13vh; left: var(--side); opacity: 0.7; }
+    .proof-win { position: absolute; inset: 22vh var(--side) 10vh; border: 2px solid #fff; overflow: hidden; }
+    .proof-win video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .proof-word { position: relative; z-index: 4; font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(2.4rem, 9vw, 8rem); line-height: 0.85; text-transform: uppercase; text-align: center; mix-blend-mode: difference; color: #fff; pointer-events: none; }
+    .proof.pin-on .proof-word { font-size: clamp(5rem, 24vw, 28rem); }
+    .proof-word.punch { animation: punch 0.2s var(--ease) both; }
+
+    /* ===== All of it: tall panels ===== */
+    .row { position: relative; background: #000; }
+    .row-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .row-grid div { position: relative; aspect-ratio: 2 / 3; overflow: hidden; }
+    .row-grid img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .row-grid span { position: absolute; left: 1.6rem; bottom: 1.8rem; z-index: 2; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; text-shadow: 0 0 1rem rgba(0,0,0,0.8); }
+    .row-title { position: absolute; z-index: 5; left: 50%; top: 50%; transform: translate(-50%, -50%); white-space: nowrap; font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(3.4rem, 15vw, 15rem); line-height: 0.9; text-transform: uppercase; color: #fff; text-shadow: 0 0 5vw rgba(0,0,0,0.6); pointer-events: none; }
+    .row::after { content: ''; position: absolute; z-index: 3; inset: clamp(0.8rem, 1.6vw, 1.6rem); border: 2px solid #fff; pointer-events: none; }
+    .row-line { padding: 1.6rem var(--side); opacity: 0.7; }
+
+    /* ===== Three answers ===== */
+    .ans { display: grid; grid-template-columns: repeat(3, 1fr); min-height: 100svh; background: var(--white); color: var(--black); }
+    .ans-c { display: flex; flex-direction: column; justify-content: center; gap: 1.6rem; padding: 14vh var(--side) 10vh; border-left: 1px solid rgba(5,5,5,0.25); }
+    .ans-c:first-child { border-left: 0; }
+    .ans-c .label:first-child { opacity: 0.6; }
+    .ans-c b { font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(4rem, 11vw, 13rem); line-height: 0.84; text-transform: uppercase; opacity: 0; }
+    .ans.in .ans-c b { opacity: 1; animation: punch 0.28s var(--ease) both; }
+    .ans.in .ans-c:nth-child(2) b { animation-delay: 0.15s; } .ans.in .ans-c:nth-child(3) b { animation-delay: 0.3s; }
+    .ans-c p { opacity: 0.85; }
+
+    /* Problem card: VADMatch shown as invoices vs payments */
+    .mt { display: grid; grid-template-columns: 1fr 22% 1fr; background: var(--black); color: #fff; padding: 2.4rem 1.6rem 3rem; min-height: 52vh; }
+    .mt-col { display: flex; flex-direction: column; }
+    .mt-col h4 { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.35em; text-transform: uppercase; opacity: 0.6; margin-bottom: 1rem; }
+    .mt-rows { flex: 1; display: grid; grid-template-rows: repeat(4, 1fr); }
+    .mt-row { display: flex; justify-content: space-between; align-items: center; gap: 0.6rem; margin: 0.45rem 0; padding: 0 1rem; border: 1px solid rgba(240,240,240,0.35); font-size: clamp(0.7rem, 1vw, 0.9rem); letter-spacing: 0.12em; text-transform: uppercase; }
+    .mt-row b { font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(1rem, 1.6vw, 1.5rem); letter-spacing: 0.06em; }
+    .mt-row.no { border-color: var(--red); }
+    .mt-row.no::before { content: ''; width: 0.5rem; height: 0.5rem; background: var(--red); flex: none; }
+    .mt-lines { position: relative; margin-top: 1.9rem; }
+    .mt-lines svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .mt-lines path { fill: none; stroke: #fff; stroke-width: 2; vector-effect: non-scaling-stroke; stroke-dasharray: 100; stroke-dashoffset: 100; }
+    .q.in .mt-lines path { stroke-dashoffset: 0; transition: stroke-dashoffset 0.9s var(--ease); }
+    .q.in .mt-lines path:nth-child(1) { transition-delay: 0.5s; } .q.in .mt-lines path:nth-child(2) { transition-delay: 0.75s; } .q.in .mt-lines path:nth-child(3) { transition-delay: 1s; }
+    .mt-ex { position: absolute; left: 1.6rem; bottom: 0.9rem; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.45; }
+
+    /* ===== Close: build yours (live builder) ===== */
+    .pb { position: relative; background: var(--black); padding: 12vh var(--side); }
+    .pb-inner { max-width: 1400px; margin: 0 auto; }
+    .pb-title { font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(3.5rem, 12vw, 11rem); line-height: 0.9; text-transform: uppercase; }
+    .pb-sub { margin: 1.2rem 0 6vh; font-size: 1rem; opacity: 0.7; }
+    .pb-body { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 5vw; align-items: start; }
+    .pb-screen { --bg: #050505; --fg: #f0f0f0; --acc: #f0f0f0; --ff: 'Anton', sans-serif; --tt: uppercase; --ls: 0.02em; --fw: 400; container-type: inline-size; position: relative; overflow: hidden; aspect-ratio: 4 / 3; background: var(--bg); color: var(--fg); outline: 1px solid rgba(240,240,240,0.25); transition: background 0.35s ease, color 0.35s ease; }
+    .pb-screen[data-vibe="clean"] { --bg: #f0f0f0; --fg: #050505; --acc: #050505; --ff: 'Space Grotesk', sans-serif; --tt: none; --ls: -0.04em; --fw: 600; }
+    .pb-screen[data-vibe="loud"] { --acc: #ff1a1a; }
+    .pb-mock { position: absolute; inset: 0; padding: 4cqw; display: none; flex-direction: column; font-family: var(--ff); font-weight: var(--fw); text-transform: var(--tt); letter-spacing: var(--ls); }
+    .pb-screen[data-type="website"] .pb-website, .pb-screen[data-type="shop"] .pb-shop, .pb-screen[data-type="tool"] .pb-tool, .pb-screen[data-type="app"] .pb-app { display: flex; }
+    .pb-mock b { font-weight: inherit; font-size: 3cqw; line-height: 1; }
+    .pb-nav { display: flex; align-items: center; gap: 2cqw; }
+    .pb-nav b { margin-right: auto; }
+    .pb-nav i { width: 6cqw; height: 0.6cqw; background: var(--fg); opacity: 0.5; }
+    .pb-hero { margin-top: auto; }
+    .pb-hero h3 { font-size: var(--fs, 14cqw); font-weight: inherit; line-height: 0.92; overflow-wrap: anywhere; }
+    .pb-bar { display: block; height: 1.2cqw; margin-top: 1.6cqw; background: var(--fg); opacity: 0.35; }
+    .w20 { width: 20%; } .w30 { width: 30%; } .w40 { width: 40%; } .w60 { width: 60%; }
+    .pb-cta { display: block; width: 16cqw; height: 4.6cqw; margin-top: 3cqw; background: var(--acc); }
+    .pb-grid { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 1.6cqw; margin-top: 3cqw; }
+    .pb-tile { position: relative; }
+    .pb-tile::before { content: ""; position: absolute; inset: 0; background: var(--fg); opacity: 0.14; }
+    .pb-tile.hot::before { background: var(--acc); opacity: 1; }
+    .pb-tile em { position: absolute; left: 1.4cqw; bottom: 1cqw; font-style: normal; font-size: 2.2cqw; }
+    .pb-tile.hot em { color: var(--bg); }
+    .pb-tool { flex-direction: row; gap: 3cqw; }
+    .pb-side { width: 18cqw; display: flex; flex-direction: column; gap: 1.6cqw; }
+    .pb-side b { margin-bottom: 2cqw; }
+    .pb-side i { height: 1.4cqw; background: var(--fg); opacity: 0.35; }
+    .pb-table { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 1.2cqw; }
+    .pb-row { display: flex; align-items: center; gap: 2cqw; padding: 1.8cqw 2cqw; background: color-mix(in srgb, var(--fg) 9%, transparent); }
+    .pb-row .pb-bar { margin: 0; }
+    .pb-row em { margin-left: auto; font-style: normal; font-size: 2.2cqw; }
+    .pb-row.hot { background: var(--acc); }
+    .pb-row.hot .pb-bar { background: var(--bg); opacity: 0.6; }
+    .pb-row.hot em { color: var(--bg); }
+    .pb-app { align-items: center; justify-content: center; }
+    .pb-phone { height: 100%; aspect-ratio: 9 / 17; border: 0.5cqw solid var(--fg); border-radius: 3cqw; padding: 2.4cqw; display: flex; flex-direction: column; gap: 2cqw; }
+    .pb-phone b { font-size: 2.6cqw; margin-bottom: 1cqw; }
+    .pb-item { display: flex; align-items: center; gap: 1.6cqw; }
+    .pb-item .pb-bar { margin: 0; }
+    .pb-dot { width: 3.4cqw; height: 3.4cqw; background: var(--fg); opacity: 0.35; flex: none; }
+    .pb-item.hot .pb-dot { background: var(--acc); opacity: 1; }
+    .pb-tabs { margin-top: auto; display: flex; justify-content: space-around; }
+    .pb-tabs i { width: 3cqw; height: 0.6cqw; background: var(--fg); opacity: 0.5; }
+
+    .pb-ctl { margin-bottom: 2.4rem; }
+    .pb-label { display: block; margin-bottom: 0.9rem; font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase; color: #8a8a8a; }
+    .pb-label b { font-family: 'Anton', sans-serif; font-weight: 400; letter-spacing: 0.1em; margin-right: 0.8em; color: var(--white); }
+    .pb-seg { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .pb-seg button { font-family: 'Anton', sans-serif; font-size: 1.5rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.45rem 1.1rem; background: transparent; color: #8a8a8a; border: 0; cursor: pointer; }
+    .pb-seg button:hover { color: var(--white); }
+    .pb-seg button[aria-pressed="true"] { background: var(--white); color: var(--black); }
+    .pb-name { width: 100%; padding: 0.3rem 0; font-family: 'Anton', sans-serif; font-size: 2.2rem; letter-spacing: 0.04em; text-transform: uppercase; background: transparent; color: var(--white); border: 0; border-bottom: 2px solid var(--white); border-radius: 0; }
+    .pb-go { display: block; margin-top: 2.8rem; padding: 1.5rem; text-align: center; font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: 0.14em; text-transform: uppercase; background: #fff; color: #000; text-decoration: none; }
+    .pb-go:hover { background: var(--black); color: #fff; outline: 2px solid #fff; }
+    .pb-go svg { display: inline-block; width: 1em; height: 1em; vertical-align: -0.12em; }
+    .pb-shuffle { margin-top: 1rem; padding: 0.4rem 0; font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase; background: none; border: 0; color: #8a8a8a; cursor: pointer; }
+    .pb-shuffle:hover { color: var(--white); }
+
+    footer { padding: 3rem var(--side); border-top: 1px solid var(--gray); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    footer .logo { font-family: 'Anton', sans-serif; font-size: 1.5rem; letter-spacing: 0.15em; }
+    footer a { text-decoration: none; opacity: 0.6; margin-left: 1.5rem; }
+    footer a:hover { opacity: 1; }
+    footer span { opacity: 0.4; }
+
+    /* ===== Phone ===== */
+    @media (max-width: 800px) {
+      nav { padding: 1.4rem 5vw; } .nav-logo { font-size: 1.4rem; } .nav-links { gap: 1.2rem; }
+      :root { --side: 5vw; }
+      .q { grid-template-columns: 1fr; padding-top: 20vh; gap: 3rem; }
+      .q-ask, .q-n { top: 10vh; }
+      .q-ans { font-size: clamp(4.6rem, 26vw, 11rem); }
+      .q-vis { min-height: 42vh; }
+      .mt { grid-template-columns: 1fr 14% 1fr; padding: 2rem 0.8rem 2.6rem; } .mt-row { padding: 0 0.6rem; }
+      .pb-body { grid-template-columns: 1fr; }
+      .row-grid div { aspect-ratio: 3 / 5; }
+      .ans { grid-template-columns: 1fr; min-height: 0; }
+      .ans-c { border-left: 0; border-top: 1px solid rgba(5,5,5,0.25); padding: 9vh var(--side); }
+      .ans-c:first-child { border-top: 0; }
+      .proof-win { inset: 20vh 5vw 10vh; }
+    }
+
+    /* ===== Reduced motion: same content, no animation ===== */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .q-ans, .q-line, .q-by, .q .go, .q-vis, .ans-c b { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
+      .mt-lines path { stroke-dashoffset: 0 !important; }
+      .pb-screen { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="nav-logo">EVRABO</a>
+    <ul class="nav-links">
+      <li><a href="originals.html">Originals</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <h1 class="sr-only">EVRABO: you bring the name, we build everything it needs to live online. First prototype free.</h1>
+
+  <!-- 0. HERO -->
+  <section class="hero">
+    <video id="hero-video" src="assets/videos/EVRABO_hero_web.mp4" poster="assets/images/hero-poster.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
+    <div class="hero-mask" aria-hidden="true"><b>You bring</b><b>the name</b></div>
+    <div class="hero-foot label" aria-hidden="true">We build the rest</div>
+    <a class="hero-ascend" href="ascend.html" aria-label="Ascend"><svg viewBox="0 0 100 90" preserveAspectRatio="none" aria-hidden="true"><polygon points="50,2 98,88 2,88"/></svg><span>Ascend</span></a>
+  </section>
+
+  <!-- 1. PROOF: a site being made, one word per stage -->
+  <section class="proof" id="proof" aria-label="Free prototype: sketch, design, code, live">
+    <div class="proof-pin">
+      <span class="label proof-k">Free prototype</span>
+      <div class="proof-win"><video src="assets/videos/Build-live-film.mp4" poster="assets/images/build-live-poster.jpg" muted loop playsinline preload="none" aria-hidden="true"></video></div>
+      <div class="proof-word" id="proof-word">Sketch. Design. Code. Live.</div>
+    </div>
+  </section>
+
+  <!-- 2. ALL OF IT: three tall panels, one word, one frame -->
+  <section class="row" aria-label="Identity, sites, shops, tools, apps">
+    <div class="row-grid">
+      <div><img src="assets/images/lambo-app.jpg" alt="Showroom site" loading="lazy" decoding="async" style="object-position:30% center"><span>Sites</span></div>
+      <div><img src="assets/images/shop/VolcanYEmpapelado.jpg" alt="Online shop" loading="lazy" decoding="async"><span>Shops</span></div>
+      <div><img src="assets/Originals/ProtoBike_mtb.jpg" alt="ProtoBike identity" loading="lazy" decoding="async" style="object-position:72% center"><span>Identity</span></div>
+    </div>
+    <div class="row-title" aria-hidden="true">All of it</div>
+    <p class="row-line label">Identity. Sites. Shops. Tools. Apps.</p>
+  </section>
+
+  <!-- 3. THREE ANSWERS -->
+  <section class="ans" id="ans">
+    <div class="ans-c"><span class="label">Do I need a designer?</span><b>No.</b><p class="label">AID designs. EVRABO builds.</p></div>
+    <div class="ans-c"><span class="label">What does it cost to see it?</span><b>$0</b><p class="label">First prototype free. No contract.</p></div>
+    <div class="ans-c"><span class="label">Whose is it after?</span><b>Yours.</b><p class="label">Your data. Your code. Export anytime.</p></div>
+  </section>
+
+  <!-- 5: a product shown as the problem it solves -->
+  <section class="q light" id="vad" aria-label="VADMatch, invoices matched to payments">
+    <span class="q-ask">Chasing payments against invoices?</span>
+    <div>
+      <div class="q-ans">Matched.</div>
+      <p class="q-line">Every invoice, matched to its payment. What doesn't match gets flagged.</p>
+      <p class="q-by label"><b>VADMatch</b> · Conciliador · by EVRABO</p>
+      <a class="go" href="contact.html">Ask for a demo <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="q-vis mt" role="img" aria-label="Example: three invoices matched to three payments, one invoice and one payment flagged as unmatched">
+      <div class="mt-col"><h4>Invoices</h4><div class="mt-rows"><div class="mt-row"><span>INV 101</span><b>$1,200</b></div><div class="mt-row"><span>INV 102</span><b>$860</b></div><div class="mt-row"><span>INV 103</span><b>$2,450</b></div><div class="mt-row no"><span>INV 104</span><b>$390</b></div></div></div>
+      <div class="mt-lines" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path pathLength="100" d="M0 12.5 C50 12.5 50 37.5 100 37.5"/><path pathLength="100" d="M0 37.5 C50 37.5 50 12.5 100 12.5"/><path pathLength="100" d="M0 62.5 L100 62.5"/></svg></div>
+      <div class="mt-col"><h4>Payments</h4><div class="mt-rows"><div class="mt-row"><span>Transfer</span><b>$860</b></div><div class="mt-row"><span>Transfer</span><b>$1,200</b></div><div class="mt-row"><span>Card</span><b>$2,450</b></div><div class="mt-row no"><span>Cash</span><b>$310</b></div></div></div>
+      <span class="mt-ex">Example</span>
+    </div>
+  </section>
+
+  <!-- 6: the close -->
+  <section class="pb" id="space">
+    <div class="pb-inner">
+      <span class="label" style="display:block;opacity:.6;margin-bottom:1.2rem">Try it. Right now.</span>
+      <h2 class="pb-title">Build yours</h2>
+      <p class="pb-sub">Pick what you need. Watch it take shape.</p>
+      <div class="pb-body">
+        <div class="pb-stage">
+          <div class="pb-screen" id="pb-screen" data-type="website" data-vibe="raw" role="img" aria-label="Live preview of your prototype">
+            <div class="pb-mock pb-website">
+              <div class="pb-nav"><b data-pb-name></b><i></i><i></i><i></i></div>
+              <div class="pb-hero"><h3 data-pb-name></h3><span class="pb-bar w60"></span><span class="pb-bar w40"></span><span class="pb-cta"></span></div>
+            </div>
+            <div class="pb-mock pb-shop">
+              <div class="pb-nav"><b data-pb-name></b><i></i><i></i></div>
+              <div class="pb-grid">
+                <div class="pb-tile"><em>$48</em></div><div class="pb-tile hot"><em>$62</em></div><div class="pb-tile"><em>$30</em></div>
+                <div class="pb-tile"><em>$75</em></div><div class="pb-tile"><em>$54</em></div><div class="pb-tile"><em>$39</em></div>
+              </div>
+            </div>
+            <div class="pb-mock pb-tool">
+              <div class="pb-side"><b data-pb-name></b><i></i><i></i><i></i><i></i></div>
+              <div class="pb-table">
+                <div class="pb-row"><span class="pb-bar w30"></span><span class="pb-bar w20"></span><em>128</em></div>
+                <div class="pb-row hot"><span class="pb-bar w40"></span><span class="pb-bar w20"></span><em>96</em></div>
+                <div class="pb-row"><span class="pb-bar w30"></span><span class="pb-bar w30"></span><em>212</em></div>
+                <div class="pb-row"><span class="pb-bar w20"></span><span class="pb-bar w20"></span><em>64</em></div>
+                <div class="pb-row"><span class="pb-bar w40"></span><span class="pb-bar w30"></span><em>180</em></div>
+              </div>
+            </div>
+            <div class="pb-mock pb-app">
+              <div class="pb-phone">
+                <b data-pb-name></b>
+                <div class="pb-item hot"><span class="pb-dot"></span><span class="pb-bar w60"></span></div>
+                <div class="pb-item"><span class="pb-dot"></span><span class="pb-bar w40"></span></div>
+                <div class="pb-item"><span class="pb-dot"></span><span class="pb-bar w60"></span></div>
+                <div class="pb-item"><span class="pb-dot"></span><span class="pb-bar w30"></span></div>
+                <div class="pb-tabs"><i></i><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pb-controls">
+          <div class="pb-ctl"><span class="pb-label"><b>01</b>What</span>
+            <div class="pb-seg" data-key="type"><button type="button" data-v="website" aria-pressed="true">Website</button><button type="button" data-v="shop" aria-pressed="false">Shop</button><button type="button" data-v="tool" aria-pressed="false">Tool</button><button type="button" data-v="app" aria-pressed="false">App</button></div></div>
+          <div class="pb-ctl"><span class="pb-label"><b>02</b>Feel</span>
+            <div class="pb-seg" data-key="vibe"><button type="button" data-v="raw" aria-pressed="true">Raw</button><button type="button" data-v="clean" aria-pressed="false">Clean</button><button type="button" data-v="loud" aria-pressed="false">Loud</button></div></div>
+          <div class="pb-ctl"><label class="pb-label" for="pb-name"><b>03</b>Name</label>
+            <input class="pb-name" id="pb-name" type="text" value="Your Brand" maxlength="28" autocomplete="off" spellcheck="false"></div>
+          <a class="pb-go" id="pb-go" href="contact.html#reserve">Reserve this prototype <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg></a>
+          <button type="button" class="pb-shuffle" id="pb-shuffle">Shuffle</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="logo">EVRABO</div>
+    <div><a href="https://www.instagram.com/evrabo_" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.tiktok.com/@evrabo_" target="_blank" rel="noopener noreferrer">TikTok</a></div>
+    <span>© 2026 EVRABO</span>
+  </footer>
+
+  <script>
+    // Cards play their entry once when they come into view; videos play only while on screen
+    (function () {
+      var cards = [].slice.call(document.querySelectorAll('.q'));
+      if (!('IntersectionObserver' in window)) { cards.forEach(function (c) { c.classList.add('in'); }); }
+      else {
+        var io = new IntersectionObserver(function (es) {
+          es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+        }, { threshold: 0.35 });
+        cards.forEach(function (c) { io.observe(c); });
+      }
+      var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var vids = [].slice.call(document.querySelectorAll('video'));
+      if (still) { vids.forEach(function (v) { v.removeAttribute('autoplay'); v.pause(); }); return; }
+      if (!('IntersectionObserver' in window)) return;
+      var vio = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          var v = e.target;
+          if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause();
+        });
+      }, { rootMargin: '30% 0px' });
+      vids.forEach(function (v) { vio.observe(v); });
+    })();
+
+    // Proof scene: one scroll value picks the word; the film plays while it is on screen
+    (function () {
+      var sec = document.getElementById('proof'), word = document.getElementById('proof-word');
+      var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!sec || still) return;
+      sec.classList.add('pin-on');
+      var W = ['Sketch.', 'Design.', 'Code.', 'Live.'], cur = -1, req = 0;
+      function tick() {
+        req = 0;
+        var r = sec.getBoundingClientRect(), span = sec.offsetHeight - window.innerHeight;
+        var p = Math.max(0, Math.min(0.999, -r.top / span)), i = Math.floor(p * 4);
+        if (i !== cur) { cur = i; word.textContent = W[i]; word.classList.remove('punch'); void word.offsetWidth; word.classList.add('punch'); }
+      }
+      function on() { if (!req) req = requestAnimationFrame(tick); }
+      window.addEventListener('scroll', on, { passive: true }); window.addEventListener('resize', on); tick();
+    })();
+    // Three answers punch in together
+    (function () {
+      var a = document.getElementById('ans');
+      if (!('IntersectionObserver' in window)) { a.classList.add('in'); return; }
+      var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { a.classList.add('in'); io.disconnect(); } }, { threshold: 0.3 });
+      io.observe(a);
+    })();
+
+    // Builder: the choices feed the preview and the reserve form
+    (function () {
+      var screen = document.getElementById('pb-screen');
+      var go = document.getElementById('pb-go'), nameIn = document.getElementById('pb-name');
+      var st = { type: 'website', vibe: 'raw' };
+      var TYPES = { website: 'Website or online shop', shop: 'Website or online shop', tool: 'Internal tool', app: 'App' };
+      var VIBES = ['raw', 'clean', 'loud'], KINDS = Object.keys(TYPES);
+      function render() {
+        var n = nameIn.value.trim() || 'Your Brand';
+        screen.dataset.type = st.type;
+        screen.dataset.vibe = st.vibe;
+        screen.style.setProperty('--fs', Math.min(14, 145 / n.length) + 'cqw');
+        screen.querySelectorAll('[data-pb-name]').forEach(function (el) { el.textContent = n; });
+        go.href = 'contact.html?company=' + encodeURIComponent(n) + '&type=' + encodeURIComponent(TYPES[st.type]) +
+          '&style=' + encodeURIComponent(st.vibe + ' ' + st.type) + '#reserve';
+        document.querySelectorAll('.pb-seg').forEach(function (seg) {
+          seg.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', String(st[seg.dataset.key] === b.dataset.v)); });
+        });
+      }
+      document.querySelectorAll('.pb-seg button').forEach(function (b) {
+        b.addEventListener('click', function () { st[b.parentNode.dataset.key] = b.dataset.v; render(); });
+      });
+      nameIn.addEventListener('input', render);
+      document.getElementById('pb-shuffle').addEventListener('click', function () {
+        st.type = KINDS[Math.floor(Math.random() * KINDS.length)];
+        st.vibe = VIBES[Math.floor(Math.random() * VIBES.length)];
+        render();
+      });
+      render();
+    })();
+  </script>
+</body>
+</html>

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EVRABO — Your whole brand, online</title>
-  <meta name="description" content="EVRABO builds your whole online world: identity, websites, shops, content, tools and apps. Your first prototype is free.">
-  <meta property="og:title" content="EVRABO — Your whole brand, online">
-  <meta property="og:description" content="Identity, websites, shops, content, tools and apps. One team, all online. Your first prototype is free.">
+  <title>Evrabo</title>
+  <meta name="description" content="EVRABO — Dirt · Dream · Reach. Future is on. We are Champions. No fear. Explore the originals.">
+  <meta property="og:title" content="EVRABO">
+  <meta property="og:description" content="Dirt · Dream · Reach. Future is on. We are Champions. No fear.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://evrabo.com/">
   <meta property="og:image" content="https://evrabo.com/assets/images/LinearMomentum.jpg">
@@ -20,7 +20,7 @@
     "name": "EVRABO",
     "url": "https://evrabo.com/",
     "logo": "https://evrabo.com/assets/images/favicon.png",
-    "description": "EVRABO builds a brand's whole online world: identity, websites, shops, content, tools and apps.",
+    "description": "EVRABO — a magazine for the ones who move first. Photography, film, and writing built without compromise.",
     "sameAs": [
       "https://instagram.com/evrabo_",
       "https://tiktok.com/@evrabo_"
@@ -55,6 +55,10 @@
     html {
       scroll-behavior: smooth;
       overflow-x: clip;
+    }
+
+    .collection {
+      margin-top: -5vh;
     }
 
     body {
@@ -113,6 +117,9 @@
       opacity: 0.04;
       background-image: url("assets/images/noise.png");
     }
+
+    /* Below-the-fold sections are not rendered until they are near the viewport */
+    .build, .originals-promo { content-visibility: auto; contain-intrinsic-size: auto 90vh; }
 
     /* Navigation */
     nav {
@@ -178,31 +185,15 @@
     }
 
     /* Hero Section — Rapid-Cut Video Montage */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      width: 100%;
-      overflow: hidden;
-      background: var(--black);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      will-change: transform;
-    }
-
-    .hero-video-stack {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
+    /* Hero: the film shows through the letters (white layer, screen blend, black text) */
+    .hero { position: relative; height: 100vh; height: 100svh; width: 100%; overflow: hidden; background: var(--black); }
+    .hero-mask { position: absolute; inset: 0; z-index: 2; background: #fff; mix-blend-mode: screen; display: flex; flex-direction: column; justify-content: center; padding: 0 4vw; pointer-events: none; }
+    .hero-mask b { display: block; font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(5rem, 23vw, 26rem); line-height: 0.82; text-transform: uppercase; color: #000; letter-spacing: 0.01em; }
+    .hero-foot { position: absolute; z-index: 3; left: 4vw; bottom: 5vh; font-size: 0.75rem; letter-spacing: 0.35em; text-transform: uppercase; mix-blend-mode: difference; color: #fff; pointer-events: none; }
 
     .hero-video-bg {
       position: absolute;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -212,14 +203,6 @@
 
     .hero-video-bg.active { opacity: 1; }
 
-    /* Light vignette, edges only */
-    .hero-vignette {
-      position: absolute;
-      inset: 0;
-      z-index: 3;
-      pointer-events: none;
-      background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(5, 5, 5, 0.5) 100%);
-    }
 
     /* Ascend: the way into the film (own page, with sound) */
     .hero-ascend {
@@ -230,14 +213,15 @@
       width: clamp(6.5rem, 10vw, 9rem);
       aspect-ratio: 1.12;
       display: block;
-      color: var(--white);
+      color: #fff;
+      mix-blend-mode: difference;
       text-decoration: none;
     }
 
     .hero-ascend svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 
     .hero-ascend polygon {
-      fill: rgba(5, 5, 5, 0.25);
+      fill: transparent;
       stroke: currentColor;
       stroke-width: 2.5;
       stroke-linejoin: miter;
@@ -260,7 +244,7 @@
     }
 
     .hero-ascend:hover polygon { fill: var(--white); }
-    .hero-ascend:hover span { color: var(--black); }
+    .hero-ascend:hover span { color: #000; }
     .hero-ascend:focus-visible { outline: 2px solid var(--white); outline-offset: 6px; }
 
     /* The blast: a white triangle grows from the button until it covers the screen, then Ascend opens */
@@ -279,100 +263,233 @@
       to { clip-path: polygon(calc(var(--bx) - 260vmax) calc(var(--by) + 160vmax), var(--bx) calc(var(--by) - 280vmax), calc(var(--bx) + 260vmax) calc(var(--by) + 160vmax)); }
     }
 
-    .hero-content {
+
+    /* Collection Section */
+    .collection {
       position: relative;
-      z-index: 5;
-      text-align: center;
-      width: 100%;
-      padding: 0 4vw;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10vh 4vw;
     }
 
-    .hero-kicker {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: clamp(0.85rem, 1.5vw, 1.2rem);
-      letter-spacing: 0.5em;
-      text-transform: uppercase;
-      color: var(--white);
-      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.7);
-      margin-bottom: 2rem;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      will-change: transform, opacity;
+    .collection-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+      flex-wrap: wrap;
+      gap: 2rem;
     }
 
-    .hero-kicker::before { content: ""; display: inline-block; width: 0.55em; height: 0.55em; margin-right: 1.1em; background: var(--red); }
-    .hero-kicker.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .hero-headline {
+    .collection-title {
       font-family: 'Anton', sans-serif;
-      font-size: clamp(3.5rem, 10.2vw, 10rem);
+      font-size: clamp(3rem, 10vw, 8rem);
       line-height: 0.9;
       text-transform: uppercase;
-      letter-spacing: -0.02em;
-      color: var(--white);
-      min-height: 1.1em;
     }
 
-    .hero-headline .line {
+    .collection-desc {
+      max-width: 400px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      opacity: 0.7;
+      text-align: right;
+    }
+
+    .collection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    @keyframes cardFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .collection-card {
+      position: relative;
       display: block;
-      opacity: 0;
-      transform: translateY(70px) scale(0.95);
-      transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      will-change: transform, opacity;
+      aspect-ratio: 3/4;
+      background: var(--gray);
+      overflow: hidden;
+      cursor: pointer;
+      animation: cardFloat 6s ease-in-out infinite;
+      will-change: transform;
+      text-decoration: none;
+      color: inherit;
     }
 
-    .hero-headline .line.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+    .collection-card:nth-child(1) { animation-delay: 0s; }
+    .collection-card:nth-child(2) { animation-delay: -2s; }
+    .collection-card:nth-child(3) { animation-delay: -4s; }
 
-    .hero-sub {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(0.85rem, 1.5vw, 1.1rem);
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--white);
-      opacity: 0;
-      margin-top: 2.5rem;
-      transform: translateY(30px);
-      transition: all 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      will-change: transform, opacity;
-    }
-
-    .hero-sub.visible {
-      opacity: 0.6;
-      transform: translateY(0);
-    }
-
-    /* Partner credit: direct, small, bottom-left. Says who made the film, not whose site this is. */
-    .hero-credit {
+    .collection-card .card-glitch {
       position: absolute;
-      left: 4vw;
-      bottom: 2.2rem;
-      z-index: 5;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(0.65rem, 0.9vw, 0.8rem);
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: rgba(240, 240, 240, 0.7);
+      inset: 0;
+      background: var(--red);
+      mix-blend-mode: multiply;
+      opacity: 0;
+      transition: opacity 0.1s ease;
+      z-index: 2;
     }
-    .hero-credit b { color: var(--white); font-weight: 600; }
-    .hero-credit i { font-style: normal; margin: 0 0.5em; color: var(--red); }
 
-    .hero-red-line {
+    .collection-card:hover .card-glitch {
+      opacity: 0.3;
+      animation: glitchFlash 0.3s ease;
+    }
+
+    @keyframes glitchFlash {
+      0%, 100% { opacity: 0; }
+      20% { opacity: 0.4; }
+      40% { opacity: 0.1; }
+      60% { opacity: 0.5; }
+      80% { opacity: 0.2; }
+    }
+
+    .collection-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(1.1);
+      transition: all 0.6s ease;
+    }
+
+    .collection-card:hover img {
+      filter: grayscale(0%) contrast(1.2);
+      transform: scale(1.05);
+    }
+
+    .card-info {
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--red), transparent);
-      z-index: 5;
+      right: 0;
+      padding: 2rem 1.5rem 1.5rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+      z-index: 3;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+
+    .collection-card:hover .card-info {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .card-name {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .card-issue {
+      font-size: 0.85rem;
       opacity: 0.6;
+      margin-top: 0.3rem;
+    }
+
+    /* Originals Promo Section */
+    .originals-promo {
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10vh 4vw;
+      overflow: hidden;
+      background: var(--black);
+      z-index: 1;
+    }
+
+    .originals-promo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 100%, rgba(26,26,26,0.5) 0%, var(--black) 60%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .originals-promo-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1.8rem;
+    }
+
+    .originals-promo-kicker {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      letter-spacing: 0.6em;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+
+    .originals-promo-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(6rem, 22vw, 18rem);
+      line-height: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--white);
+    }
+
+    .originals-promo-desc {
+      max-width: 480px;
+      font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+      line-height: 1.7;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      opacity: 0.55;
+    }
+
+    .originals-promo-btn {
+      position: relative;
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 1.2rem 4rem;
+      border: 1px solid var(--white);
+      color: var(--white);
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+
+    .originals-promo-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--red);
+      transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .originals-promo-btn:hover::before {
+      left: 0;
+    }
+
+    .originals-promo-btn:hover {
+      border-color: var(--red);
+      color: var(--white);
     }
 
     /* Footer CTA */
@@ -557,40 +674,48 @@
     }
 
 
-    /* Free prototype: a window of the footage opens in the middle, FREE and PROTOTYPE slide in from opposite sides
-       and lock into a diagonal around it, then the window opens up to the whole screen.
-       Only clip-path, opacity and transform change on scroll. */
-    .offer { position: relative; width: 100%; background: var(--black); z-index: 1; }
-    .s-offer { --h: 480vh; overflow: visible; }
-    .offer-pin { background: var(--black); }
-    .offer-build { position: absolute; inset: 0; z-index: 0; overflow: hidden; clip-path: inset(50% 50% 50% 50%); will-change: clip-path; }
-    .offer-build video {
-      display: block; width: 100%; height: 100%; object-fit: cover; object-position: 20% top;
-      filter: grayscale(var(--gs, 0)) contrast(1.1) brightness(0.7); transform: scale(var(--vs, 1));
+    /* Scroll-Driven 3:4 Vertical Image Sequence */
+    .image-sequence[hidden] { display: none; }
+
+    .image-sequence {
+      position: relative;
+      width: 100%;
+      background: var(--black);
+      z-index: 1;
     }
-    .of-row-w { position: absolute; left: 0; z-index: 2; white-space: nowrap; will-change: transform; pointer-events: none;
-      font-family: 'Anton', sans-serif; text-transform: uppercase; line-height: 0.82; color: var(--white); }
-    .of-free { top: 12vh; font-size: 26vw; }
-    .of-proto { bottom: 21vh; font-size: 20vw; }
-    .of-for { position: absolute; z-index: 2; right: 4vw; top: 14vh; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--white); will-change: opacity; }
-    .of-bottom { position: absolute; z-index: 3; left: 4vw; right: 4vw; bottom: 6vh; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
-    .of-short { margin: 0; font-size: clamp(0.8rem, 1.2vw, 1rem); letter-spacing: 0.32em; text-transform: uppercase; color: var(--white); will-change: transform, opacity; }
-    .offer-btn {
-      display: flex; justify-content: space-between; align-items: center; gap: 2.5rem; padding: 1.25rem 1.6rem;
-      background: var(--white); color: var(--black); border: 1px solid var(--white); text-decoration: none;
-      font-family: 'Anton', sans-serif; font-size: clamp(1.3rem, 2.2vw, 2rem); letter-spacing: 0.08em; text-transform: uppercase;
-      transition: background 0.3s ease, color 0.3s ease; will-change: transform, opacity;
+
+    .image-sequence-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      background: var(--black);
     }
-    .offer-btn:hover { background: var(--black); color: var(--white); }
-    html:not(.story) .offer-pin { min-height: 100svh; }
-    html:not(.story) .offer-build { clip-path: none; }
-    html:not(.story) .of-row-w { left: 4vw; }
-    @media (max-width: 700px) {
-      .of-free { top: 13vh; font-size: 36vw; }
-      .of-proto { bottom: 25vh; font-size: 18.5vw; }
-      .of-for { display: none; }
-      .of-bottom { flex-direction: column; align-items: stretch; bottom: 5vh; }
+
+    .image-sequence-sticky img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(1.4) rotate(2deg) translateY(3%);
+      filter: contrast(1.15) saturate(0.9) blur(15px) brightness(0.7);
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform, filter, object-position;
+      z-index: 0;
     }
+
+    .image-sequence-sticky img.active {
+      opacity: 1;
+      transform: scale(1) rotate(0) translateY(0);
+      filter: contrast(1.1) saturate(0.85) blur(0) brightness(1);
+      z-index: 1;
+    }
+
 
     /* Mobile Menu Toggle */
     .nav-toggle {
@@ -672,10 +797,12 @@
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .nav-toggle { display: flex; }
-      .hero { min-height: 80vh; }
-      .hero-headline { font-size: clamp(2.5rem, 14vw, 5rem); }
+      .collection-desc { text-align: left; }
       .cursor, .cursor-follower { display: none; }
       body { cursor: auto; }
+      .originals-promo-title {
+        font-size: clamp(4.5rem, 18vw, 10rem);
+      }
     }
 
 
@@ -695,154 +822,244 @@
       white-space: nowrap;
       border: 0;
     }
+    /* Online identity: solid kicker word above a hollow one — the identity not yet built. */
+    .identity {
+      position: relative;
+      width: 100%;
+      height: 75vh;
+      height: 75svh;
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      background: var(--black);
+      overflow: hidden;
+      z-index: 1;
+    }
 
-    /* =====================================================================
-       STORY STAGES: pinned scenes driven by scroll progress (see SCROLLYTELLING_PLAYBOOK.md)
-       The pinned behaviour only exists under html.story (JS on, motion not reduced).
-       ===================================================================== */
+    /* The logo: big signature, vertically centered on the right half. */
+    .identity-mark {
+      position: absolute;
+      right: 6vw;
+      top: 50%;
+      height: clamp(240px, 52vh, 560px);
+      width: auto;
+      filter: grayscale(100%) contrast(1.15);
+      mix-blend-mode: screen;
+      opacity: 0;
+      transition: opacity 1.2s ease 0.3s;
+    }
+
+    .identity-mark.in {
+      opacity: 1;
+      animation: mark-spin 16s linear infinite;
+    }
+
+    @keyframes mark-spin {
+      from { transform: translateY(-50%) rotate(0deg); }
+      to { transform: translateY(-50%) rotate(360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .identity-mark.in { animation: none; transform: translateY(-50%); }
+    }
+
+    /* Type block, flush left, vertically centered. */
+    .identity-title {
+      margin: 0 0 0 4vw;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      font-family: 'Anton', sans-serif;
+      text-transform: uppercase;
+    }
+
+    /* First word: solid, quiet, kicker-sized. */
+    .identity-title .identity-online {
+      font-family: inherit;
+      font-size: clamp(3rem, 9vw, 9.5rem);
+      line-height: 0.9;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      margin-bottom: 0.6rem;
+    }
+
+    /* Plain statement of what the section is about. */
+    .identity-sub {
+      margin: 2.2rem 0 0 4vw;
+      max-width: 38rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(0.8rem, 1.1vw, 1rem);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(240, 240, 240, 0.75);
+    }
+
+    .identity-sub b { font-weight: 500; color: var(--white); }
+    .identity-sub i { font-style: normal; margin: 0 0.7em; opacity: 0.45; }
+
+    /* The word that matters: solid white, wall-to-wall. Size is the highlight. */
+    .identity-title .identity-hl {
+      font-size: clamp(4.5rem, 16vw, 17rem);
+      line-height: 0.82;
+      letter-spacing: 0;
+      color: var(--white);
+    }
+
+    @media (max-width: 900px) {
+      .identity { height: 62vh; height: 62svh; min-height: 400px; }
+      .identity-mark { right: 5vw; height: clamp(160px, 36vh, 340px); }
+      .identity-title { margin-left: 5vw; }
+      .identity-sub { margin-left: 5vw; letter-spacing: 0.2em; }
+    }
+
+    /* What we build: hard-ruled capability list with image preview */
+    .build {
+      position: relative;
+      z-index: 2;
+      padding: 14vh 4vw 12vh;
+      background: var(--black);
+    }
+
+    .build-kicker {
+      font-size: 0.75rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 5vh;
+    }
+
+    .build-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 4vw;
+      align-items: start;
+    }
+
+    .build-list { list-style: none; border-top: 3px solid var(--white); }
+
+    .build-row {
+      display: grid;
+      grid-template-columns: 3rem 1fr auto;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 1.6rem 1rem;
+      border-bottom: 1px solid rgba(240, 240, 240, 0.3);
+      color: var(--white);
+      text-decoration: none;
+      transition: background 0.25s ease, color 0.25s ease, padding 0.25s ease;
+    }
+
+    .build-row b {
+      font-weight: 400;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      opacity: 0.5;
+    }
+
+    .build-name {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .build-line {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      text-align: right;
+    }
+
+    .build-row:hover,
+    .build-row:focus-visible { background: var(--white); color: var(--black); padding-left: 1.8rem; outline: none; }
+
+    .build-preview {
+      position: sticky;
+      top: 14vh;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      border: 1px solid rgba(240, 240, 240, 0.3);
+      pointer-events: none;
+    }
+
+    .build-preview img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(40%) saturate(1.25) contrast(1.15) brightness(0.85);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .build-preview img.on { opacity: 1; }
+
+    /* Protobike and Kado: their own Originals photos, in full colour */
+    .build-preview .preview-photo {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Zen Kaku Gothic New', 'Space Grotesk', sans-serif;
+      font-weight: 300;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .build-preview .preview-photo::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--bg) var(--pos, center) / cover no-repeat;
+      filter: brightness(0.62) saturate(1.1);
+    }
+
+    .build-preview .preview-photo.on { opacity: 1; }
+    .build-preview .preview-photo > * { position: relative; }
+    .build-preview .preview-photo > img { position: absolute; inset: 0; opacity: 1; filter: none; mix-blend-mode: screen; }
+    .build-preview .preview-photo span { font-size: clamp(3rem, 7vw, 6rem); letter-spacing: 0.12em; padding-left: 0.12em; }
+    .build-preview .preview-photo small { font-size: 1rem; letter-spacing: 0.6em; padding-left: 0.6em; opacity: 0.6; }
+
+    .build-preview img.logo-flat { background: var(--black); object-fit: contain; filter: none; }
+
+    .build-preview figcaption {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      padding: 0.5rem 1rem;
+      background: var(--white);
+      color: var(--black);
+      font-family: 'Anton', sans-serif;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      .build-grid { grid-template-columns: 1fr; }
+      .build-preview { display: none; }
+      .build-row { grid-template-columns: 2.2rem 1fr; }
+      .build-line { grid-column: 2; text-align: left; }
+    }
+
+
+    /* ===== Story stages: AID chapters and the free prototype (pinned, scroll-driven; plain sections when motion is reduced) ===== */
     .stage { position: relative; z-index: 1; }
     .pin { position: relative; min-height: 100vh; min-height: 100svh; overflow: hidden; }
     html.story .stage { height: var(--h, 400vh); }
     html.story .pin { position: sticky; top: 0; height: 100vh; height: 100svh; min-height: 0; }
 
-    /* 2. The build: a site goes from sketch to live while you scroll */
-    .s-build { --h: 760vh; background: var(--black); --bp: 1; }
-    .build-pin {
-      display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.5fr);
-      align-items: center; gap: 4vw; padding: 0 4vw;
-    }
-    .bs-left { position: relative; display: flex; align-items: center; gap: 2.2vw; height: 56vh; }
-    .bs-rail { position: relative; align-self: stretch; width: 3px; background: rgba(240, 240, 240, 0.2); flex: none; }
-    .bs-rail > i { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: var(--white); transform-origin: 50% 0; transform: scaleY(var(--bp, 1)); }
-    .bs-ticks { position: absolute; left: 0; top: 0; bottom: 0; }
-    .bs-ticks span {
-      position: absolute; left: 1.1rem; font-size: 0.7rem; letter-spacing: 0.25em; opacity: 0.35; transform: translateY(-50%);
-      transition: opacity 0.3s ease;
-    }
-    .bs-ticks span.on { opacity: 1; }
-    .bs-words { position: relative; flex: 1; height: 1em; font-size: clamp(3.4rem, 8.4vw, 9rem); perspective: 900px; margin-left: 2.4rem; }
-    .bs-word {
-      position: absolute; left: 0; top: 50%; margin-top: -0.5em; white-space: nowrap;
-      font-family: 'Anton', sans-serif; line-height: 1; text-transform: uppercase; color: var(--white);
-      opacity: 0; transform: rotateX(-95deg); transition: opacity 0.45s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .bs-word.on { opacity: 1; transform: none; }
-    .bs-word.past { opacity: 0; transform: rotateX(95deg); }
-    html:not(.story) .bs-words { height: auto; display: flex; flex-direction: column; margin-left: 0; font-size: clamp(2.6rem, 6vw, 6rem); }
-    html:not(.story) .bs-word { position: static; margin: 0; opacity: 1; transform: none; }
-    html:not(.story) .bs-rail, html:not(.story) .bs-ticks { display: none; }
-    html:not(.story) .build-pin { padding-top: 12vh; padding-bottom: 12vh; }
-
-    /* Layers are static; scroll only changes opacity and transform (compositor work), so it stays smooth. */
-    .bs-stage { position: relative; width: 100%; justify-self: center; transform-origin: 50% 50%; will-change: transform; }
-    .bs-browser {
-      position: relative; width: 100%; aspect-ratio: 16 / 10; max-height: 78vh; margin: 0 auto;
-      background: #0b0b0b; border: 1px solid rgba(240, 240, 240, 0.35); overflow: hidden;
-    }
-    .bb-bar { position: absolute; left: 0; right: 0; top: 0; height: 9%; display: flex; align-items: center; gap: 0.45rem; padding: 0 3%; background: #161616; border-bottom: 1px solid rgba(240, 240, 240, 0.2); }
-    .bb-bar i { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: rgba(240, 240, 240, 0.3); }
-    .bb-url { margin: 0 auto 0 3%; flex: 1; max-width: 55%; padding: 0.25rem 0.8rem; background: #0b0b0b; font-size: clamp(0.55rem, 0.9vw, 0.8rem); letter-spacing: 0.12em; color: rgba(240, 240, 240, 0.7); }
-    .bb-body { position: absolute; left: 0; right: 0; top: 9%; bottom: 0; }
-    .lay { position: absolute; inset: 0; opacity: 0; will-change: opacity; }
-    .lay-design { opacity: 1; }
-
-    .e { position: absolute; border: 1px solid rgba(240, 240, 240, 0.55); will-change: transform, opacity; }
-    .e-nav { left: 3%; top: 4%; width: 94%; height: 9%; }
-    .e-hero { left: 3%; top: 16%; width: 94%; height: 46%; overflow: hidden; }
-    .e-c1, .e-c2, .e-c3 { top: 66%; width: 30%; height: 22%; overflow: hidden; }
-    .e-c1 { left: 3%; } .e-c2 { left: 35%; } .e-c3 { left: 67%; }
-    .e-foot { left: 3%; top: 92%; width: 94%; height: 4%; }
-    .lay-wire .e-hero {
-      background:
-        linear-gradient(to top right, transparent calc(50% - 0.5px), rgba(240, 240, 240, 0.3) 50%, transparent calc(50% + 0.5px)),
-        linear-gradient(to bottom right, transparent calc(50% - 0.5px), rgba(240, 240, 240, 0.3) 50%, transparent calc(50% + 0.5px));
-    }
-    .lay-design .e-nav { background: #121212; display: flex; align-items: center; justify-content: space-between; padding: 0 2%; }
-    .lay-design .e-nav b { width: 14%; height: 55%; background: var(--white); }
-    .lay-design .e-nav i { flex: 1; margin: 0 8%; height: 0.28rem; background: rgba(240, 240, 240, 0.6); }
-    .lay-design .e-nav u { width: 13%; height: 60%; background: var(--red); }
-    .lay-design .e-hero { background: #1a1a1a; display: flex; align-items: flex-end; }
-    .lay-design .e-hero span { padding: 0 4% 3%; font-family: 'Anton', sans-serif; text-transform: uppercase; line-height: 0.9; font-size: clamp(1.6rem, 5vw, 5.2rem); color: var(--white); }
-    .lay-design .e-c1 img, .lay-design .e-c2 img, .lay-design .e-c3 img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(0.7) contrast(1.1); }
-    .lay-design .e-foot { background: rgba(240, 240, 240, 0.25); }
-
-    .lay-code { background: #070707; overflow: hidden; }
-    .lay-code pre {
-      margin: 0; padding: 4%; will-change: transform; white-space: pre;
-      font: 600 clamp(0.5rem, 0.95vw, 0.85rem) / 1.75 ui-monospace, 'Cascadia Mono', Consolas, monospace; color: rgba(240, 240, 240, 0.75);
-    }
-    .lay-code u { text-decoration: none; color: var(--red); }
-    .lay-code s { text-decoration: none; opacity: 0.45; }
-    .cb-bar { position: absolute; left: 4%; right: 4%; bottom: 6%; height: 4px; background: rgba(240, 240, 240, 0.2); }
-    .cb-bar i { position: absolute; inset: 0; background: var(--white); transform-origin: 0 50%; transform: scaleX(0); will-change: transform; }
-
-    /* The live layer covers the whole window (bar included) once the browser opens up into the film */
-    .lay-live { z-index: 2; inset: 0; background: #000; clip-path: inset(9% 0 0 0); }
-    .lay-live video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .bb-live { display: flex; align-items: center; gap: 0.4rem; font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(0.6rem, 1vw, 0.9rem); letter-spacing: 0.2em; color: var(--white); opacity: 0; will-change: opacity; }
-    .bb-live::before { content: ''; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--red); animation: livePulse 1.2s ease-in-out infinite; }
-    @keyframes livePulse { 50% { opacity: 0.25; } }
-    .bs-tag { position: absolute; left: 4vw; bottom: 6vh; z-index: 5; display: flex; align-items: center; gap: 0.8rem; font-family: 'Anton', sans-serif; font-size: clamp(2rem, 6vw, 5rem); letter-spacing: 0.06em; text-transform: uppercase; color: var(--white); opacity: 0; pointer-events: none; will-change: opacity; }
-    .bs-tag::before { content: ''; width: 0.4em; height: 0.4em; border-radius: 50%; background: var(--red); animation: livePulse 1.2s ease-in-out infinite; }
-    html:not(.story) .lay-wire, html:not(.story) .lay-code, html:not(.story) .lay-live, html:not(.story) .bs-tag { display: none; }
-
-    @media (max-width: 900px) {
-      .build-pin { grid-template-columns: 1fr; align-content: center; gap: 3vh; padding: 0 5vw; }
-      .bs-left { height: auto; }
-      .bs-rail, .bs-ticks { display: none; }
-      .bs-words { margin-left: 0; font-size: clamp(3.2rem, 17vw, 6rem); }
-      .bs-browser { max-height: none; }
-    }
-
-    /* What we build: one design canvas with four artboards. A camera focuses each one in turn
-       (identity, websites, shops, apps), then pulls back to show the whole thing at once. Only transform changes. */
-    .cv-pin { background: #060606; }
-    .cv { position: absolute; left: 0; top: 0; width: calc(var(--u) * 160); height: calc(var(--u) * 120); transform-origin: 0 0; will-change: transform; }
-    .cv-grid { position: absolute; inset: 0; background-image: radial-gradient(rgba(240, 240, 240, 0.2) 1px, transparent 1.4px); background-size: calc(var(--u) * 3) calc(var(--u) * 3); }
-    .abw { position: absolute; left: calc(var(--u) * var(--x)); top: calc(var(--u) * var(--y)); width: calc(var(--u) * 60); }
-    .ab-tag { display: flex; align-items: baseline; gap: 0.9em; margin-bottom: calc(var(--u) * 1); font-size: max(0.7rem, calc(var(--u) * 1)); letter-spacing: 0.3em; text-transform: uppercase; color: var(--white); }
-    .ab-tag b { font-weight: 400; opacity: 0.5; }
-    .ab-tag a { margin-left: auto; color: var(--white); text-decoration: none; border-bottom: 1px solid var(--white); }
-    .ab-tag a:hover { color: var(--red); border-color: var(--red); }
-    .ab { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #0b0b0b; border: 1px solid rgba(240, 240, 240, 0.4); box-shadow: 0 calc(var(--u) * 2) calc(var(--u) * 6) rgba(0, 0, 0, 0.6); }
-    .ab-bar { position: absolute; left: 0; right: 0; top: 0; height: 7.5%; display: flex; align-items: center; gap: 0.4em; padding: 0 2.5%; background: #161616; border-bottom: 1px solid rgba(240, 240, 240, 0.2); font-size: max(0.55rem, calc(var(--u) * 0.8)); letter-spacing: 0.1em; color: rgba(240, 240, 240, 0.65); }
-    .ab-bar i { width: 0.55em; height: 0.55em; border-radius: 50%; background: rgba(240, 240, 240, 0.3); }
-    .ab-bar span { margin-left: 2%; }
-    .ab-in { position: absolute; left: 0; right: 0; top: 7.5%; bottom: 0; }
-    .ab-in > img, .ab-in > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .cv-words { position: absolute; left: 4vw; bottom: 6vh; z-index: 6; width: 92vw; height: 1em; margin: 0; font-size: clamp(3.4rem, 13vw, 14rem); pointer-events: none; }
-    .cv-words .bs-word small { position: absolute; left: 0.1em; bottom: 100%; margin-bottom: 0.2rem; font-family: 'Space Grotesk', sans-serif; font-size: clamp(0.75rem, 1.1vw, 0.95rem); letter-spacing: 0.34em; text-transform: uppercase; color: var(--white); opacity: 0.85; }
-    html:not(.story) .cv { position: relative; width: auto; height: auto; padding: 14vh 4vw; display: grid; gap: 8vh; }
-    html:not(.story) .abw { position: relative; left: auto; top: auto; width: 100%; max-width: 900px; margin: 0 auto; }
-    html:not(.story) .cv-words, html:not(.story) .cv-grid { display: none; }
-    .ab-line { display: none; }
-    /* Phones: no camera. Each artboard is a plain block in a vertical list, full width, with its own line under it. */
-    @media (max-width: 700px) {
-      html.story .stage.s-all { height: auto; }
-      html.story .s-all .pin { position: relative; height: auto; min-height: 0; overflow: visible; }
-      html.story .s-all .cv { position: relative; width: auto; height: auto; padding: 14vh 5vw 10vh; display: grid; gap: 11vh; transform: none !important; }
-      html.story .s-all .cv > .abw { position: relative; left: auto !important; top: auto !important; width: 100%; }
-      .cv-grid, .cv-words { display: none; }
-      .ab-tag { font-size: 0.72rem; letter-spacing: 0.2em; gap: 0.7em; margin-bottom: 0.9rem; white-space: nowrap; }
-      .ab-tag a { letter-spacing: 0.1em; }
-      .ab { aspect-ratio: 4 / 5; box-shadow: none; }
-      .ab-bar { font-size: 0.6rem; }
-      .ab-line { display: block; margin: 1.1rem 0 0; font-family: 'Anton', sans-serif; font-size: clamp(1.6rem, 8vw, 2.4rem); letter-spacing: 0.05em; text-transform: uppercase; line-height: 1; }
-      .ab-in.mock { --q: 2cqw; }
-      .sh-grid { padding: 4cqw 8cqw; gap: 4cqw; }
-      .sh-nav span { display: none; }
-      .tl { grid-template-columns: 1fr; }
-      .tl-side { display: none; }
-      /* these must out-rank the base .id-grid / .id-p rules, which are declared further down the file */
-      .s-all .id-grid { grid-template-columns: 1fr; grid-template-rows: repeat(3, 1fr); }
-      .s-all .id-p:nth-child(1) img { width: auto; height: 62%; max-height: none; max-width: 70%; }
-      .s-all .id-p:nth-child(2) img { width: 96%; height: auto; max-height: none; }
-      .s-all .id-p .kado span { font-size: clamp(2.6rem, 13vw, 4.5rem); }
-    }
-
-    /* 3b. AID (design partner): full-screen chapters that stack as you scroll.
-       One image or film per chapter, one word. Only transform and opacity change. */
-    .s-all { --u: 1vw; --h: 780vh; background: var(--black); }
     .s-aid { --h: 300vh; background: var(--black); }
     .all-card { position: absolute; inset: 0; overflow: hidden; background: #000; will-change: transform; }
     .all-media { position: absolute; inset: 0; will-change: transform; }
@@ -860,75 +1077,94 @@
     }
     .all-link:hover { border-color: var(--red); color: var(--red); }
     .all-link svg { width: 1em; height: 1em; }
-    /* identity: three real brands, three panels */
-    /* Mini product mocks inside the "What we build" frames; sizes follow the frame width (cqw). */
-    .ab-in.mock { --q: 1cqw; container-type: size; background: #0b0b0b; }
-    .sh { position: absolute; inset: 0; display: flex; flex-direction: column; font-size: calc(2.2 * var(--q)); color: #f0f0f0; font-family: 'Space Grotesk', sans-serif; }
-    .sh-nav { display: flex; align-items: center; gap: calc(3 * var(--q)); padding: calc(2 * var(--q)) calc(4 * var(--q)); border-bottom: 1px solid rgba(240, 240, 240, 0.15); letter-spacing: 0.15em; text-transform: uppercase; font-size: calc(1.8 * var(--q)); }
-    .sh-nav b { font-family: 'Anton', sans-serif; font-size: calc(3.2 * var(--q)); letter-spacing: 0.1em; margin-right: auto; font-weight: 400; }
-    .sh-nav em { font-style: normal; border: 1px solid rgba(240, 240, 240, 0.5); padding: calc(0.5 * var(--q)) calc(1.6 * var(--q)); }
-    .sh-grid { flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: calc(3 * var(--q)); padding: calc(3 * var(--q)) calc(12 * var(--q)); min-height: 0; }
-    .sh-p { display: flex; flex-direction: column; gap: calc(1.2 * var(--q)); min-height: 0; }
-    .sh-p img { flex: 1; min-height: 0; width: 100%; object-fit: cover; }
-    .sh-p > div { display: flex; justify-content: space-between; font-size: calc(1.9 * var(--q)); letter-spacing: 0.08em; text-transform: uppercase; }
-    .sh-p > div span { opacity: 0.65; }
-    .sh-p u { text-decoration: none; text-align: center; background: #f0f0f0; color: #000; padding: calc(1 * var(--q)) 0; font-size: calc(1.7 * var(--q)); letter-spacing: 0.2em; text-transform: uppercase; }
-    .tl { position: absolute; inset: 0; display: grid; grid-template-columns: 22% 1fr; font-size: calc(2 * var(--q)); color: #f0f0f0; font-family: 'Space Grotesk', sans-serif; }
-    .tl-side { display: flex; flex-direction: column; gap: calc(1.4 * var(--q)); padding: calc(3 * var(--q)) calc(2.4 * var(--q)); border-right: 1px solid rgba(240, 240, 240, 0.15); background: #101010; text-transform: uppercase; letter-spacing: 0.15em; font-size: calc(1.7 * var(--q)); }
-    .tl-side b { font-family: 'Anton', sans-serif; font-size: calc(3 * var(--q)); font-weight: 400; letter-spacing: 0.08em; margin-bottom: calc(2 * var(--q)); }
-    .tl-side span { opacity: 0.5; padding: calc(1 * var(--q)) calc(1.2 * var(--q)); }
-    .tl-side span.on { opacity: 1; background: #f0f0f0; color: #000; }
-    .tl-main { display: flex; flex-direction: column; gap: calc(2.4 * var(--q)); padding: calc(3 * var(--q)); min-width: 0; }
-    .tl-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(2 * var(--q)); }
-    .tl-stats div { border: 1px solid rgba(240, 240, 240, 0.2); padding: calc(1.6 * var(--q)) calc(2 * var(--q)); display: flex; flex-direction: column; gap: calc(0.6 * var(--q)); }
-    .tl-stats em { font-style: normal; font-family: 'Anton', sans-serif; font-size: calc(4.6 * var(--q)); line-height: 1; }
-    .tl-stats small { font-size: calc(1.5 * var(--q)); letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.55; }
-    .tl-chart { flex: 1; min-height: 0; display: flex; align-items: flex-end; gap: calc(1.6 * var(--q)); border-bottom: 1px solid rgba(240, 240, 240, 0.25); }
-    .tl-chart i { flex: 1; height: var(--h); background: rgba(240, 240, 240, 0.28); }
-    .tl-chart i.hot { background: var(--red); }
-    .tl-rows { display: grid; gap: calc(1 * var(--q)); }
-    .tl-rows div { display: flex; align-items: center; gap: calc(2 * var(--q)); border: 1px solid rgba(240, 240, 240, 0.15); padding: calc(0.9 * var(--q)) calc(1.6 * var(--q)); }
-    .tl-rows span { flex: 1; height: calc(0.9 * var(--q)); background: rgba(240, 240, 240, 0.25); }
-    .tl-rows b { font-weight: 400; font-size: calc(1.5 * var(--q)); letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; }
-
-    .id-grid { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: #000; }
-    .id-p { position: relative; overflow: hidden; background: #0b0b0b; will-change: transform; }
-    .id-p .bg { position: absolute; left: 0; right: 0; top: -6%; bottom: -6%; background: var(--bg) var(--pos, center) / cover no-repeat; filter: brightness(0.7) saturate(1.05); }
-    .id-p img { position: absolute; left: 50%; top: 50%; width: 62%; max-height: 40%; object-fit: contain; transform: translate(-50%, -50%); }
-    .id-p .kado { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.8rem; color: var(--white); font-family: 'Zen Kaku Gothic New', 'Space Grotesk', sans-serif; font-weight: 300; }
-    .id-p .kado span { font-size: clamp(2rem, 5vw, 5.5rem); letter-spacing: 0.12em; padding-left: 0.12em; }
-    .id-p .kado small { font-size: clamp(0.7rem, 1vw, 0.95rem); letter-spacing: 0.6em; padding-left: 0.6em; opacity: 0.8; }
-    /* AID chapters */
     .all-media > img.aid-mark { position: absolute; inset: auto; left: 50%; top: 44%; height: 46vh; width: auto; object-fit: contain; transform: translate(-50%, -50%); }
     .all-media > video.sq { inset: auto; left: 50%; top: 42%; width: min(62vh, 90vw); height: min(62vh, 90vw); transform: translate(-50%, -50%); }
     html:not(.story) .s-all .all-card, html:not(.story) .s-aid .all-card { position: relative; height: 100vh; }
     @media (max-width: 700px) {
-      .id-p img { width: 78%; }
       .all-media > img.aid-mark { height: 34vh; top: 40%; }
       .all-link { right: auto; left: 4vw; bottom: auto; top: 18vh; }
     }
+    /* Free prototype: a window of the footage opens in the middle, FREE and PROTOTYPE slide in from opposite sides
+       and lock into a diagonal around it, then the window opens up to the whole screen.
+       Only clip-path, opacity and transform change on scroll. */
+    .s-offer { --h: 480vh; overflow: visible; }
+    .offer-pin { background: var(--black); }
+    .offer-build { position: absolute; inset: 0; z-index: 0; overflow: hidden; clip-path: inset(50% 50% 50% 50%); will-change: clip-path; }
+    .offer-build video {
+      display: block; width: 100%; height: 100%; object-fit: cover; object-position: 20% top;
+      filter: grayscale(var(--gs, 0)) contrast(1.1) brightness(0.7); transform: scale(var(--vs, 1));
+    }
+    .of-row-w { position: absolute; left: 0; z-index: 2; white-space: nowrap; will-change: transform; pointer-events: none;
+      font-family: 'Anton', sans-serif; text-transform: uppercase; line-height: 0.82; color: var(--white); }
+    .of-free { top: 12vh; font-size: 26vw; }
+    .of-proto { bottom: 21vh; font-size: 20vw; }
+    .of-for { position: absolute; z-index: 2; right: 4vw; top: 14vh; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--white); will-change: opacity; }
+    .of-bottom { position: absolute; z-index: 3; left: 4vw; right: 4vw; bottom: 6vh; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+    .of-short { margin: 0; font-size: clamp(0.8rem, 1.2vw, 1rem); letter-spacing: 0.32em; text-transform: uppercase; color: var(--white); will-change: transform, opacity; }
+    .offer-btn {
+      display: flex; justify-content: space-between; align-items: center; gap: 2.5rem; padding: 1.25rem 1.6rem;
+      background: var(--white); color: var(--black); border: 1px solid var(--white); text-decoration: none;
+      font-family: 'Anton', sans-serif; font-size: clamp(1.3rem, 2.2vw, 2rem); letter-spacing: 0.08em; text-transform: uppercase;
+      transition: background 0.3s ease, color 0.3s ease; will-change: transform, opacity;
+    }
+    .offer-btn:hover { background: var(--black); color: var(--white); }
+    html:not(.story) .offer-pin { min-height: 100svh; }
+    html:not(.story) .offer-build { clip-path: none; }
+    html:not(.story) .of-row-w { left: 4vw; }
+    @media (max-width: 700px) {
+      .of-free { top: 13vh; font-size: 36vw; }
+      .of-proto { bottom: 25vh; font-size: 18.5vw; }
+      .of-for { display: none; }
+      .of-bottom { flex-direction: column; align-items: stretch; bottom: 5vh; }
+    }
 
-    /* Close: the last headline flips in when it arrives */
-    .cta-title .cw { display: inline-block; white-space: nowrap; perspective: 900px; }
-    .cta-title .cw + .cw { margin-left: 0.28em; }
-    .cta-title .ch { display: inline-block; }
-    html.story .cta-title .ch { opacity: 0; transform: rotateX(180deg); transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i) * 60ms), opacity 0.25s ease calc(var(--i) * 60ms); }
-    html.story .cta-title.in .ch { opacity: 1; transform: none; }
-    .cta-row { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 1.2rem; justify-content: center; }
-    .cta-btn.ghost { border-color: rgba(240, 240, 240, 0.45); }
+  
+    /* ===== Duo: a sketch is eaten by the finished film (ported from EVRABO_static) ===== */
+    .dz { --dz-side: 4vw; background: #000; }
+    .dz-l { font-family: 'Space Grotesk', sans-serif; font-size: 0.72rem; letter-spacing: 0.4em; text-transform: uppercase; }
+    .dz-sk, .dz-bd { position: absolute; inset: 0; }
+    .dz-sk img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.5) brightness(0.5); }
+    .dz-sk::after { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(240,240,240,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(240,240,240,0.2) 1px, transparent 1px); background-size: 7vw 7vw; }
+    .dz-bd video { width: 100%; height: 100%; object-fit: cover; }
+    html.st-js .dz-bd { clip-path: inset(0 100% 0 0); }
+    .dz-div { position: absolute; z-index: 4; top: 0; bottom: 0; left: 0; width: 100%; border-left: 3px solid var(--red); pointer-events: none; }
+    .dz-div span { position: absolute; left: 0; top: 50%; transform: translate(-50%, -50%); background: var(--red); color: #fff; padding: 0.7rem 1rem; white-space: nowrap; }
+    .dz-q { position: absolute; z-index: 5; top: 13svh; left: 0; right: 0; text-align: center; mix-blend-mode: difference; color: #fff; }
+    .dz-lb, .dz-rb { position: absolute; z-index: 5; top: 22svh; mix-blend-mode: difference; color: #fff; }
+    .dz-lb { left: var(--dz-side); } .dz-rb { right: var(--dz-side); text-align: right; }
+    .dz-lb b, .dz-rb b { display: block; font-family: 'Anton', sans-serif; font-weight: 400; font-size: min(11vw, 17svh); line-height: 0.9; letter-spacing: 0; text-transform: uppercase; margin-top: 0.8rem; }
+    .dz-st { position: absolute; z-index: 5; bottom: 5svh; mix-blend-mode: difference; color: #fff; }
+    .dz-sl { left: var(--dz-side); } .dz-sr { right: var(--dz-side); }
+    .dz-ans { position: absolute; z-index: 5; left: 0; right: 0; bottom: 11svh; text-align: center; font-family: 'Anton', sans-serif; font-size: min(9vw, 13svh); line-height: 0.9; text-transform: uppercase; mix-blend-mode: difference; color: #fff; pointer-events: none; }
+    html.st-js .dz-ans { opacity: 0; }
+    html:not(.story) .dz-bd { display: none; }
+    html:not(.story) .dz { height: 100svh; }
 
-    .credit-mark { height: 1.5em; width: auto; vertical-align: middle; margin: -0.2em 0.25em 0 0.15em; }
-
+    /* ===== Close: one word, the film behind it ===== */
+    .dz-close video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
+    .dz-ck { position: absolute; z-index: 3; left: var(--dz-side); top: 13svh; opacity: 0.6; }
+    .dz-name { position: absolute; z-index: 3; left: 0; right: 0; top: 46%; transform: translateY(-55%); text-align: center; white-space: nowrap; line-height: 1; font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: min(34vw, 62svh); }
+    .dz-name span { display: block; }
+    .dz-hol { color: transparent; -webkit-text-stroke: 2px rgba(240,240,240,0.85); }
+    .dz-sol { position: absolute; left: 0; right: 0; top: 0; color: #fff; }
+    html.st-js .dz-sol { clip-path: inset(0 100% 0 0); }
+    .dz-act { position: absolute; z-index: 3; left: var(--dz-side); right: var(--dz-side); bottom: 7svh; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.4rem; }
+    html.st-js .dz-act { opacity: 0; visibility: hidden; }
+    .dz-act .cta-btn { margin: 0; }
+    .dz-go { color: #fff; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-size: 0.78rem; letter-spacing: 0.3em; text-transform: uppercase; border-bottom: 2px solid #fff; padding-bottom: 0.2rem; }
+    @media (max-width: 800px) { .dz-lb b, .dz-rb b { font-size: min(14vw, 13svh); } .dz-ans { font-size: min(12vw, 10svh); } }
   </style>
   <script>
-    // Pinned scroll stories only when motion is welcome; otherwise the same content shows as plain sections
-    try { if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('story'); } catch (e) {}
     // evrabo.com/index.html and evrabo.com are the same page: keep the address bar on the clean root URL
     if (/\/index\.html$/.test(location.pathname)) history.replaceState(null, '', location.pathname.replace(/index\.html$/, '') + location.search + location.hash);
   </script>
+  <script>
+    // Pinned scroll stories only when motion is welcome; otherwise the same content shows as plain sections
+    try { if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('story', 'st-js'); } catch (e) {}
+  </script>
 </head>
 <body>
-  <h1 class="sr-only">EVRABO — Your whole brand, online: identity, websites, shops, content, tools and apps</h1>
+  <h1 class="sr-only">EVRABO — Dirt · Dream · Reach</h1>
   <div id="ev-intro" role="presentation"><span>EVRABO®︎</span></div>
 
   <div class="cursor"></div>
@@ -956,158 +1192,77 @@
 
 
   <section class="hero" id="hero">
-    <!--
-      SINGLE LOOPING HERO VIDEO — one file, no cut logic, no lag.
-      To swap: edit your montage into one .mp4 and replace the src below.
-    -->
-    <div class="hero-video-stack">
-      <video class="hero-video-bg" muted loop playsinline preload="none" poster="assets/images/hero-poster.jpg" data-src="assets/videos/EVRABO_hero_web.mp4"></video>
-    </div>
-
-    <div class="hero-vignette"></div>
-
+    <video class="hero-video-bg" muted loop playsinline preload="none" poster="assets/images/hero-poster.jpg" data-src="assets/videos/EVRABO_hero_web.mp4"></video>
+    <div class="hero-mask" aria-hidden="true"><b style="font-size:clamp(4rem,30vw,34rem)">EVRABO</b></div>
+    <div class="hero-foot" aria-hidden="true"><span>We build the rest</span></div>
     <a class="hero-ascend" href="ascend.html" aria-label="Ascend"><svg viewBox="0 0 100 90" preserveAspectRatio="none" aria-hidden="true"><polygon points="50,2 98,88 2,88"/></svg><span>Ascend</span></a>
-
-    <div class="hero-content">
-      <div class="hero-kicker" id="hero-kicker">Your online studio</div>
-      <h2 class="hero-headline" id="hero-headline">
-        <span class="line" data-index="0">YOU BRING THE NAME</span>
-      </h2>
-      <p class="hero-sub" id="hero-sub">We build everything it needs to live online</p>
-    </div>
-
-    <div class="hero-credit"><span>Motion</span> by <img class="credit-mark" src="assets/Originals/aid-mark.png" alt=""><b>AID</b> <i>/</i> design partner</div>
-
   </section>
 
-  <!-- 1. OPENER -->
-<!-- 2. THE BUILD -->
-  <section class="stage s-build" id="build" aria-label="How a site gets built">
-    <h2 class="sr-only">Sketch, design, code, launch</h2>
-    <div class="pin build-pin">
-      <div class="bs-left" aria-hidden="true">
-        <div class="bs-rail"><i></i><div class="bs-ticks"><span style="top:0%">01</span><span style="top:33.3%">02</span><span style="top:66.6%">03</span><span style="top:100%">04</span></div></div>
-        <div class="bs-words">
-          <span class="bs-word">Sketch</span>
-          <span class="bs-word">Design</span>
-          <span class="bs-word">Code</span>
-          <span class="bs-word">Launch</span>
-        </div>
-      </div>
-      <div class="bs-stage" aria-hidden="true">
-        <div class="bs-browser">
-          <div class="bb-bar"><i></i><i></i><i></i><span class="bb-url">yourbrand.com</span><b class="bb-live">LIVE</b></div>
-          <div class="bb-body">
-            <div class="lay lay-wire"><div class="e e-nav"></div><div class="e e-hero"></div><div class="e e-c1"></div><div class="e e-c2"></div><div class="e e-c3"></div><div class="e e-foot"></div></div>
-            <div class="lay lay-design">
-              <div class="e e-nav"><b></b><i></i><u></u></div>
-              <div class="e e-hero"><span>Your brand.<br>Live.</span></div>
-              <div class="e e-c1"><img src="assets/Originals/ProtoBike_mtb.jpg" alt="" loading="lazy" decoding="async"></div>
-              <div class="e e-c2"><img src="assets/Originals/Kado_sand.jpg" alt="" loading="lazy" decoding="async"></div>
-              <div class="e e-c3"><img src="assets/images/pICdH.jpg" alt="" loading="lazy" decoding="async"></div>
-              <div class="e e-foot"></div>
-            </div>
-            <div class="lay lay-code"><pre><s>&lt;</s>main<s>&gt;</s>
-  <s>&lt;</s>nav <s>/&gt;</s>
-  <s>&lt;</s>hero <u>src</u>=<s>"film.mp4"</s> <s>/&gt;</s>
-  <s>&lt;</s>grid <u>cols</u>=<s>"3"</s> <s>/&gt;</s>
-<s>&lt;/</s>main<s>&gt;</s>
+  <section class="identity" id="identity" aria-label="Online identity">
+    <img class="identity-mark" src="assets/images/OnIdentity.png" alt="Brand mark" loading="lazy" decoding="async">
+    <h2 class="identity-title">
+      <span class="glitch-text identity-online" data-text="ONLINE">ONLINE</span>
+      <span class="glitch-text identity-hl" data-text="IDENTITY">IDENTITY</span>
+    </h2>
+    <p class="identity-sub"><b>Build</b><i>/</i><b>Launch</b><i>/</i><b>Own</b><br>We engineer the place your brand lives online.</p>
+  </section>
 
-<u>import</u> { motion } <u>from</u> <s>'./film'</s>
-<u>const</u> brand = <u>await</u> design(idea)
-<u>const</u> site  = <u>await</u> build(brand)
-<u>await</u> site.test()
-
-<u>export default</u> site
-
-$ npm run build
-  compiled in 1.8s
-$ deploy --prod
-  <u>live</u></pre><span class="cb-bar"><i></i></span></div>
-          </div>
-          <div class="lay lay-live"><video muted loop playsinline preload="none" poster="assets/images/build-live-poster.jpg" data-src="assets/videos/Build-live-film.mp4"></video></div>
-        </div>
-      </div>
-      <div class="bs-tag" aria-hidden="true">Live</div>
+  <section class="build" aria-label="What we build">
+    <div class="build-kicker">What we build</div>
+    <div class="build-grid">
+      <ul class="build-list">
+        <li><a class="build-row" href="https://leonardou-lab.github.io/WEB-DOWNHILL_03/index.html" target="_blank" rel="noopener noreferrer" data-preview="0"><b>01</b><span class="build-name">Websites</span><span class="build-line">Built to be remembered</span></a></li>
+        <li><a class="build-row" href="https://aid-branding.myshopify.com/" target="_blank" rel="noopener noreferrer" data-preview="1"><b>02</b><span class="build-name">Shops</span><span class="build-line">Built to sell</span></a></li>
+        <li><a class="build-row" href="contact.html" data-preview="2"><b>03</b><span class="build-name">Tools</span><span class="build-line">Built to save hours</span></a></li>
+        <li><a class="build-row" href="contact.html" data-preview="3"><b>04</b><span class="build-name">Apps</span><span class="build-line">Built to be used daily</span></a></li>
+      </ul>
+      <figure class="build-preview" aria-hidden="true">
+        <img src="assets/images/pICdH.jpg" alt="" loading="lazy" decoding="async">
+        <img src="assets/Originals/aid-mark.png" alt="" loading="lazy" decoding="async">
+        <div class="preview-photo" style="--bg: url('assets/Originals/ProtoBike_mtb.jpg'); --pos: 72% center;"><img src="assets/Originals/ProtoBike_white.png" alt="" loading="lazy" decoding="async"></div>
+        <div class="preview-photo" style="--bg: url('assets/Originals/Kado_sand.jpg');"><span>Kado</span><small>カド</small></div>
+        <figcaption>Selected work</figcaption>
+      </figure>
     </div>
   </section>
 
-  <!-- 3. WHAT WE BUILD: a camera travels across one canvas -->
-  <section class="stage s-all" id="all" aria-label="What we build">
-    <h2 class="sr-only">Identity, websites, shops, apps and tools</h2>
-    <div class="pin cv-pin">
-      <div class="cv">
-        <div class="cv-grid" aria-hidden="true"></div>
-        <div class="abw" style="--x:10;--y:10">
-          <div class="ab-tag"><b>01</b><span>Identity</span></div>
-          <div class="ab"><div class="id-grid">
-            <div class="id-p"><img src="assets/Originals/aid-mark.png" alt="AID" loading="lazy" decoding="async"></div>
-            <div class="id-p"><div class="bg" style="--bg: url('assets/Originals/ProtoBike_mtb.jpg'); --pos: 72% center;"></div><img src="assets/Originals/ProtoBike_white.png" alt="Protobike" loading="lazy" decoding="async" style="mix-blend-mode:screen"></div>
-            <div class="id-p"><div class="bg" style="--bg: url('assets/Originals/Kado_sand.jpg');"></div><div class="kado"><span>Kado</span><small>カド</small></div></div>
-          </div></div>
-          <p class="ab-line">A name. A mark. A voice.</p>
-        </div>
-        <div class="abw" style="--x:82;--y:10">
-          <div class="ab-tag"><b>02</b><span>Websites</span><a href="lambo/index.html">Open the 3D showroom<svg viewBox="0 0 24 24" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.1em;margin-left:0.4em"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg></a></div>
-          <div class="ab"><div class="ab-bar"><i></i><i></i><i></i><span>3d showroom</span></div><div class="ab-in"><img src="assets/images/lambo-app.jpg" alt="" loading="lazy" decoding="async" style="object-position:30% center"></div></div>
-          <p class="ab-line">Built to be remembered</p>
-        </div>
-        <div class="abw" style="--x:10;--y:59.5">
-          <div class="ab-tag"><b>03</b><span>Shops</span><a href="https://aid-branding.myshopify.com/" target="_blank" rel="noopener noreferrer">AID Store<svg viewBox="0 0 24 24" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.1em;margin-left:0.4em"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg></a></div>
-          <div class="ab"><div class="ab-bar"><i></i><i></i><i></i><span>aid-branding.myshopify.com</span></div><div class="ab-in mock"><div class="sh">
-            <div class="sh-nav"><b>AID</b><span>Shop</span><span>Posters</span><span>Apparel</span><em>Cart (1)</em></div>
-            <div class="sh-grid">
-              <div class="sh-p"><img src="assets/images/shop/VolcanYEmpapelado.jpg" alt="" loading="lazy" decoding="async"><div><b>Volcano Poster</b><span>$45</span></div><u>Add to cart</u></div>
-              <div class="sh-p"><img src="assets/Originals/Montain.jpg" alt="" loading="lazy" decoding="async"><div><b>Few of Us</b><span>$38</span></div><u>Add to cart</u></div>
-            </div>
-          </div></div></div>
-          <p class="ab-line">Built to sell</p>
-        </div>
-        <div class="abw" style="--x:82;--y:59.5">
-          <div class="ab-tag"><b>04</b><span>Apps &amp; Tools</span></div>
-          <div class="ab"><div class="ab-bar"><i></i><i></i><i></i><span>yourbrand.app/dashboard</span></div><div class="ab-in mock"><div class="tl">
-            <div class="tl-side"><b>Yourbrand</b><span class="on">Orders</span><span>Stock</span><span>Clients</span><span>Reports</span></div>
-            <div class="tl-main">
-              <div class="tl-stats"><div><em>128</em><small>Orders today</small></div><div><em>$9.4k</em><small>Revenue</small></div><div><em>12</em><small>Low stock</small></div></div>
-              <div class="tl-chart"><i style="--h:35%"></i><i style="--h:52%"></i><i style="--h:44%"></i><i style="--h:70%"></i><i style="--h:58%"></i><i style="--h:84%"></i><i class="hot" style="--h:96%"></i></div>
-              <div class="tl-rows"><div><span></span><b>Paid</b></div><div><span></span><b>Packed</b></div><div><span></span><b>Shipped</b></div></div>
-            </div>
-          </div></div></div>
-          <p class="ab-line">Built to be used daily</p>
-        </div>
-      </div>
-      <div class="bs-words cv-words" aria-hidden="true">
-        <span class="bs-word">Identity<small>A name. A mark. A voice.</small></span>
-        <span class="bs-word">Websites<small>Built to be remembered</small></span>
-        <span class="bs-word">Shops<small>Built to sell</small></span>
-        <span class="bs-word">Apps &amp; Tools<small>Built to be used daily</small></span>
-        <span class="bs-word">Online<small>One brand. Every surface.</small></span>
-      </div>
-    </div>
-  </section>
-
-  <!-- 3b. AID, DESIGN PARTNER -->
-  <section class="stage s-aid" id="aid" aria-label="AID, our design partner">
-    <h2 class="sr-only">AID, our design partner</h2>
+  <section class="stage dz" id="duo" style="--h:380vh" aria-label="AID draws, EVRABO builds. No designer needed.">
     <div class="pin">
-      <article class="all-card" data-i="0">
-        <div class="all-media"><img class="aid-mark" src="assets/Originals/aid-mark.png" alt="" loading="lazy" decoding="async"></div>
-        <div class="all-shade"></div>
-        <div class="all-idx">01 / 02</div>
-        <div class="all-cap"><span class="all-line">AID designs. EVRABO builds.</span><span class="all-word">Design partner</span></div>
-        <div class="all-dim"></div>
-      </article>
-      <article class="all-card" data-i="1">
-        <div class="all-media"><video class="sq" muted loop playsinline preload="none" data-src="assets/videos/Aedwards-web.mp4"></video></div>
-        <div class="all-shade"></div>
-        <div class="all-idx">02 / 02</div>
-        <div class="all-cap"><span class="all-line">Film and motion direction by AID</span><span class="all-word">Motion</span></div>
-        <div class="all-dim"></div>
-      </article>
+      <div class="dz-sk"><img src="assets/images/r-night_car.jpg" alt="" loading="lazy" decoding="async"></div>
+      <div class="dz-bd" id="dz-bd"><video id="dz-vid" src="assets/videos/r-night_car.mp4" poster="assets/images/r-night_car.jpg" muted loop playsinline preload="none" aria-hidden="true"></video></div>
+      <div class="dz-div" id="dz-div" aria-hidden="true"><span class="dz-l">AID &#9664; &#9654; EVRABO</span></div>
+      <p class="dz-q dz-l">Do I need a designer?</p>
+      <div class="dz-lb dz-l">EVRABO<b>Builds</b></div>
+      <div class="dz-rb dz-l">AID<b>Draws</b></div>
+      <span class="dz-st dz-sl dz-l">Live</span><span class="dz-st dz-sr dz-l">Sketch</span>
+      <div class="dz-ans" id="dz-ans" aria-hidden="true">No designer needed.</div>
     </div>
   </section>
 
-  <section class="stage offer s-offer" id="offer" aria-label="Free prototype">
+  <section class="image-sequence" id="image-sequence" hidden>
+    <div class="image-sequence-sticky">
+      <img class="active" src="assets/images/Indx/a.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/b.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/c.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/d.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/f.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/h.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/i.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/image%20%2812%29.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/Indx/j.jpg" alt="" loading="lazy" decoding="async">
+    </div>
+  </section>
+
+  <section class="originals-promo" id="originals">
+    <div class="originals-promo-content">
+      <div class="originals-promo-kicker">The Lab</div>
+      <h2 class="originals-promo-title glitch-text" data-text="ORIGINALS">ORIGINALS</h2>
+      <p class="originals-promo-desc">Projects born in the void</p>
+      <a href="originals.html" class="originals-promo-btn">Enter the Lab</a>
+    </div>
+  </section>
+
+  <section class="stage s-offer" id="offer" aria-label="Free prototype">
     <div class="pin offer-pin">
       <div class="offer-build" id="offer-build">
         <video src="assets/videos/DHMEX-web.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
@@ -1123,13 +1278,54 @@ $ deploy --prod
     </div>
   </section>
 
-  <section class="footer-cta" id="contact">
-    <h2 class="cta-title" aria-label="Build yours">
-      <span class="cw" aria-hidden="true"><span class="ch" style="--i:0">B</span><span class="ch" style="--i:1">U</span><span class="ch" style="--i:2">I</span><span class="ch" style="--i:3">L</span><span class="ch" style="--i:4">D</span></span><span class="cw" aria-hidden="true"><span class="ch" style="--i:5">Y</span><span class="ch" style="--i:6">O</span><span class="ch" style="--i:7">U</span><span class="ch" style="--i:8">R</span><span class="ch" style="--i:9">S</span></span>
-    </h2>
-    <div class="cta-row">
-      <a href="contact.html" class="cta-btn">Start your build</a>
-      <a href="originals.html" class="cta-btn ghost">Enter the Lab</a>
+
+  <section class="collection" id="collection">
+    <div class="collection-header">
+      <h2 class="collection-title glitch-text" data-text="SS / 26">SS / 26</h2>
+      <p class="collection-desc">
+        The new issue drops raw. Sexy, risky, aggressive, confident — a magazine 
+        for those who don't wait to be watched. Three issues. No permission needed.
+      </p>
+    </div>
+    <div class="collection-grid">
+      <a href="404.html" class="collection-card">
+        <div class="card-glitch"></div>
+        <img src="https://cdn.cosmos.so/f2565b51-87f6-4f00-aa54-e2ea4bb8ceb9?format=jpeg" alt="Crib" loading="lazy" decoding="async">
+        <div class="card-info">
+          <div class="card-name">Crib</div>
+          <div class="card-issue">Issue I</div>
+        </div>
+      </a>
+      <a href="katana.html" class="collection-card">
+        <div class="card-glitch"></div>
+        <img src="https://cdn.cosmos.so/13e21033-3c05-4aa2-98df-1edf49d80528?format=jpeg" alt="Katana" loading="lazy" decoding="async">
+        <div class="card-info">
+          <div class="card-name">Katana</div>
+          <div class="card-issue">Issue II</div>
+        </div>
+      </a>
+      <a href="404.html" class="collection-card">
+        <div class="card-glitch"></div>
+        <img src="https://cdn.cosmos.so/eed1465f-b629-4aff-9b6a-a17889c6bc29?format=jpeg" alt="Bitch" loading="lazy" decoding="async">
+        <div class="card-info">
+          <div class="card-name">Bitch</div>
+          <div class="card-issue">Issue III</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="stage dz dz-close" id="contact" style="--h:300vh" aria-label="Reserve your free prototype">
+    <div class="pin">
+      <video id="dz-cvid" src="assets/videos/r-Navy.mp4" poster="assets/images/r-Navy.jpg" muted loop playsinline preload="none" aria-hidden="true"></video>
+      <p class="dz-ck dz-l">Next</p>
+      <div class="dz-name" aria-hidden="true"><span class="dz-hol">Yours.</span><span class="dz-sol" id="dz-sol">Yours.</span></div>
+      <h2 class="sr-only">Yours. Reserve your free prototype.</h2>
+      <div class="dz-act" id="dz-act">
+        <p class="dz-l">Your data. Your code. Export anytime.</p>
+        <a class="cta-btn" href="contact.html#reserve">Reserve the free prototype</a>
+        <a class="dz-go" href="originals.html">Originals &#8599;</a>
+      </div>
     </div>
   </section>
 
@@ -1203,21 +1399,6 @@ $ deploy --prod
       heroVideo.src = src;
       heroVideo.play().catch(() => {});
     })();
-    const heroKicker = document.getElementById('hero-kicker');
-    const heroHeadline = document.getElementById('hero-headline');
-    const heroSub = document.getElementById('hero-sub');
-
-    const headlineLine = heroHeadline.querySelector('.line');
-
-    const headlines = [
-      { text: 'YOU BRING THE NAME', sub: 'We build everything it needs to live online' },
-      { text: 'WE BUILD FIRST', sub: 'Your prototype is ready before you pay anything' },
-      { text: 'DRAWN, THEN BUILT', sub: 'AID draws the brand. EVRABO builds the world around it' },
-      { text: 'THEN YOU DECIDE', sub: 'No contract. No pressure. Just the proof' }
-    ];
-
-    let headlineIndex = 0;
-    let headlineInterval = null;
 
     // Ascend: a white triangle blasts out of the button, then the film opens already lit (see ascend.html)
     const ascendLink = document.querySelector('.hero-ascend');
@@ -1243,47 +1424,12 @@ $ deploy --prod
     requestAnimationFrame(() => heroVideo.classList.add('active'));
     heroVideo.play().catch(() => {});
 
-    // One timer only: two timers stepping the same index is what skipped headlines
-    function startRotation() {
-      if (!headlineInterval) headlineInterval = setInterval(rotateHeadline, 2500);
-    }
 
-    function rotateHeadline() {
-      headlineLine.classList.remove('visible');
-      setTimeout(() => {
-        headlineIndex = (headlineIndex + 1) % headlines.length;
-        headlineLine.textContent = headlines[headlineIndex].text;
-        heroSub.textContent = headlines[headlineIndex].sub;
-        headlineLine.classList.add('visible');
-      }, 400);
-    }
-
-    // Reveal sequence when section enters viewport
-    const heroObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setTimeout(() => heroKicker.classList.add('visible'), 200);
-          setTimeout(() => headlineLine.classList.add('visible'), 400);
-          setTimeout(() => heroSub.classList.add('visible'), 700);
-          startRotation();
-          heroObserver.unobserve(heroSection);
-        }
-      });
-    }, { threshold: 0.4 });
-
-    heroObserver.observe(heroSection);
-
-    // Pause/resume when off-screen to save resources
+    // Pause the film while the hero is off-screen
     const heroVisibilityObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (!entry.isIntersecting) {
-          clearInterval(headlineInterval);
-          headlineInterval = null;
-          heroVideo.pause();
-        } else {
-          heroVideo.play().catch(() => {});
-          startRotation();
-        }
+        if (entry.isIntersecting) heroVideo.play().catch(() => {});
+        else heroVideo.pause();
       });
     }, { threshold: 0.05 });
 
@@ -1322,6 +1468,74 @@ $ deploy --prod
       });
     });
 
+    // Collection Card Glitch on Hover
+    document.querySelectorAll('.collection-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        const glitch = card.querySelector('.card-glitch');
+        glitch.style.animation = 'none';
+        glitch.offsetHeight;
+        glitch.style.animation = 'glitchFlash 0.4s ease';
+      });
+    });
+
+    // Online identity: the mark fades in and settles when the display scrolls into view.
+    const identityImg = document.querySelector('.identity-mark');
+    if (identityImg) {
+      if ('IntersectionObserver' in window) {
+        const identityObserver = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) {
+            identityImg.classList.add('in');
+            identityObserver.disconnect();
+          }
+        }, { threshold: 0.3 });
+        identityObserver.observe(identityImg);
+      } else {
+        identityImg.classList.add('in');
+      }
+    }
+
+    // Scroll-Revealed 3:4 Image Sequence
+    const imageSequence = document.getElementById('image-sequence');
+    const imageSequenceOn = imageSequence && !imageSequence.hidden;
+    const sequenceImages = imageSequence ? imageSequence.querySelectorAll('.image-sequence-sticky img') : [];
+    const scrollPerImageVH = 80;
+
+    if (imageSequence && sequenceImages.length) {
+      imageSequence.style.height = `${sequenceImages.length * scrollPerImageVH}vh`;
+    }
+
+    function updateImageSequence() {
+      if (!imageSequence || !sequenceImages.length) return;
+      const rect = imageSequence.getBoundingClientRect();
+      const sectionHeight = imageSequence.offsetHeight;
+      const viewportHeight = window.innerHeight;
+
+      let progress = -(rect.top) / (sectionHeight - viewportHeight);
+      progress = Math.max(0, Math.min(1, progress));
+
+      const rawIndex = progress * (sequenceImages.length - 1);
+      const frameIndex = Math.floor(rawIndex);
+      const localProgress = rawIndex - frameIndex;
+
+      sequenceImages.forEach((img, i) => {
+        const isActive = i === frameIndex;
+        img.classList.toggle('active', isActive);
+        if (isActive) {
+          img.style.objectPosition = `center ${30 + localProgress * 40}%`;
+        }
+      });
+    }
+
+    if (imageSequenceOn) {
+      let seqTicking = false;
+      window.addEventListener('scroll', () => {
+        if (seqTicking) return;
+        seqTicking = true;
+        requestAnimationFrame(() => { updateImageSequence(); seqTicking = false; });
+      }, { passive: true });
+      updateImageSequence();
+    }
+
     // Mobile menu toggle
     const navToggle = document.querySelector('.nav-toggle');
     const navMobile = document.querySelector('.nav-mobile');
@@ -1344,19 +1558,27 @@ $ deploy --prod
     }
 
 
+    // What we build: image preview follows the hovered row
+    (function () {
+      const rows = document.querySelectorAll('.build-row');
+      const imgs = document.querySelectorAll('.build-preview > img, .build-preview .preview-photo');
+      if (!rows.length || !imgs.length) return;
+      const show = (i) => imgs.forEach((img, k) => img.classList.toggle('on', k === i));
+      rows.forEach(row => {
+        const i = parseInt(row.dataset.preview, 10);
+        ['mouseenter', 'focus'].forEach(ev => row.addEventListener(ev, () => show(i)));
+        ['mouseleave', 'blur'].forEach(ev => row.addEventListener(ev, () => show(-1)));
+      });
+      show(0);
+    })();
 
-    // =====================================================================
-    // Story engine: every stage is a pure function of its scroll progress (0..1).
-    // Only runs under html.story (set in <head> when motion is not reduced).
-    // =====================================================================
+  </script>
+
+  <script>
+    // Story engine: each stage is a pure function of its scroll progress (0..1). Only runs under html.story.
     (function () {
       const root = document.documentElement;
-      const closeTitle = document.querySelector('.cta-title');
-      if (closeTitle && 'IntersectionObserver' in window) {
-        new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { closeTitle.classList.add('in'); o.disconnect(); } }, { threshold: 0.5 }).observe(closeTitle);
-      } else if (closeTitle) closeTitle.classList.add('in');
       if (!root.classList.contains('story')) return;
-
       const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
       const seg = (p, a, b) => clamp((p - a) / (b - a));
       const easeIn = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -1368,56 +1590,10 @@ $ deploy --prod
         if (en.isIntersecting && v.dataset.src && !v.getAttribute('src')) { v.preload = 'auto'; v.src = v.dataset.src; }
         if (en.isIntersecting && !v.closest('.s-build')) v.play().catch(() => {}); else if (!en.isIntersecting) v.pause();
       }), { rootMargin: '60% 0px' });
-      document.querySelectorAll('.s-build video, .s-offer video').forEach((v) => vio.observe(v));
+      document.querySelectorAll('.s-offer video').forEach((v) => vio.observe(v));
 
       const stages = [];
       const add = (el, update, resize) => stages.push({ el, update, resize, p: -1 });
-
-      // ---- 2. The build (layers crossfade; only opacity/transform change per frame)
-      (function () {
-        const el = document.getElementById('build'); if (!el) return;
-        const words = [...el.querySelectorAll('.bs-word')], ticks = [...el.querySelectorAll('.bs-ticks span')];
-        const left = el.querySelector('.bs-left'), stage = el.querySelector('.bs-stage'), tag = el.querySelector('.bs-tag');
-        const wire = el.querySelector('.lay-wire'), design = el.querySelector('.lay-design'), codeL = el.querySelector('.lay-code'), live = el.querySelector('.lay-live');
-        const wireEls = [...wire.querySelectorAll('.e')], pre = codeL.querySelector('pre'), bar = codeL.querySelector('.cb-bar i');
-        const url = el.querySelector('.bb-live'), video = live.querySelector('video'), rail = el.querySelector('.bs-rail > i');
-        let step = -1, tx = 0, ty = 0, S = 3, codeH = 0, vidOn = false;
-        const op = (n, v) => { v = +v.toFixed(3); if (n._o !== v) { n._o = v; n.style.opacity = v; } };
-        const tf = (n, v) => { if (n._t !== v) { n._t = v; n.style.transform = v; } };
-        const measure = () => {
-          stage.style.transform = 'none'; stage._t = 'none';
-          const r = stage.getBoundingClientRect(), pr = el.querySelector('.pin').getBoundingClientRect();
-          tx = innerWidth / 2 - (r.left - pr.left + r.width / 2); ty = innerHeight / 2 - (r.top - pr.top + r.height / 2);
-          S = Math.max(innerWidth / r.width, innerHeight / r.height) * 1.02;
-          codeH = Math.max(0, pre.scrollHeight - codeL.clientHeight * 0.8);
-        };
-        add(el, (p) => {
-          const appear = easeOut(seg(p, 0, 0.08)), e = easeIn(seg(p, 0.84, 0.98));
-          tf(stage, 'translate3d(' + (tx * e).toFixed(1) + 'px,' + (ty * e).toFixed(1) + 'px,0) scale(' + ((0.94 + 0.06 * appear) * (1 + (S - 1) * e)).toFixed(4) + ')');
-          op(stage, appear);
-          wireEls.forEach((n, i) => { const t = easeOut(seg(p, 0.03 + i * 0.03, 0.13 + i * 0.03)); op(n, t); tf(n, 'translate3d(0,' + (14 * (1 - t)).toFixed(1) + 'px,0)'); });
-          const d = seg(p, 0.26, 0.34);
-          op(wire, 1 - d); op(design, d * (1 - seg(p, 0.5, 0.56)));
-          op(codeL, seg(p, 0.5, 0.56) * (1 - seg(p, 0.74, 0.8)));
-          tf(pre, 'translate3d(0,' + (-codeH * seg(p, 0.5, 0.76)).toFixed(1) + 'px,0)');
-          tf(bar, 'scaleX(' + seg(p, 0.52, 0.74).toFixed(3) + ')');
-          op(live, seg(p, 0.74, 0.82));
-          live.style.clipPath = e > 0 ? 'inset(' + (9 * (1 - e)).toFixed(2) + '% 0 0 0)' : '';
-          op(url, seg(p, 0.8, 0.86));
-          op(left, 1 - seg(p, 0.82, 0.9));
-          op(tag, seg(p, 0.94, 0.99));
-          tf(rail, 'scaleY(' + p.toFixed(3) + ')');
-          const s = p < 0.26 ? 0 : p < 0.5 ? 1 : p < 0.74 ? 2 : 3;
-          if (s !== step) {
-            step = s;
-            words.forEach((w, i) => { w.classList.toggle('on', i === s); w.classList.toggle('past', i < s); });
-            ticks.forEach((t, i) => t.classList.toggle('on', i <= s));
-          }
-          const on = p > 0.72;
-          if (on !== vidOn) { vidOn = on; if (on) { if (!video.getAttribute('src')) { video.preload = 'auto'; video.src = video.dataset.src; } video.play().catch(() => {}); } else video.pause(); }
-        }, measure);
-        measure();
-      })();
 
       // ---- 3. Stacked chapters (what we build, and AID)
       const stack = (id, extra) => {
@@ -1449,40 +1625,6 @@ $ deploy --prod
           if (extra) extra(q, tf);
         });
       };
-      // ---- 3. What we build: the camera travels across the canvas
-      (function () {
-        const el = document.getElementById('all'); if (!el) return;
-        const cv = el.querySelector('.cv'), words = [...el.querySelectorAll('.bs-word')], vid = el.querySelector('.cv video');
-        let u = 0, vx = 0, vy = 0, sO = 0.6, C = {}, step = -1, vidOn = null, mob = false;
-        const tf = (n, v) => { if (n._t !== v) { n._t = v; n.style.transform = v; } };
-        const io = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        const measure = () => {
-          u = innerWidth * (innerWidth <= 700 ? 0.014 : 0.01); vx = innerWidth / 2; vy = innerHeight * (innerWidth <= 700 ? 0.4 : 0.43);
-          const cx = 40, cy = 28.75; // artboard centres in canvas units: A, B, C, D, overview
-          mob = innerWidth <= 700;
-          C = mob ? { A: [40, 47.3], B: [40, 137.3], C: [40, 227.3], D: [40, 317.3], O: [40, 317.3] }
-                  : { A: [40, 28.75], B: [112, 28.75], C: [40, 78.25], D: [112, 78.25], O: [76, 53.5] };
-          sO = mob ? 1 : Math.min(innerWidth * 0.92 / (132 * u), innerHeight * 0.8 / (88 * u));
-        };
-        // keyframes: where the camera rests (p), which artboard (or overview), and whether the move between dips (zooms out mid-way)
-        const K = [[0, 'A'], [0.14, 'A'], [0.30, 'B'], [0.42, 'B'], [0.58, 'C'], [0.70, 'C'], [0.84, 'D'], [0.90, 'D'], [1, 'O']];
-        add(el, (p) => {
-          if (innerWidth <= 700) { tf(cv, 'none'); return; }
-          let i = 0; while (i < K.length - 2 && p > K[i + 1][0]) i++;
-          const a = K[i], b = K[i + 1], t = io(seg(p, a[0], b[0]));
-          const sa = a[1] === 'O' ? sO : 1, sb = b[1] === 'O' ? sO : 1;
-          const dip = a[1] !== b[1] && b[1] !== 'O' ? 0.3 * Math.sin(Math.PI * t) : 0;
-          const s = sa + (sb - sa) * t - dip;
-          const x = C[a[1]][0] + (C[b[1]][0] - C[a[1]][0]) * t, y = C[a[1]][1] + (C[b[1]][1] - C[a[1]][1]) * t;
-          tf(cv, 'translate3d(' + (vx - x * u * s).toFixed(1) + 'px,' + (vy - y * u * s).toFixed(1) + 'px,0) scale(' + s.toFixed(4) + ')');
-          const w = p < 0.22 ? 0 : p < 0.5 ? 1 : p < 0.77 ? 2 : p < 0.945 ? 3 : 4;
-          if (w !== step) { step = w; words.forEach((n, k) => { n.classList.toggle('on', k === w); n.classList.toggle('past', k < w); }); }
-          const on = !!vid && p > 0.1 && p < 0.58;
-          if (vid && on !== vidOn) { vidOn = on; if (on) { if (!vid.getAttribute('src')) { vid.preload = 'auto'; vid.src = vid.dataset.src; } vid.play().catch(() => {}); } else vid.pause(); }
-        }, measure);
-        measure();
-      })();
-
       stack('aid');
 
       // ---- 4. Prototype offer
@@ -1535,7 +1677,35 @@ $ deploy --prod
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
       dirty = true; req();
     })();
+  </script>
 
+  <script src="assets/story.js"></script>
+  <script>
+    // Duo and the closing word: each is a pure function of its scroll progress (assets/story.js)
+    (function () {
+      var S = window.Story; if (!S || !S.on) return;
+      var T = S.T, io = S.io, out = S.out, g = function (i) { return document.getElementById(i); };
+      function watch(v, t) {
+        if (!('IntersectionObserver' in window)) return;
+        new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause(); }); }, { rootMargin: '20% 0px' }).observe(t);
+      }
+      var bd = g('dz-bd'), dv = g('dz-div'), ans = g('dz-ans');
+      watch(g('dz-vid'), g('duo'));
+      S.add(g('duo'), function (p) {
+        var e = io(T(p, 0.08, 0.78));
+        bd.style.clipPath = 'inset(0 ' + (100 * (1 - e)).toFixed(2) + '% 0 0)';
+        dv.style.transform = 'translate3d(' + (100 * e).toFixed(2) + '%,0,0)';
+        dv.style.opacity = 1 - T(p, 0.8, 0.88);
+        var a = out(T(p, 0.84, 0.95)); ans.style.opacity = a; ans.style.transform = 'translateY(' + ((1 - a) * 30).toFixed(1) + '%)';
+      });
+      var sol = g('dz-sol'), act = g('dz-act');
+      watch(g('dz-cvid'), g('contact'));
+      S.add(g('contact'), function (p) {
+        sol.style.clipPath = 'inset(0 ' + (100 * (1 - io(T(p, 0.05, 0.7)))).toFixed(2) + '% 0 0)';
+        var c = T(p, 0.72, 0.85); act.style.opacity = c; act.style.visibility = c > 0 ? 'visible' : 'hidden';
+      });
+      if (S.start) S.start();
+    })();
   </script>
 </body>
 </html>
